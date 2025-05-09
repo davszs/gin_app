@@ -9,7 +9,6 @@
     <!-- Biblioteca de ícones -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href={{asset('css/login.css')}}>
-    <img src="{{ asset('images/plano_fundo.png') }}">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,8 +16,9 @@
 </head>
 <body>
     <main class="container">
-        <form action="valida.php" method="POST">
-            <img class="logo" src="Images/logo.png">
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
+            <img class="logo" src="{{ asset('images/logo.png') }}">
             <h1>Área Exclusiva</h1>
 
             <div class="input-box">
@@ -27,7 +27,7 @@
             </div>
 
             <div class="input-box">
-                <input type="password" name="senha" placeholder="Senha" required>
+                <input type="password" name="password" placeholder="Senha" required>
                 <i class="bx bxs-lock-alt"></i>
             </div>
 
@@ -45,7 +45,7 @@
                     <input type="checkbox">
                     Lembrar senha
                 </label>
-                <a href="rec_senha.html">Esqueci minha senha</a>
+                <a href="{{ route('recuperar-senha') }}">Esqueci minha senha</a>
             </div>
 
             <button type="submit" class="login">Login</button>

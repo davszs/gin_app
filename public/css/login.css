@@ -11,7 +11,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url(plano_fundo.png) ;
+    background-image: url('../images/plano_fundo.png');
     background-size: cover;
     background-position: center;
 }
