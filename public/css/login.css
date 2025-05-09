@@ -1,0 +1,201 @@
+/* Estilo Geral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url('../images/plano_fundo.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.logo{
+height: 200px;
+width: 300px;
+margin-left: 10px ;
+}
+.colab{
+    height: 80px;
+    width: 50px;
+    margin-left: 15px;
+    
+}
+.logo_academia{
+    height: 90px;
+    width: 150px;
+}
+/* Container de login */
+.container {
+    width: 428px;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 10px;
+    color: #fff;
+    padding: 30px 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(50px); /* Efeito Blur, tipo de borramento e transparência */
+    transition: all 0.3s ease;
+}
+
+.container h1 {
+    font-size: 36px;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+/* Input Boxes */
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+    transition: all 0.3s ease;
+}
+
+/* Estilo dos Inputs */
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    outline: none;
+    font-size: 16px;
+    color: #fff;
+    padding: 20px 45px 20px 20px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.input-box input::placeholder {
+    color: #ffffff;
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+/* Efeito Hover e Focus nos Inputs */
+.input-box input:hover {
+    border-color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.input-box input:focus {
+    background-color: #f1f1f1;
+    color: #000;
+    border-color: #ccc;
+}
+
+.input-box select:hover,
+.input-box input:focus {
+    border-color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilo para o select */
+.input-box select {
+    width: 50%;
+    height: 100%;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 40px;
+    outline: none;
+    font-size: 16px;
+    text-align: center;
+    color: #ffffff;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.input-box select:hover {
+    border-color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.input-box select:focus {
+    background-color: #f1f1f1;
+    color: #000;
+    border-color: #ccc;
+}
+
+
+.remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    margin: -15px 0 15px;
+    transition: all 0.3s ease;
+}
+
+.remember-forgot label input {
+    accent-color: #fff;
+    margin-right: 5px;
+}
+
+.remember-forgot a {
+    text-decoration: none;
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+    color: #0d0ac49d;
+}
+
+/* Estilo do botão de Login */
+.login {
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+    border: none;
+    border-radius: 40px;
+    color: #333;
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.login:hover {
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    color: #fff;
+    transition: 0.4s ease;
+}
+
+.input-box select:hover {
+    border-color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.back-to-login {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-to-login a {
+    
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
+    border: 2px solid #fff;
+    padding: 10px 20px;
+    border-radius: 40px;
+    transition: all 0.3s ease;
+}
+
+.back-to-login a:hover {
+    background-color: #fff;
+    color: #333;
+    border-color: #fff;
+}
