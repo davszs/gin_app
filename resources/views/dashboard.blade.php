@@ -294,9 +294,14 @@
             <span>Configurações</span>
         </div>
         <div class="sidebar-item" style="margin-top: auto;">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Sair</span>
-        </div>
+    <form action="{{ route('logout') }}" method="POST" id="logout-form" style="display: none;">
+        @csrf
+    </form>
+    <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" title="Sair">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Desconectar</span>
+    </a>
+</div>
     </div>
 
     <!-- Content -->

@@ -21,16 +21,7 @@ height: 200px;
 width: 300px;
 margin-left: 10px ;
 }
-.colab{
-    height: 80px;
-    width: 50px;
-    margin-left: 15px;
-    
-}
-.logo_academia{
-    height: 90px;
-    width: 150px;
-}
+
 /* Container de login */
 .container {
     width: 428px;
