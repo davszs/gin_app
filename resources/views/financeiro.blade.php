@@ -298,10 +298,18 @@
             <i class="fas fa-cog"></i>
             <span>Configurações</span>
         </a>
-        <a href="#" title="Sair" style="margin-top: auto;">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Sair</span>
-        </a>
+       </a>
+    
+    <!-- Formulário de logout -->
+    <form action="{{ route('logout') }}" method="POST" id="logout-form" style="display: none;">
+        @csrf
+    </form>
+
+    <!-- Link para Sair, que submete o formulário -->
+    <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" title="Sair" style="margin-top: auto;">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Sair</span>
+    </a>
     </div>
     
     <!-- Main Content -->

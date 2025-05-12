@@ -16,13 +16,13 @@
 </head>
 <body>
     <main class="container">
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('login.submit') }}" method="POST">
             @csrf
             <img class="logo" src="{{ asset('images/logo.png') }}">
             <h1>Área Exclusiva</h1>
 
             <div class="input-box">
-                <input type="email" name="email" placeholder="Usuário" required>
+                <input type="email" name="email" placeholder="Email" required>
                 <i class="bx bxs-user"></i>
             </div>
 
@@ -31,14 +31,7 @@
                 <i class="bx bxs-lock-alt"></i>
             </div>
 
-            <div class="input-box">
-                <h3>Fazer login como:</h3>
-                <select name="tipo_usuario" required>
-                    <option value="administrador">Administrador</option>
-                    <option value="professor">Professor</option>
-                    <option value="aluno">Aluno</option>
-                </select>
-            </div><br>
+           
 
             <div class="remember-forgot">
                 <label>
