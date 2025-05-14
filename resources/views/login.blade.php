@@ -18,7 +18,7 @@
     <main class="container">
         <form action="{{ route('login.submit') }}" method="POST">
             @csrf
-            <img class="logo" src="{{ asset('images/logo.png') }}">
+            <img alt="Logo da Academia" class="logo" src="{{ asset('images/logo.png') }}">
             <h1>Área Exclusiva</h1>
 
             <div class="input-box">
@@ -44,5 +44,27 @@
             <button type="submit" class="login">Login</button>
         </form>
     </main>
+    @if (session('status'))
+    <div class="overlay-message" id="overlayMessage">
+        <div class="alert-box">
+            <p>{{ session('status') }}</p>
+            <button id="okBtn">OK</button>
+        </div>
+    </div>
+@endif
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const okBtn = document.getElementById("okBtn");
+        const overlay = document.getElementById("overlayMessage");
+
+        if (okBtn && overlay) {
+            okBtn.addEventListener("click", function () {
+                overlay.style.display = "none";
+            });
+        }
+    });
+</script>
+
+
 </body>
 </html>

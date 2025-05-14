@@ -18,5 +18,5 @@ Route::get('/home_aluno', fn() => view('dashboard'))->name('aluno.dashboard');
 Route::get('/home_admin', fn() => view('financeiro'))->name('admin.dashboard');
 
 
-Route::get('/recuperar-senha', [ResetPasswordController::class, 'showResetForm'])->name('recuperar-senha');
-Route::post('/recuperar-senha', [ResetPasswordController::class, 'resetPassword']);
+Route::get('/recuperar-senha', [ResetPasswordController::class, 'showResetForm'])->name('recuperar-senha.form');
+Route::post('/recuperar-senha', [ResetPasswordController::class, 'resetPassword'])->name('recuperar-senha');
