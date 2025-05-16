@@ -17,6 +17,7 @@
 <body>
     <main class="container">
         <form action="{{ route('recuperar-senha') }}" method="POST" id="recuperar-form">
+            @csrf
             <h1>Recuperar Senha</h1>
             <p>Informe o seu e-mail para que possamos enviar as instruções de recuperação.</p>
 
@@ -33,6 +34,25 @@
             </p>
         </form>
     </main>
+@if (session('status'))
+    <div class="message" id="messageBox">
+        <p>{{ session('status') }}</p>
+        <button id="closeBtn">OK</button>
+    </div>
+@endif
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const closeBtn = document.getElementById("closeBtn");
+        const msgBox = document.getElementById("messageBox");
+
+        if (closeBtn && msgBox) {
+            closeBtn.addEventListener("click", () => {
+                msgBox.style.display = "none";
+            });
+        }
+    });
+</script>
     <script src="{{ asset('js/script.js')}}"></script>
 </body>
 </html>

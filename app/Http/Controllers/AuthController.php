@@ -31,7 +31,7 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         $tipo = $user->tipo_user;
-        return redirect()->route($tipo === 'Administrador' ? 'admin.dashboard' : 'aluno.dashboard');
+        return redirect()->route($tipo === 'Administrador' ? 'admin.dashboard' : 'aluno.dashboard')->with('status', $tipo === 'Administrador' ? 'Bem-vindo ao Portal de Controle!' : 'Bem-vindo ao Portal do Aluno!');
     }
 
     return back()->withInput()->with('status', 'Login inválido!');
