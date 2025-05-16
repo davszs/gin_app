@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\AlunosController;
 use App\Http\Controllers\ResetPasswordController;
 
 Route::get('/', function () {
@@ -20,3 +20,9 @@ Route::get('/home_admin', fn() => view('financeiro'))->name('admin.dashboard');
 
 Route::get('/recuperar-senha', [ResetPasswordController::class, 'showResetForm'])->name('recuperar-senha');
 Route::post('/recuperar-senha', [ResetPasswordController::class, 'resetPassword']);
+
+// Route::get('/alunos', fn() => view('alunos'))->name('alunos.index');
+// Route::get('/alunos/create', fn() => view('create_aluno'))->name('alunos.create');
+// Route::post('/alunos', [AlunosController::class,'createAluno'])->name('alunos.store');
+
+Route::resource('alunos', AlunosController::class);
