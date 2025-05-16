@@ -5,6 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Sistema de Gerenciamento de Academia</title>
     <style>
+
+        .logout-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .logout-box {
+        background: white;
+        padding: 30px 40px;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .logout-box p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .logout-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .logout-buttons button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .logout-buttons .confirm {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .logout-buttons .cancel {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .logout-buttons .confirm:hover {
+        background-color: #c82333;
+    }
+
+    .logout-buttons .cancel:hover {
+        background-color: #5a6268;
+    }
+        .overlay-message {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.6); /* fundo escuro transparente */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .alert-box {
+        background-color: #fff;
+        padding: 30px 40px;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .alert-box p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .alert-box button {
+        padding: 10px 25px;
+        background-color: #007BFF;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .alert-box button:hover {
+        background-color: #0056b3;
+    }
         * {
             margin: 0;
             padding: 0;
@@ -258,6 +365,9 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+
+
 </head>
 <body>
     <!-- Sidebar -->
@@ -293,15 +403,12 @@
             <i class="fas fa-cog"></i>
             <span>Configurações</span>
         </div>
-        <div class="sidebar-item" style="margin-top: auto;">
-    <form action="{{ route('logout') }}" method="POST" id="logout-form" style="display: none;">
-        @csrf
-    </form>
-    <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();" title="Sair">
-        <i class="fas fa-sign-out-alt"></i>
-        <span>Desconectar</span>
-    </a>
-</div>
+       <div class="sidebar-item">
+        <a href="#" id="logoutTrigger">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Desconectar</span>
+            </a>
+        </div>
     </div>
 
     <!-- Content -->
@@ -412,5 +519,57 @@
             </div>
         </div>
     </div>
+    @if (session('status'))
+    <div class="overlay-message" id="overlayMessage">
+        <div class="alert-box">
+            <p>{{ session('status') }}</p>
+            <button id="okBtn">OK</button>
+        </div>
+    </div>
+@endif
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const okBtn = document.getElementById("okBtn");
+        const overlay = document.getElementById("overlayMessage");
+
+        if (okBtn && overlay) {
+            okBtn.addEventListener("click", function () {
+                overlay.style.display = "none";
+            });
+        }
+    });
+</script>
+
+<div id="logoutModal" class="logout-overlay" style="display: none;">
+    <div class="logout-box">
+        <p>Tem certeza que deseja desconectar a conta e sair?</p>
+        <div class="logout-buttons">
+            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="confirm">Sim, sair</button>
+            </form>
+            <button class="cancel" id="cancelLogout">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const logoutLink = document.getElementById("logoutTrigger");
+        const logoutModal = document.getElementById("logoutModal");
+        const cancelBtn = document.getElementById("cancelLogout");
+
+        logoutLink.addEventListener("click", function (e) {
+            e.preventDefault(); // Impede que o link recarregue a página
+            logoutModal.style.display = "flex";
+        });
+
+        cancelBtn.addEventListener("click", function () {
+            logoutModal.style.display = "none";
+        });
+    });
+</script>
+
+
 </body>
 </html>
