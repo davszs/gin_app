@@ -15,23 +15,7 @@
     <div class="container">
         <!-- Menu Lateral -->
         <nav class="sidebar">
-            <div class="logo">
-                <a href="#"><i class="fas fa-dumbbell"></i></a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="inicio.html" title="Início"><i class="fas fa-home"></i><span>Início</span></a></li>
-                <li class="active"><a href="aulas.html" title="Aulas"><i
-                            class="fas fa-calendar-alt"></i><span>Aulas</span></a></li>
-                <li><a href="comunicados.html" title="Comunicados"><i
-                            class="fas fa-bullhorn"></i><span>Comunicados</span></a></li>
-                <li><a href="financeiro.html" title="Financeiro"><i
-                            class="fas fa-wallet"></i><span>Financeiro</span></a></li>
-                <li><a href="suporte.html" title="Suporte"><i class="fas fa-headset"></i><span>Suporte</span></a></li>
-                <li class="sidebar-bottom">
-                    <a href="configuracoes.html" title="Configurações"><i
-                            class="fas fa-cog"></i><span>Configurações</span></a>
-                </li>
-            </ul>
+             @yield('menu_aluno')
         </nav>
 
         <!-- Conteúdo Principal -->
