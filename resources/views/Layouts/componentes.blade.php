@@ -8,6 +8,9 @@
 </head>
 <body>
     @section('menu_adm')
+    <div class="logo">
+                <a href="#"><i class="fas fa-dumbbell"></i></a>
+            </div>
     <ul class="sidebar-menu">
         <li class="sidebar-item active">
              <a href="#"><i class="fas fa-home"></i>
@@ -23,7 +26,7 @@
         </li>
         <li class="sidebar-item">
             <a href="#"> <i class="fas fa-book"></i>
-            span>Aulas</span></a>
+            <span>Aulas</span></a>
         </li>
         <li class="sidebar-item">
             <a href="#"> <i class="fas fa-users"></i>
