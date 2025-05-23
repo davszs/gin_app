@@ -15,7 +15,9 @@
     <div class="container">
         <!-- Menu Lateral -->
         <nav class="sidebar">
+
              @yield('menu_aluno')
+
         </nav>
 
         <!-- Conteúdo Principal -->
