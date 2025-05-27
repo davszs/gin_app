@@ -19,17 +19,17 @@
              <div class="logo">
                 <a href="#"><i class="fas fa-dumbbell"></i></a>
             </div>
-            <ul class="nav-links">
-                <li><a href="inicio.html" title="Início"><i class="fas fa-home"></i><span>Início</span></a></li>
-                <li class="active"><a href="aulas.html" title="Aulas"><i
+              <ul class="nav-links">
+                <li><a href="{{ route('aluno.dashboard') }}" title="Início"><i class="fas fa-home"></i><span>Início</span></a></li>
+                <li class="active"><a href="{{ route('aulas.aluno') }}" title="Aulas"><i
                             class="fas fa-calendar-alt"></i><span>Aulas</span></a></li>
-                <li><a href="comunicados.html" title="Comunicados"><i
+                <li><a href="{{ route('comunicados.aluno') }}" title="Comunicados"><i
                             class="fas fa-bullhorn"></i><span>Comunicados</span></a></li>
-                <li><a href="financeiro.html" title="Financeiro"><i
+                <li><a href="{{ route('pagamento.aluno') }}" title="Financeiro"><i
                             class="fas fa-wallet"></i><span>Financeiro</span></a></li>
-                <li><a href="suporte.html" title="Suporte"><i class="fas fa-headset"></i><span>Suporte</span></a></li>
+                <li><a href="#" title="Suporte"><i class="fas fa-headset"></i><span>Suporte</span></a></li>
                 <li class="sidebar-bottom">
-                    <a href="configuracoes.html" title="Configurações"><i
+                    <a href="#" title="Configurações"><i
                             class="fas fa-cog"></i><span>Configurações</span></a>
                 </li>
                <li><a href="#" id="logoutTrigger"><i class="fas fa-sign-out-alt"></i><span>Desconectar</span></a></li>
