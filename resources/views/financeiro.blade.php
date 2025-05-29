@@ -7,6 +7,7 @@
     {{-- <link rel="stylesheet" href="{{asset('css/estilo_basico.css')}}"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+
         .logout-overlay {
         position: fixed;
         top: 0;
@@ -69,7 +70,7 @@
     .logout-buttons .cancel:hover {
         background-color: #5a6268;
     }
-         .overlay-message {
+        .overlay-message {
         position: fixed;
         top: 0;
         left: 0;
@@ -117,80 +118,86 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
         }
-        
+
         body {
-            display: flex;
-            min-height: 100vh;
             background-color: #f5f5f5;
+            display: flex;
         }
-        
+
+        /* Sidebar */
         .sidebar {
-            width: 50px;
+            width: 68px;
             background-color: #2c3e50;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
             color: white;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            position: fixed;
-            height: 100%;
-            z-index: 100;
         }
-        
-        .sidebar a {
+
+        .sidebar-item a {
             color: white;
             text-decoration: none;
-            width: 100%;
+            height: 68px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px 0;
+            justify-content: center;
             font-size: 12px;
+            cursor: pointer;
             transition: background-color 0.3s;
+            padding: 10px 0;
+            
         }
-        
-        .sidebar a:hover {
-            background-color: #34495e;
+
+        .sidebar-item a:hover, .sidebar-item a.active {
+            background-color: #1c2e40;
         }
-        
-        .sidebar a i {
-            font-size: 20px;
+
+        .sidebar-item i {
+            font-size: 18px;
             margin-bottom: 5px;
         }
-        
-        .main-content {
-            flex: 1;
-            margin-left: 50px;
-            padding: 20px;
+
+        /* Content */
+        .content {
+            margin-left: 68px;
+            width: calc(100% - 68px);
         }
-        
+
+        /* Header */
         .header {
+            background-color: white;
+            height: 60px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 0 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         .header h1 {
-            font-size: 22px;
+            font-size: 18px;
             color: #333;
         }
-        
-        .profile {
+
+        .admin-profile {
             display: flex;
             align-items: center;
         }
-        
-        .profile span {
+
+        .admin-profile span {
             margin-right: 10px;
+            font-size: 14px;
         }
-        
-        .profile-icon {
-            width: 40px;
-            height: 40px;
+
+        .avatar {
+            width: 36px;
+            height: 36px;
             background-color: #3498db;
             border-radius: 50%;
             display: flex;
@@ -199,231 +206,262 @@
             color: white;
             font-weight: bold;
         }
-        
-        .search-filters {
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+        }
+
+        /* Date Filter */
+        .date-filter {
             background-color: white;
             padding: 15px;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
-        }
-        
-        .search-input {
-            flex: 1;
-            min-width: 200px;
-            position: relative;
-        }
-        
-        .search-input input {
-            width: 100%;
-            padding: 8px 30px 8px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        .search-input i {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-        }
-        
-        .status-filter {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .status-filter button {
-            padding: 8px 12px;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        
-        .status-filter button.active {
-            background-color: #3498db;
-            color: white;
-            border-color: #3498db;
-        }
-        
-        .status-filter button:hover:not(.active) {
-            background-color: #e9e9e9;
-        }
-        
-        .new-payment-btn {
-            padding: 8px 15px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             display: flex;
             align-items: center;
-            gap: 5px;
         }
-        
-        .new-payment-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        .financeiro-table {
-            width: 100%;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .financeiro-table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .financeiro-table th {
-            background-color: #f5f5f5;
-            padding: 12px 15px;
-            text-align: left;
-            font-weight: 600;
-            color: #333;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .financeiro-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
+
+        .date-filter label {
+            margin-right: 10px;
+            font-size: 14px;
             color: #666;
         }
-        
-        .financeiro-table tr:hover {
-            background-color: #f9f9f9;
-        }
-        
-        .status {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-            text-align: center;
-            display: inline-block;
-            min-width: 80px;
-        }
-        
-        .status.pago {
-            background-color: #e6f7ed;
-            color: #2ecc71;
-        }
-        
-        .status.pendente {
-            background-color: #fff5e6;
-            color: #f39c12;
-        }
-        
-        .status.atrasado {
-            background-color: #fce6e6;
-            color: #e74c3c;
-        }
-        
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .action-btn {
-            width: 30px;
-            height: 30px;
+
+        .date-filter input {
+            padding: 8px;
+            border: 1px solid #ddd;
             border-radius: 4px;
+            margin-right: 15px;
+        }
+
+        .date-filter button {
+            background-color: #3498db;
+            color: white;
             border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .date-filter button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Summary Cards */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Notice Board */
+        .notice-board {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
         }
-        
-        .edit-btn {
-            background-color: #f1c40f;
-            color: white;
+
+        .section-title i {
+            margin-right: 8px;
+            color: #3498db;
         }
-        
-        .edit-btn:hover {
-            background-color: #d0a90d;
+
+        .notice-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
         }
-        
-        .delete-btn {
-            background-color: #e74c3c;
-            color: white;
+
+        .notice-item:last-child {
+            border-bottom: none;
         }
-        
-        .delete-btn:hover {
-            background-color: #c0392b;
+
+        .notice-date {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
         }
-        
-        .active-sidebar {
-            background-color: #34495e;
+
+        .notice-text {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* Quick Alerts */
+        .alerts-container {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+        }
+
+        .alert-icon {
+            margin-right: 12px;
+            color: #ffc107;
+            font-size: 18px;
+        }
+
+        .alert-text {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .alert-item.critical {
+            background-color: #ffeaed;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .alert-item.critical .alert-icon {
+            color: #e74c3c;
+        }
+
+        /* Font Awesome icons */
+        .fas, .far {
+            font-family: "Font Awesome";
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+
+
 </head>
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="#" title="Início">
-            <i class="fas fa-home"></i>
-            <span>Início</span>
-        </a>
-        <a href="#" title="Alunos">
-            <i class="fas fa-user-graduate"></i>
-            <span>Alunos</span>
-        </a>
-        <a href="#" title="Professores">
-            <i class="fas fa-chalkboard-teacher"></i>
-            <span>Professores</span>
-        </a>
-        <a href="#" title="Aulas">
-            <i class="fas fa-book-open"></i>
-            <span>Aulas</span>
-        </a>
-        <a href="#" title="Turmas">
-            <i class="fas fa-users"></i>
-            <span>Turmas</span>
-        </a>
-        <a href="#" class="active-sidebar" title="Financeiro">
-            <i class="fas fa-dollar-sign"></i>
-            <span>Financeiro</span>
-        </a>
-        <a href="#" title="Configurações">
-            <i class="fas fa-cog"></i>
-            <span>Configurações</span>
-        </a>
-        <a href="#" id="logoutTrigger"title="Sair">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Desconectar</span>
-        </a>
+    <ul class="sidebar-menu">
+        <li class="sidebar-item active">
+             <a href="#"><i class="fas fa-home"></i>
+            <span>Início</span></a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#"> <i class="fas fa-user-graduate"></i>
+            <span>Alunos</span></a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#"> <i class="fas fa-chalkboard-teacher"></i>
+            <span>Professores</span></a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#"> <i class="fas fa-book"></i>
+            <span>Aulas</span></a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#"> <i class="fas fa-users"></i>
+            <span>Turmas</span></a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#"> <i class="fas fa-dollar-sign"></i>
+            <span>Financeiro</span></a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#"> <i class="fas fa-cog"></i>
+            <span>Configurações</span></a>
+    </li>
+        <li class="sidebar-item">
+            <a href="#" id="logoutTrigger"><i class="fas fa-sign-out-alt"></i><span>Desconectar</span></a>
+        </li>
+    </ul>
     </div>
     
-    <!-- Formulário de logout -->
+     {{-- Modal de logout --}}
     <div id="logoutModal" class="logout-overlay" style="display: none;">
-    <div class="logout-box">
-        <p>Tem certeza que deseja desconectar a conta e sair?</p>
-        <div class="logout-buttons">
-            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="confirm">Sim, sair</button>
-            </form>
-            <button class="cancel" id="cancelLogout">Cancelar</button>
+        <div class="logout-box">
+            <p>Tem certeza que deseja desconectar a conta e sair?</p>
+            <div class="logout-buttons">
+                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="confirm">Sim, sair</button>
+                </form>
+                <button class="cancel" id="cancelLogout">Cancelar</button>
+            </div>
         </div>
     </div>
-</div>
-    
+
+      @if (session('status'))
+        <div class="overlay-message" id="overlayMessage">
+            <div class="alert-box">
+                <p>{{ session('status') }}</p>
+                <button id="okBtn">OK</button>
+            </div>
+        </div>
+        @endif
+    </div>
+
+
+    {{-- Scripts relacionados à sidebar --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const okBtn = document.getElementById("okBtn");
+            const overlay = document.getElementById("overlayMessage");
+            if (okBtn && overlay) {
+                okBtn.addEventListener("click", () => overlay.style.display = "none");
+            }
+
+            const logoutLink = document.getElementById("logoutTrigger");
+            const logoutModal = document.getElementById("logoutModal");
+            const cancelBtn = document.getElementById("cancelLogout");
+
+            logoutLink?.addEventListener("click", e => {
+                e.preventDefault();
+                logoutModal.style.display = "flex";
+            });
+
+            cancelBtn?.addEventListener("click", () => {
+                logoutModal.style.display = "none";
+            });
+        });
+    </script>
+
+   
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
@@ -605,58 +643,7 @@
             </table>
         </div>
     </div>]
-    @if (session('status'))
-    <div class="overlay-message" id="overlayMessage">
-        <div class="alert-box">
-            <p>{{ session('status') }}</p>
-            <button id="okBtn">OK</button>
-        </div>
-    </div>
-@endif
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const okBtn = document.getElementById("okBtn");
-        const overlay = document.getElementById("overlayMessage");
-
-        if (okBtn && overlay) {
-            okBtn.addEventListener("click", function () {
-                overlay.style.display = "none";
-            });
-        }
-    });
-</script>
-
-
-<div id="logoutModal" class="logout-overlay" style="display: none;">
-    <div class="logout-box">
-        <p>Tem certeza que deseja desconectar a conta e sair?</p>
-        <div class="logout-buttons">
-            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="confirm">Sim, sair</button>
-            </form>
-            <button class="cancel" id="cancelLogout">Cancelar</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const logoutLink = document.getElementById("logoutTrigger");
-        const logoutModal = document.getElementById("logoutModal");
-        const cancelBtn = document.getElementById("cancelLogout");
-
-        logoutLink.addEventListener("click", function (e) {
-            e.preventDefault(); // Impede que o link recarregue a página
-            logoutModal.style.display = "flex";
-        });
-
-        cancelBtn.addEventListener("click", function () {
-            logoutModal.style.display = "none";
-        });
-    });
-</script>
-
+    
 
 </body>
 </html>

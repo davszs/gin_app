@@ -27,6 +27,9 @@ SET time_zone = "+00:00";
 -- Estrutura para tabela `administrador`
 --
 
+CREATE DATABASE academiagin_bd;
+USE academiagin_bd;
+
 CREATE TABLE `administrador` (
   `id_usuario` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
