@@ -1,13 +1,11 @@
 @extends('layouts.alunoheader')
 
-@section('title', 'Minhas Aulas')
-
-@section('page-title', 'Minhas Aulas')
+@section('title', 'Aulas')
+@section('page-title', 'Aulas')
 
 @section('content')
-
-   
-
+    {{-- Seção Minhas Aulas --}}
+    <h2>Minhas Aulas</h2><br>
     @if($aulas->isEmpty())
         <p>Você ainda não está inscrito em nenhuma aula.</p>
     @else
@@ -16,8 +14,9 @@
                 <div class="card-aula">
                     <h3>{{ $aula->nome }}</h3>
                     <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
-                    <p><strong>Dia(s) da Semana:</strong> {{ $aula->dia_semana }}</p>
+                    <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
                     <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
+                    <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
 
                     <form action="{{ route('inscricao.cancelar', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja cancelar esta inscrição?')">
                         @csrf
@@ -28,7 +27,42 @@
             @endforeach
         </div>
     @endif
+    <br>
+
+    {{-- Seção Aulas Disponíveis --}}
+    <h2>Inscreve-se em Aulas</h2>
+    <br>
+    <form method="GET" action="{{ route('aulas.filtro') }}" class="form-filtro">
+    <label for="modalidade">Modalidade:</label>
+    <input type="text" name="modalidade" id="modalidade" value="{{ old('modalidade', $modalidade ?? '') }}">
+
+    <label for="dia">Dia da Semana:</label>
+    <input type="text" name="dia" id="dia" value="{{ old('dia', $dia ?? '') }}">
+
+    <button type="submit">Filtrar</button>
+</form><br>
+    @if($aulasDisponiveis->isEmpty())
+        <p>Não há aulas disponíveis no momento.</p>
+    @else
+        <div class="cards-container">
+            @foreach($aulasDisponiveis as $aula)
+                <div class="card-aula">
+                    <h3>{{ $aula->nome }}</h3>
+                    <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
+                    <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
+                    <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
+                    <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
+
+                    <form action="{{ route('inscricao.inscrever', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja se inscrever nessa aula?')">
+                        @csrf
+                        <button type="submit" class="btn-inscrever">Inscrever-se</button>
+                    </form>
+                </div>
+            @endforeach
+        </div>
+    @endif
 @endsection
+
 
 @push('styles')
 <style>
@@ -61,6 +95,39 @@
 }
 .btn-cancelar:hover {
     background-color: #c0392b;
+}
+.btn-inscrever {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+.btn-inscrever:hover {
+    background-color: #2980b9;
+}
+.form-filtro {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.form-filtro label {
+    font-weight: bold;
+}
+.form-filtro input, .form-filtro select {
+    padding: 0.3rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+.form-filtro button {
+    padding: 0.4rem 1rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
 }
 
 </style>

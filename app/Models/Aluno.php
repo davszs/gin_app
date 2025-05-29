@@ -34,8 +34,8 @@ class Aluno extends Model
     public function aulas()
     {
         return $this->belongsToMany(Aula::class, 'inscricao_aula', 'aluno_id', 'aula_id')
-                    ->withPivot('status', 'data_inscricao')
-                    ->withTimestamps();
+                ->withPivot('status', 'data_inscricao')
+                ->withTimestamps();
     }
 
     /**
@@ -43,6 +43,9 @@ class Aluno extends Model
      */
     public function inscricoes()
     {
-        return $this->hasMany(InscricaoAula::class, 'aluno_id');
+          return $this->belongsToMany(Aluno::class, 'inscricao_aula', 'aula_id', 'aluno_id')
+                ->withPivot('status', 'data_inscricao')
+                ->withTimestamps();
     }
+    
 }

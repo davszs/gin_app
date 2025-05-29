@@ -36,6 +36,8 @@ class Aula extends Model
      */
     public function inscricoes()
     {
-        return $this->hasMany(InscricaoAula::class, 'aula_id');
+         return $this->belongsToMany(Aluno::class, 'inscricao_aula', 'aula_id', 'aluno_id')
+                ->withPivot('status', 'data_inscricao')
+                ->withTimestamps();
     }
 }

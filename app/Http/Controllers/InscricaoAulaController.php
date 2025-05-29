@@ -13,15 +13,24 @@ class InscricaoAulaController extends Controller
     public function minhasAulas()
     {
         $userId = Auth::id();
-        $aluno = Aluno::where('user_id', $userId)->first();
+    $aluno = Aluno::where('user_id', $userId)->first();
 
-        if (!$aluno) {
-            return response()->json(['erro' => 'Aluno não encontrado.'], 404);
-        }
+    if (!$aluno) {
+        return response()->json(['erro' => 'Aluno não encontrado.'], 404);
+    }
 
-        $aulas = $aluno->aulas;
+    // Aulas em que está inscrito
+    $aulas = $aluno->aulas;
 
-        return view('alunoviews.aulas', compact('aulas'));
+    // Aulas que ele ainda NÃO está inscrito
+   $aulasDisponiveis = Aula::whereDoesntHave('inscricoes', function ($query) use ($aluno) {
+    $query->where('aluno_id', $aluno->id);
+})->get();
+
+    return view('alunoviews.aulas', [
+        'aulas' => $aulas,
+        'aulasDisponiveis' => $aulasDisponiveis
+    ]);
     }
 
     public function inscrever(Request $request, Aula $aula)
@@ -51,27 +60,17 @@ class InscricaoAulaController extends Controller
     }
 
     public function cancelarInscricao(Aula $aula)
-    {
-        $userId = Auth::id();
-        $aluno = Aluno::where('user_id', $userId)->first();
+    {  $userId = Auth::id();
+    $aluno = Aluno::where('user_id', $userId)->first();
 
-        if (!$aluno) {
-            return response()->json(['erro' => 'Aluno não encontrado.'], 404);
-        }
+    if (!$aluno) {
+        return redirect()->back()->with('erro', 'Aluno não encontrado.');
+    }
 
-        $inscricao = InscricaoAula::where('aluno_id', $aluno->id)
-            ->where('aula_id', $aula->id)
-            ->where('status', 'ativo')
-            ->first();
+    // Cancela inscrição
+    $aluno->aulas()->detach($aula->id);
 
-        if (!$inscricao) {
-            return response()->json(['erro' => 'Inscrição ativa não encontrada.'], 404);
-        }
-
-        $inscricao->status = 'cancelado';
-        $inscricao->save();
-
-       return redirect()->back()->with('success', 'Inscrição cancelada com sucesso.');
+    return redirect()->back()->with('sucesso', 'Inscrição cancelada com sucesso.');
     }
 
     public function filtro(Request $request)
@@ -95,40 +94,6 @@ class InscricaoAulaController extends Controller
     }
 
     
-    public function aulasDisponiveis(Request $request)
-    {
-        $userId = Auth::id();
-        $aluno = Aluno::where('user_id', $userId)->first();
-
-        if (!$aluno) {
-            return response()->json(['erro' => 'Aluno não encontrado.'], 404);
-        }
-
-        $modalidade = $request->get('modalidade');
-        $dia = $request->get('dia');
-
-        
-        $idsAulasInscritasAtivas = InscricaoAula::where('aluno_id', $aluno->id)
-            ->where('status', 'ativo')
-            ->pluck('aula_id')
-            ->toArray();
-
-        $query = Aula::query();
-
-        if ($modalidade) {
-            $query->where('modalidade', $modalidade);
-        }
-
-        if ($dia) {
-            $query->where('dias_semana', 'like', "%{$dia}%");
-        }
-
-        // Somente aulas que NÃO estão entre as inscrições ativas
-        $query->whereNotIn('id', $idsAulasInscritasAtivas);
-
-        $aulasDisponiveis = $query->get();
-
-        return view('aulas.disponiveis', compact('aulasDisponiveis', 'modalidade', 'dia'));
-    }
+   
     
 }

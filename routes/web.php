@@ -31,8 +31,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/minhas-aulas', [InscricaoAulaController::class, 'minhasAulas'])->name('aulas.aluno');
     Route::post('/aulas/{aula}/inscrever', [InscricaoAulaController::class, 'inscrever'])->name('inscricao.inscrever');
     Route::put('/aulas/{aula}/cancelar', [InscricaoAulaController::class, 'cancelarInscricao'])->name('inscricao.cancelar');
+    Route::get('/aulas/filtro', [InscricaoAulaController::class, 'filtro'])->name('aulas.filtro');
 
-    Route::get('/aulas-disponiveis', [InscricaoAulaController::class, 'aulasDisponiveis'])->name('aulas.disponiveis');
+
 });
 Route::get('/pagamento', fn() => view('alunoviews.financeiroaluno'))->name(("pagamento.aluno"));
 Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name(("comunicados.aluno"));

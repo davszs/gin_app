@@ -67,6 +67,20 @@ class DatabaseSeeder extends Seeder
                 'updated_at' => now(),
             ]
         ]);
+        DB::table('aulas')->insert([
+            [
+                'id' => 2,
+                'nome' => 'Funcional Nádegas',
+                'descricao' => 'Levantamento de peso com nádegas, com Gabriel Minelli',
+                'dia_semana' => 1,
+                'horario_inicio' => '07:00:00',
+                'horario_fim' => '08:00:00',
+                'instrutor' => 'Gabriel Minelli',
+                'capacidade' => 20,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        ]);
 
         // Inserindo inscrição da aula para o aluno
         DB::table('inscricao_aula')->insert([
