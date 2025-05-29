@@ -9,20 +9,23 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    protected $table = 'usuario'; 
-    protected $primaryKey = 'id_usuario';
+    protected $table = 'users';
 
     public $timestamps = false;
 
     protected $fillable = [
-        'email', 'nome_user', 'senha_user', 'tipo_user'
+        'nome',
+        'cpf',
+        'email',
+        'password',
+        'tipo',
     ];
 
-    protected $hidden = ['senha_user'];
+    protected $hidden = ['password'];
 
     // Nome do campo de senha personalizado
     public function getAuthPassword()
     {
-        return $this->senha_user;
+        return $this->password;
     }
 }

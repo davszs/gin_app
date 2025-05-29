@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use function Pest\Laravel\from;
+use Illuminate\Notifications\Notifiable;
 
 class AlunosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   use Notifiable;
+
+    
     public function index()
     {
         //

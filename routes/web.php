@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlunosController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\InscricaoAulaController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -26,11 +27,14 @@ Route::post('/recuperar-senha', [ResetPasswordController::class, 'resetPassword'
 Route::resource('alunos', AlunosController::class);
 
 // ROTAS alunos 
-Route::get('/minhas-aulas', fn() => view('alunoviews.aulas'))->name(("aulas.aluno"));
+Route::middleware(['auth'])->group(function () {
+    Route::get('/minhas-aulas', [InscricaoAulaController::class, 'minhasAulas'])->name('aulas.aluno');
+    Route::post('/aulas/{aula}/inscrever', [InscricaoAulaController::class, 'inscrever'])->name('inscricao.inscrever');
+    Route::put('/aulas/{aula}/cancelar', [InscricaoAulaController::class, 'cancelarInscricao'])->name('inscricao.cancelar');
+
+    Route::get('/aulas-disponiveis', [InscricaoAulaController::class, 'aulasDisponiveis'])->name('aulas.disponiveis');
+});
 Route::get('/pagamento', fn() => view('alunoviews.financeiroaluno'))->name(("pagamento.aluno"));
 Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name(("comunicados.aluno"));
 
 //ROTAS adm
-
-
-
