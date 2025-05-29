@@ -31,6 +31,3 @@ Route::get('/pagamento', fn() => view('alunoviews.financeiroaluno'))->name(("pag
 Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name(("comunicados.aluno"));
 
 //ROTAS adm
-
-
-
