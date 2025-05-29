@@ -11,8 +11,8 @@ class AuthController extends Controller
     public function index()
     {
            if (Auth::check()) {
-        $tipo = Auth::user()->tipo_user;
-        return redirect()->route($tipo === 'Administrador' ? 'admin.dashboard' : 'aluno.dashboard');
+        $tipo = Auth::user()->tipo;
+        return redirect()->route($tipo === 'administrador' ? 'admin.dashboard' : 'aluno.dashboard');
     }
         return view('login');
     }
@@ -26,12 +26,12 @@ class AuthController extends Controller
 
     $user = User::where('email', $dados['email'])->first();
 
-    if ($user && Hash::check($dados['password'], $user->senha_user)) {
+    if ($user && Hash::check($dados['password'], $user->password)) {
         Auth::login($user);
         $request->session()->regenerate();
 
-        $tipo = $user->tipo_user;
-        return redirect()->route($tipo === 'Administrador' ? 'admin.dashboard' : 'aluno.dashboard')->with('status', $tipo === 'Administrador' ? 'Bem-vindo ao Portal de Controle!' : 'Bem-vindo ao Portal do Aluno!');
+        $tipo = $user->tipo;
+        return redirect()->route($tipo === 'administrador' ? 'admin.dashboard' : 'aluno.dashboard')->with('status', $tipo === 'administrador' ? 'Bem-vindo ao Portal de Controle!' : 'Bem-vindo ao Portal do Aluno!');
     }
 
     return back()->withInput()->with('status', 'Login inválido!');
