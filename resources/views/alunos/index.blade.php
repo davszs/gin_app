@@ -129,6 +129,7 @@
         }
         
         .add-button {
+            text-decoration: none;
             background-color: #3498db;
             color: white;
             border: none;
@@ -212,6 +213,10 @@
             border: none;
         }
         
+        .action-button a{
+            text-decoration: none;
+        }
+
         .edit-button {
             background-color: #f1f8fe;
             color: #3498db;
@@ -221,6 +226,51 @@
             background-color: #fff2f2;
             color: #e74c3c;
         }
+
+        .overlay-message {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.6); /* fundo escuro transparente */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .alert-box {
+        background-color: #fff;
+        padding: 30px 40px;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .alert-box p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .alert-box button {
+        padding: 10px 25px;
+        background-color: #007BFF;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .alert-box button:hover {
+        background-color: #0056b3;
+    }
     </style>
     <!-- Font Awesome CDN para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -260,8 +310,8 @@
             <i class="fas fa-sign-out-alt"></i>
             <span>Sair</span>
         </a>
-    </div>
-
+    </div>    
+    
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
@@ -274,6 +324,9 @@
         </div>
 
         <!-- Content -->
+        @section('content')
+        
+        @endsection
         <div class="content">
             <!-- Search and Add button -->
             <div class="actions-bar">
@@ -281,13 +334,23 @@
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Pesquisar alunos...">
                 </div>
-                <button action={{route('alunos.tabela')}} class="add-button">
+                <a href="{{route('alunos.create')}}" class="add-button">
                     <i class="fas fa-plus"></i>
                     Novo Aluno
-                </button>
+                </a>
             </div>
 
+            @if(session('status'))
+            <div class="overlay-message" id="overlayMessage">
+            <div class="alert-box">
+                <p>{{ session('status') }}</p>
+                <button id="okBtn">Ok</button>
+            </div>
+            </div>
+            @endif
+
             <!-- Table -->
+            @if ($alunos->count())
             <div class="table-container">
                 <table>
                     <thead>
@@ -296,160 +359,61 @@
                             <th>Nome</th>
                             <th>CPF</th>
                             <th>Email</th>
+                            <th>Telefone</th>
                             <th>Plano atual</th>
                             <th>Status</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($alunos as $aluno)                            
                         <tr>
-                            <td>1</td>
-                            <td>Ana Silva</td>
-                            <td>123.456.789-10</td>
-                            <td>ana.silva@email.com</td>
+                            <td>{{$aluno->user->id}}</td>
+                            <td>{{$aluno->user->nome}}</td>
+                            <td>{{$aluno->user->cpf}}</td>
+                            <td>{{$aluno->user->email}}</td>
+                            <td>{{$aluno->telefone}}</td>
                             <td>Mensal</td>
                             <td><span class="status active">Ativo</span></td>
                             <td>
-                                <div class="action-buttons">
-                                    <button class="action-button edit-button">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-button delete-button">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
+                            <div class="action-as">
+                            <button class="action-button">
+                            <a href="{{ route('alunos.show', $aluno) }}" class="fas fa-eye"></a>
+                            </button>
+
+                            <button class="action-button edit-button">
+                            <a class="fas fa-edit" href="{{ route('alunos.edit', $aluno) }}"></a>
+                            </button>
+                            <form action="{{ route('alunos.destroy', $aluno) }}" method="POST"
+                                onsubmit="return confirm('Tem certeza que deseja excluir este aluno?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="action-button delete-button"><i class="fas fa-trash"></i></button>
+                            </form>
+                            </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>João Pereira</td>
-                            <td>987.654.321-00</td>
-                            <td>joao.pereira@email.com</td>
-                            <td>Trimestral</td>
-                            <td><span class="status active">Ativo</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-button edit-button">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-button delete-button">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Maria Santos</td>
-                            <td>456.789.123-45</td>
-                            <td>maria.santos@email.com</td>
-                            <td>Anual</td>
-                            <td><span class="status active">Ativo</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-button edit-button">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-button delete-button">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Carlos Ferreira</td>
-                            <td>789.123.456-78</td>
-                            <td>carlos.ferreira@email.com</td>
-                            <td>Semestral</td>
-                            <td><span class="status inactive">Inativo</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-button edit-button">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-button delete-button">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Fernanda Oliveira</td>
-                            <td>234.567.890-12</td>
-                            <td>fernanda.oliveira@email.com</td>
-                            <td>Mensal</td>
-                            <td><span class="status active">Ativo</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-button edit-button">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-button delete-button">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Roberto Almeida</td>
-                            <td>345.678.901-23</td>
-                            <td>roberto.almeida@email.com</td>
-                            <td>Mensal</td>
-                            <td><span class="status inactive">Inativo</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-button edit-button">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-button delete-button">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>Luiza Castro</td>
-                            <td>567.890.123-45</td>
-                            <td>luiza.castro@email.com</td>
-                            <td>Trimestral</td>
-                            <td><span class="status active">Ativo</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-button edit-button">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-button delete-button">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>Marcelo Lima</td>
-                            <td>678.901.234-56</td>
-                            <td>marcelo.lima@email.com</td>
-                            <td>Anual</td>
-                            <td><span class="status active">Ativo</span></td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-button edit-button">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-button delete-button">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
+            @else
+            <p>Nenhum aluno cadastrado!</p>
+            @endif
         </div>
     </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const okBtn = document.getElementById("okBtn");
+        const overlay = document.getElementById("overlayMessage");
+
+        if (okBtn && overlay) {
+            okBtn.addEventListener("click", function () {
+                overlay.style.display = "none";
+            });
+        }
+    });
+</script>
 </body>
 </html>
