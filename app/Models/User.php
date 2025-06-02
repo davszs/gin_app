@@ -14,7 +14,7 @@ class User extends Authenticatable
     public $timestamps = false;
 
     protected $fillable = [
-        'email', 'nome', 'password', 'tipo'
+        'cpf', 'email', 'nome', 'password', 'tipo'
     ];
 
     protected $hidden = ['password'];
@@ -23,5 +23,17 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return $this->password;
+    }
+    
+    //Relacionamento(1,1): Um usuário pode ser um aluno
+    public function aluno()
+    {
+        return $this->hasOne(Aluno::class);
+    }
+
+    //Relacionamento(1,1): Um usuário pode ser um administrador
+    public function administrador()
+    {
+        return $this->hasOne(Administrador::class);
     }
 }

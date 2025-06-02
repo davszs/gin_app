@@ -2,9 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Layouts</title>
-    
-    
+    <title>@yield('title', 'Gin App')</title>
 </head>
 <body>
     @section('menu_adm')
@@ -44,8 +42,6 @@
             <a href="#" id="logoutTrigger"><i class="fas fa-sign-out-alt"></i><span>Desconectar</span></a>
         </li>
     </ul>
-
-
     
     {{-- Modal de logout --}}
     <div id="logoutModal" class="logout-overlay" style="display: none;">
