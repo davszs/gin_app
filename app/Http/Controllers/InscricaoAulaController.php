@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\InscricaoAula;
 use App\Models\Aluno;
 use App\Models\Aula;
+use App\Models\SolicitacaoAula;
 use Illuminate\Support\Facades\Auth;
 
 class InscricaoAulaController extends Controller
 {
     public function minhasAulas()
     {
-        $userId = Auth::id();
+    $userId = Auth::id();
     $aluno = Aluno::where('user_id', $userId)->first();
 
     if (!$aluno) {
@@ -27,50 +28,82 @@ class InscricaoAulaController extends Controller
     $query->where('aluno_id', $aluno->id);
 })->get();
 
-    return view('alunoviews.aulas', [
-        'aulas' => $aulas,
-        'aulasDisponiveis' => $aulasDisponiveis
-    ]);
+$solicitacoesPendentes = SolicitacaoAula::where('aluno_id', $aluno->id)
+    ->where('status', 'pendente')
+    ->with('aula') // para acessar dados da aula
+    ->get();
+
+return view('alunoviews.aulas', [
+    'aulas' => $aulas,
+    'aulasDisponiveis' => $aulasDisponiveis,
+    'solicitacoesPendentes' => $solicitacoesPendentes,
+]);
+    
     }
 
     public function inscrever(Request $request, Aula $aula)
     {
-        $userId = Auth::id();
-        $aluno = Aluno::where('user_id', $userId)->first();
-
-        if (!$aluno) {
-            return response()->json(['erro' => 'Aluno não encontrado.'], 404);
-        }
-
-        $inscricaoExistente = InscricaoAula::where('aluno_id', $aluno->id)
-            ->where('aula_id', $aula->id)
-            ->where('status', 'ativo')
-            ->first();
-
-        if ($inscricaoExistente) {
-            return response()->json(['erro' => 'Você já está inscrito nesta aula.'], 400);
-        }
-
-        $inscricao = InscricaoAula::updateOrCreate(
-            ['aluno_id' => $aluno->id, 'aula_id' => $aula->id],
-            ['status' => 'ativo', 'data_inscricao' => now()]
-        );
-
-        return redirect()->back()->with('success', 'Inscrição realizada com sucesso!');
-    }
-
-    public function cancelarInscricao(Aula $aula)
-    {  $userId = Auth::id();
+       $userId = Auth::id();
     $aluno = Aluno::where('user_id', $userId)->first();
 
     if (!$aluno) {
         return redirect()->back()->with('erro', 'Aluno não encontrado.');
     }
 
-    // Cancela inscrição
-    $aluno->aulas()->detach($aula->id);
+    $existe = SolicitacaoAula::where('aluno_id', $aluno->id)
+        ->where('aula_id', $aula->id)
+        ->where('tipo', 'inscricao')
+        ->where('status', 'pendente')
+        ->exists();
 
-    return redirect()->back()->with('sucesso', 'Inscrição cancelada com sucesso.');
+    if ($existe) {
+        return redirect()->back()->with('info', 'Você já fez uma solicitação de inscrição pendente.');
+    }
+
+    SolicitacaoAula::create([
+        'aluno_id' => $aluno->id,
+        'aula_id' => $aula->id,
+        'tipo' => 'inscricao',
+    ]);
+
+    return redirect()->back()->with('sucesso', 'Solicitação de inscrição enviada para aprovação.');
+    }
+
+    public function cancelarInscricao(Aula $aula)
+    { $userId = Auth::id();
+    $aluno = Aluno::where('user_id', $userId)->first();
+
+    if (!$aluno) {
+        return redirect()->back()->with('erro', 'Aluno não encontrado.');
+    }
+
+    // Verifica se o aluno está realmente inscrito nessa aula
+    $inscrito = $aluno->aulas()->where('aula_id', $aula->id)->exists();
+
+    if (!$inscrito) {
+        return redirect()->back()->with('erro', 'Você não está inscrito nessa aula.');
+    }
+
+    // Evita duplicação de solicitação pendente
+    $existe = SolicitacaoAula::where('aluno_id', $aluno->id)
+        ->where('aula_id', $aula->id)
+        ->where('tipo', 'cancelamento')
+        ->where('status', 'pendente')
+        ->exists();
+
+    if ($existe) {
+        return redirect()->back()->with('info', 'Você já fez uma solicitação de cancelamento pendente.');
+    }
+
+    // Cria a solicitação
+    SolicitacaoAula::create([
+        'aluno_id' => $aluno->id,
+        'aula_id' => $aula->id,
+        'tipo' => 'cancelamento',
+    ]);
+
+    return redirect()->back()->with('sucesso', 'Solicitação de cancelamento enviada para aprovação.');
+
     }
 
     public function filtro(Request $request)

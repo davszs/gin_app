@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('senha123'),  // senha que quiser
                 'tipo' => 'aluno',
+                 'cpf' => '222.222.222-22',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -31,7 +32,8 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@teste.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('admin123'),
-                'tipo' => 'adm',
+                'tipo' => 'administrador',
+                 'cpf' => '12345678901',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -62,6 +64,7 @@ class DatabaseSeeder extends Seeder
                 'horario_inicio' => '07:00:00',
                 'horario_fim' => '08:00:00',
                 'instrutor' => 'Eduardo dos Reis',
+                'valor' => 50.00,
                 'capacidade' => 20,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -76,6 +79,7 @@ class DatabaseSeeder extends Seeder
                 'horario_inicio' => '07:00:00',
                 'horario_fim' => '08:00:00',
                 'instrutor' => 'Gabriel Minelli',
+                'valor' => 50.00,
                 'capacidade' => 20,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -89,10 +93,48 @@ class DatabaseSeeder extends Seeder
                 'aluno_id' => 1,
                 'aula_id' => 1,
                 'status' => 'ativo',
+                'valor' => 50.00,
                 'data_inscricao' => now(),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
         ]);
+
+        // Inserindo plano para o aluno
+        DB::table('planos')->insert([
+        [
+                'id' => 1,
+                'aluno_id' => 1,
+                'nome' => 'Plano Inicial',
+                'valor_total' => 50.00,
+                'status' => 'pendente',
+                'created_at' => now(),
+                'updated_at' => now(),
+         ]
+]);
+
+// Ligando a inscrição ao plano
+DB::table('plano_inscricao_aula')->insert([
+    [
+        'plano_id' => 1,
+        'inscricao_aula_id' => 1,
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]
+]);
+
+DB::table('pagamentos')->insert([
+    [
+        'plano_id' => 1,
+        'valor' => 50.00,
+        'status' => 'pendente',
+        'vencimento' => now()->addDays(7),
+        'data_referencia' => now()->startOfMonth(),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]
+]);
     }
+
+    
 }

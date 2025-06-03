@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlunosController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\InscricaoAulaController;
+use App\Http\Controllers\SolicitacaoAulaController;
+use App\Http\Controllers\PagamentoController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -35,7 +37,23 @@ Route::middleware(['auth'])->group(function () {
 
 
 });
-Route::get('/pagamento', fn() => view('alunoviews.financeiroaluno'))->name(("pagamento.aluno"));
+Route::get('/pagamentos', [PagamentoController::class, 'index'])->name('pagamento.aluno');
+Route::get('pagar-boleto/{id}', [PagamentoController::class, 'gerarBoleto'])->name('pagamento.gerarBoleto');
 Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name(("comunicados.aluno"));
 
 //ROTAS adm
+Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('/solicitacoes', [SolicitacaoAulaController::class, 'index'])->name('solicitacoes.index');
+    Route::put('/solicitacoes/{id}/aprovar', [SolicitacaoAulaController::class, 'aprovar'])->name('solicitacoes.aprovar');
+    Route::put('/solicitacoes/{id}/rejeitar', [SolicitacaoAulaController::class, 'rejeitar'])->name('solicitacoes.rejeitar');
+});
+
+Route::get('/cadastro-aulas', fn() => view('cadastro.aulas'))->name('cadastro.aulas');
+
+Route::get('/financeiro', fn() => view('financeiro'))->name('financeiro');
+
+Route::get('/planos', fn() => view('planos'))->name('planos');
+
+Route::get('/configuracoes', fn() => view('config'))->name('adm.config');
+
+

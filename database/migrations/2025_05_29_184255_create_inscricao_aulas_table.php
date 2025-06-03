@@ -17,6 +17,7 @@ return new class extends Migration
     $table->foreignId('aula_id')->constrained('aulas');
     $table->string('status');
     $table->timestamp('data_inscricao');
+    $table->decimal('valor', 8, 2);
     $table->timestamps(); // Isso adiciona created_at e updated_at
         });
     }

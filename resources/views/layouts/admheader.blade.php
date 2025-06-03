@@ -22,24 +22,24 @@
     {{-- Sidebar --}}
     <nav class="sidebar">
         <div class="logo">
-            <a href="{{ route('aluno.dashboard') }}"><i class="fas fa-dumbbell"></i></a>
+            <a href="{{ route('admin.dashboard') }}"><i class="fas fa-dumbbell"></i></a>
         </div>
         <ul class="nav-links">
-            <li class="{{ request()->routeIs('aluno.dashboard') ? 'active' : '' }}">
-                <a href="{{ route('aluno.dashboard') }}" title="Início"><i class="fas fa-home"></i><span>Início</span></a>
+            <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('admin.dashboard') }}" title="Início"><i class="fas fa-home"></i><span>Início</span></a>
             </li>
-            <li class="{{ request()->routeIs('aulas.aluno') ? 'active' : '' }}">
-                <a href="{{ route('aulas.aluno') }}" title="Aulas"><i class="fas fa-calendar-alt"></i><span>Aulas</span></a>
+            <li class="{{ request()->routeIs('cadastro.aulas') ? 'active' : '' }}">
+                <a href="{{ route('cadastro.aulas') }}" title="Aulas"><i class="fas fa-calendar-alt"></i><span>Aulas</span></a>
             </li>
-            <li class="{{ request()->routeIs('comunicados.aluno') ? 'active' : '' }}">
-                <a href="{{ route('comunicados.aluno') }}" title="Comunicados"><i class="fas fa-bullhorn"></i><span>Comunicados</span></a>
+            <li class="{{ request()->routeIs('solicitacoes.index') ? 'active' : '' }}">
+                <a href="{{ route('solicitacoes.index') }}" title="Comunicados"><i class="fas fa-bullhorn"></i><span>Solicitações <br> Aulas</span></a>
             </li>
-            <li class="{{ request()->routeIs('pagamento.aluno') ? 'active' : '' }}">
-                <a href="{{ route('pagamento.aluno') }}" title="Financeiro"><i class="fas fa-wallet"></i><span>Mensalidades</span></a>
+            <li class="{{ request()->routeIs('financeiro') ? 'active' : '' }}">
+                <a href="{{ route('financeiro') }}" title="Financeiro"><i class="fas fa-wallet"></i><span>Financeiro</span></a>
             </li>
-            <li><a href="#" title="Suporte"><i class="fas fa-headset"></i><span>Suporte</span></a></li>
+            <li><a href="{{ route('planos') }}" title="Suporte"><i class="fas fa-headset"></i><span>Planos</span></a></li>
             <li class="sidebar-bottom">
-                <a href="#" title="Configurações"><i class="fas fa-cog"></i><span>Configurações</span></a>
+                <a href="{{ route('adm.config') }}" title="Configurações"><i class="fas fa-cog"></i><span>Configurações</span></a>
             </li>
             <li><a href="#" id="logoutTrigger"><i class="fas fa-sign-out-alt"></i><span>Desconectar</span></a></li>
         </ul>
@@ -73,20 +73,25 @@
     <div class="container">
         <main class="content">
             <header class="top-bar">
-                <div class="page-title">
-                    <h1>@yield('page-title', 'Página')</h1>
-                </div>
+               
                 <div class="user-info">
                     <span>Logado como <strong>Aluno</strong></span>
                     <div class="user-avatar">
                         <img src="https://via.placeholder.com/40" alt="Avatar do usuário" />
                     </div>
                 </div>
+                
             </header>
+            <div class="page-title">
+                    <h1>@yield('page-title', 'Página')</h1>
+                </div>
+             
 
             <div class="dashboard-container">
+                
                 @yield('content')
             </div>
+            
         </main>
     </div>
 

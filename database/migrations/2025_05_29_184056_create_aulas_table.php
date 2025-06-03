@@ -20,6 +20,7 @@ return new class extends Migration
             $table->time('horario_fim');
             $table->string('instrutor')->nullable();
             $table->integer('capacidade')->default(30);
+            $table->decimal('valor', 8, 2)->default(0);
             $table->timestamps();
         });
     }

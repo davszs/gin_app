@@ -19,6 +19,8 @@ class Aula extends Model
         'horario_fim',
         'instrutor',
         'capacidade',
+        'valor',
+        
     ];
 
     /**

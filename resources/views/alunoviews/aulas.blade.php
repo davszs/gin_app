@@ -6,62 +6,95 @@
 @section('content')
     {{-- Seção Minhas Aulas --}}
     <h2>Minhas Aulas</h2><br>
-    @if($aulas->isEmpty())
-        <p>Você ainda não está inscrito em nenhuma aula.</p>
-    @else
-        <div class="cards-container">
-            @foreach($aulas as $aula)
-                <div class="card-aula">
-                    <h3>{{ $aula->nome }}</h3>
-                    <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
-                    <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
-                    <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
-                    <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
+   @foreach($aulas as $aula)
+    @php
+        // Procura se já existe solicitação pendente de cancelamento para esta aula
+        $solicitacaoCancelamento = $solicitacoesPendentes->firstWhere(function($sol) use ($aula) {
+            return $sol->aula_id == $aula->id && $sol->tipo == 'cancelamento';
+        });
+    @endphp
 
-                    <form action="{{ route('inscricao.cancelar', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja cancelar esta inscrição?')">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn-cancelar">Cancelar Inscrição</button>
-                    </form>
-                </div>
-            @endforeach
+    <div class="card-aula">
+        <h3>{{ $aula->nome }}</h3>
+        <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
+        <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
+        <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
+        <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
+
+        @if($solicitacaoCancelamento)
+            <button class="btn-solicitado-cancelar" disabled>Solicitação de Cancelamento Enviada</button>
+        @else
+            <form action="{{ route('inscricao.cancelar', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja cancelar esta inscrição?')">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn-cancelar">Solicitar Cancelamento</button>
+            </form>
+        @endif
+    </div>
+@endforeach
         </div>
-    @endif
     <br>
 
     {{-- Seção Aulas Disponíveis --}}
     <h2>Inscreve-se em Aulas</h2>
     <br>
-    <form method="GET" action="{{ route('aulas.filtro') }}" class="form-filtro">
-    <label for="modalidade">Modalidade:</label>
-    <input type="text" name="modalidade" id="modalidade" value="{{ old('modalidade', $modalidade ?? '') }}">
+    @foreach($aulasDisponiveis as $aula)
+    @php
+        // Procura se já existe solicitação pendente de inscrição para esta aula
+        $solicitacaoInscricao = $solicitacoesPendentes->firstWhere(function($sol) use ($aula) {
+            return $sol->aula_id == $aula->id && $sol->tipo == 'inscricao';
+        });
+    @endphp
 
-    <label for="dia">Dia da Semana:</label>
-    <input type="text" name="dia" id="dia" value="{{ old('dia', $dia ?? '') }}">
+    <div class="card-aula">
+        <h3>{{ $aula->nome }}</h3>
+        <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
+        <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
+        <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
+        <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
 
-    <button type="submit">Filtrar</button>
-</form><br>
-    @if($aulasDisponiveis->isEmpty())
-        <p>Não há aulas disponíveis no momento.</p>
-    @else
-        <div class="cards-container">
-            @foreach($aulasDisponiveis as $aula)
-                <div class="card-aula">
-                    <h3>{{ $aula->nome }}</h3>
-                    <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
-                    <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
-                    <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
-                    <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
+        @if($solicitacaoInscricao)
+            <button class="btn-solicitado-inscrever" disabled>Solicitação de Inscrição Enviada</button>
+        @else
+            <form action="{{ route('inscricao.inscrever', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja se inscrever nessa aula?')">
+                @csrf
+                <button type="submit" class="btn-inscrever">Solicitar Inscrição</button>
+            </form>
+        @endif
+    </div>
+@endforeach<br>
 
-                    <form action="{{ route('inscricao.inscrever', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja se inscrever nessa aula?')">
-                        @csrf
-                        <button type="submit" class="btn-inscrever">Inscrever-se</button>
-                    </form>
-                </div>
-            @endforeach
-        </div>
-    @endif
+    {{-- Seção Aulas Pendentes --}}
+    <h2>Status de últimas solicitações</h2><br>
+    @if($solicitacoesPendentes->isEmpty())
+    <p>Você não possui solicitações pendentes.</p>
+@else
+    <div class="cards-container">
+        @foreach($solicitacoesPendentes as $solicitacao)
+            <div class="card-aula">
+                <h3>{{ $solicitacao->aula->nome }}</h3>
+                <p><strong>Tipo:</strong> {{ ucfirst($solicitacao->tipo) }}</p>
+                <p><strong>Status:</strong> {{ ucfirst($solicitacao->status) }}</p>
+                <p><strong>Data:</strong> {{ $solicitacao->created_at->format('d/m/Y H:i') }}</p>
+            </div>
+        @endforeach
+    </div>
+@endif
+
+@if(session('info'))
+    <div class="alert alert-warning">
+        {{ session('info') }}
+    </div>
+@endif
+@if(session('sucesso'))
+    <div class="alert alert-success">
+        {{ session('sucesso') }}
+    </div>
+@endif
+
 @endsection
+
+
 
 
 @push('styles')
@@ -129,6 +162,52 @@
     border: none;
     border-radius: 4px;
 }
+.btn-solicitado-inscrever {
+    background-color: #2ecc71; /* verde */
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: not-allowed;
+    margin-top: 1rem;
+}
+
+.btn-solicitado-cancelar {
+    background-color: #f1c40f; /* amarelo */
+    color: black;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: not-allowed;
+    margin-top: 1rem;
+}
 
 </style>
+@endpush
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleciona todos os formulários de solicitação
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const btn = form.querySelector('button');
+            if (btn) {
+                e.preventDefault(); // previne o envio imediato
+                btn.disabled = true; // desabilita o botão para evitar múltiplos cliques
+                
+                if (btn.classList.contains('btn-cancelar')) {
+                    btn.style.backgroundColor = '#f1c40f'; // amarelo
+                    btn.textContent = 'Solicitação de Cancelamento Enviada';
+                } else if (btn.classList.contains('btn-inscrever')) {
+                    btn.style.backgroundColor = '#2ecc71'; // verde
+                    btn.textContent = 'Solicitação de Inscrição Enviada';
+                }
+
+                // Envia o formulário após mudar o texto e cor, com pequeno delay
+                setTimeout(() => form.submit(), 500);
+            }
+        });
+    });
+});
+</script>
 @endpush
