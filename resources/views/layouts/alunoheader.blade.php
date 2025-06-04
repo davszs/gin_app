@@ -37,9 +37,9 @@
             <li class="{{ request()->routeIs('pagamento.aluno') ? 'active' : '' }}">
                 <a href="{{ route('pagamento.aluno') }}" title="Financeiro"><i class="fas fa-wallet"></i><span>Mensalidades</span></a>
             </li>
-            <li><a href="#" title="Suporte"><i class="fas fa-headset"></i><span>Suporte</span></a></li>
-            <li class="sidebar-bottom">
-                <a href="#" title="Configurações"><i class="fas fa-cog"></i><span>Configurações</span></a>
+            <li class="{{ request()->routeIs('suport.aluno') ? 'active' : '' }}"><a href="{{ route('suport.aluno') }}" title="Suporte"><i class="fas fa-headset"></i><span>Suporte</span></a></li>
+            <li class="{{ request()->routeIs('config.aluno') ? 'active' : '' }}">
+                <a href="{{ route('config.aluno') }}" title="Configurações"><i class="fas fa-cog"></i><span>Configurações</span></a>
             </li>
             <li><a href="#" id="logoutTrigger"><i class="fas fa-sign-out-alt"></i><span>Desconectar</span></a></li>
         </ul>
@@ -79,7 +79,8 @@
                 <div class="user-info">
                     <span>Logado como <strong>Aluno</strong></span>
                     <div class="user-avatar">
-                        <img src="https://via.placeholder.com/40" alt="Avatar do usuário" />
+                       <img src="{{ asset('storage/' . (auth()->user()->aluno->avatar ?? 'default-avatar.png')) }}" />
+
                     </div>
                 </div>
             </header>

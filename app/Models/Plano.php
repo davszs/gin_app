@@ -30,24 +30,22 @@ class Plano extends Model
      * Um plano tem muitas inscrições (via tabela pivot).
      */
     public function inscricoes()
-    {
-        return $this->belongsToMany(
-            InscricaoAula::class,
-            'plano_inscricao_aula',
-            'plano_id',
-            'inscricao_aula_id'
-        )->withTimestamps();
-    }
+{
+    return $this->belongsToMany(
+        InscricaoAula::class,
+        'plano_inscricao_aula',
+        'plano_id',
+        'inscricao_aula_id'
+    )->withTimestamps();
+}
 
-    /**
-     * Todas as aulas relacionadas via inscrições.
-     */
     public function aulas()
-    {
-        return $this->inscricoes->map(function ($inscricao) {
-            return $inscricao->aula;
-        });
-    }
+{
+    return $this->inscricoes->map(function ($inscricao) {
+        return $inscricao->aula;
+    });
+}
+
     public function calcularValorTotal()
 {
     $valorTotal = $this->inscricoes->sum(function ($inscricao) {

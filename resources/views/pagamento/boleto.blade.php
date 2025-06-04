@@ -1,14 +1,15 @@
 @extends('layouts.alunoheader')
 
-@section('title', 'Mensalidades')
-@section('page-title', 'Mensalidades')
+@section('title', 'Pagamento')
+@section('page-title', 'Pagamento')
 
 @section('content')
-<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; gap: 1.5rem; padding: 1rem;">
+<h1 style="">Pague sua mensalidade no PIX</h1><br>
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; gap: 1.5rem; padding: 1rem;margin-left:60%;">
 
-    <h1 style="text-align: center;">Pague sua Mensalidade</h1>
+    
 
-    <div style="display: flex; gap: 2rem; background: #fff; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 6px rgb(0 0 0 / 0.1); max-width: 700px; width: 100%;">
+    <div style="display: flex; gap: 2rem; background: #fff; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 6px rgb(0 0 0 / 0.1); max-width: 800px; width: 100%;">
 
         <!-- Informações -->
         <div style="flex: 1; border: 1px solid #ddd; padding: 1rem; border-radius: 8px;">
@@ -25,7 +26,7 @@
 
         <!-- QR Code Pix -->
         <div style="flex: 1; text-align: center; padding: 1rem; border-radius: 8px; border: 1px solid #ddd;">
-            <h3>Pagamento via Pix</h3>
+            <h3>QR Code </h3>
             
             <div style="margin: 1rem auto; width: 250px; height: 250px; background: #000; border-radius: 12px; position: relative;">
 

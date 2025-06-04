@@ -18,6 +18,7 @@ class Aluno extends Model
         'cpf',
         'telefone',
         'endereco',
+        'avatar' //foto de perfil
     ];
 
     /**
@@ -47,5 +48,9 @@ class Aluno extends Model
                 ->withPivot('status', 'data_inscricao')
                 ->withTimestamps();
     }
+    public function plano()
+{
+    return $this->hasOne(Plano::class);
+}
     
 }

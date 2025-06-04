@@ -67,9 +67,7 @@
                                                 <i class="fas fa-qrcode"></i>
                                                 <span>Pague com pix</span>
                                             </a>
-                                            </td>
-  
-                                            <td><br> <button class="btn-acao btn-detalhe" data-pagamento-id="{{ $pagamento->id }}">
+                                            <br> <button class="btn-acao btn-detalhe" data-pagamento-id="{{ $pagamento->id }}">
                                                 <i class="fas fa-eye"></i>
                                                 <span>Ver-Detalhes</span>
                                             </button>
@@ -146,20 +144,6 @@
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-
-    // Função para filtrar (se já quiser usar no carregamento)
-    function filtrarMensalidades(status) {
-        const rows = document.querySelectorAll("#tabela-mensalidades tbody tr");
-        rows.forEach(row => {
-            const rowStatus = row.getAttribute("data-status");
-            if (status === 'todas' || rowStatus === status) {
-                row.style.display = "";
-            } else {
-                row.style.display = "none";
-            }
-        });
-    }
-
     function atualizarDetalhamento(row) {
         // Preenche os dados
         document.getElementById('detalhamento-referencia').textContent = row.getAttribute('data-referencia');
@@ -207,6 +191,18 @@
 
     // Função global (se quiser que o select funcione)
     window.filtrarMensalidades = filtrarMensalidades;
+    // Função para filtrar (se já quiser usar no carregamento)
+    function filtrarMensalidades(status) {
+        const rows = document.querySelectorAll("#tabela-mensalidades tbody tr");
+        rows.forEach(row => {
+            const rowStatus = row.getAttribute("data-status");
+            if (status === 'todas' || rowStatus === status) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
 
 
     </script>
@@ -248,5 +244,22 @@
     line-height: 1;
     cursor: pointer;
     color: #333;
+}
+.tabela-mensalidades {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tabela-mensalidades th,
+.tabela-mensalidades td {
+    border: 1px solid #ddd; /* Linha divisória */
+    padding: 8px;
+    text-align: left;
+}
+
+.tabela-mensalidades th {
+    background-color: #f5f5f5;
+    font-weight: bold;
 }
 </style>

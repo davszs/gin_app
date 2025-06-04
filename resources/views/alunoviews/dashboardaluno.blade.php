@@ -3,7 +3,7 @@
 @section('title', 'Painel de Controle')
 @section('page-title', 'Painel de Controle')
             
-            <div class="dashboard-container"><!-- Card Plano -->
+   @section('content')        
                 <div class="card plano-card">
                     <div class="card-header">
                         <h2>Meu Plano</h2>
@@ -158,6 +158,6 @@
                             </div>
                         </div><button class="btn btn-primary">Ver todos os comunicados</button>
                     </div>
-                </div>
+                @endsection
             
        

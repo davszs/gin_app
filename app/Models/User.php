@@ -28,4 +28,8 @@ class User extends Authenticatable
     {
         return $this->password;
     }
+    public function aluno()
+{
+    return $this->hasOne(Aluno::class);
+}
 }

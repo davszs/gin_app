@@ -2,7 +2,7 @@
 
 @section('title', 'Comunicados')
 @section('page-title', 'Comunicados')
-
+ @section('content')      
             <!-- Conteúdo dos Comunicados -->
             <div class="comunicados-container">
                 <!-- Filtros -->
@@ -127,6 +127,4 @@
             </div>
         </main>
     </div>
-</body>
-
-</html>
+ @endsection

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('cpf', 14)->unique();
             $table->string('telefone', 13);
             $table->string('endereco', 70)->nullable();
+            $table->string('avatar')->nullable()->after('endereco');
             $table->timestamps();
         });
     }
@@ -29,5 +30,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('alunos');
+         Schema::table('alunos', function (Blueprint $table) {
+        $table->dropColumn('avatar');
+    });
     }
 };

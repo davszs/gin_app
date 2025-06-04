@@ -7,6 +7,8 @@ use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\InscricaoAulaController;
 use App\Http\Controllers\SolicitacaoAulaController;
 use App\Http\Controllers\PagamentoController;
+use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\SuportController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -29,17 +31,29 @@ Route::post('/recuperar-senha', [ResetPasswordController::class, 'resetPassword'
 Route::resource('alunos', AlunosController::class);
 
 // ROTAS alunos 
+
+//Aulas-Aluno
 Route::middleware(['auth'])->group(function () {
     Route::get('/minhas-aulas', [InscricaoAulaController::class, 'minhasAulas'])->name('aulas.aluno');
     Route::post('/aulas/{aula}/inscrever', [InscricaoAulaController::class, 'inscrever'])->name('inscricao.inscrever');
     Route::put('/aulas/{aula}/cancelar', [InscricaoAulaController::class, 'cancelarInscricao'])->name('inscricao.cancelar');
     Route::get('/aulas/filtro', [InscricaoAulaController::class, 'filtro'])->name('aulas.filtro');
-
-
 });
+//Pagamentos-Aluno
 Route::get('/pagamentos', [PagamentoController::class, 'index'])->name('pagamento.aluno');
 Route::get('pagar-boleto/{id}', [PagamentoController::class, 'gerarBoleto'])->name('pagamento.gerarBoleto');
+//Comunicados-Alunos
 Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name(("comunicados.aluno"));
+//Suporte-Alunos
+Route::get('/suporte-', [SuportController::class, 'configuracoes'])->name('suport.aluno');
+
+//Configurações-Alunos
+
+    Route::get('/configuracoes-alunos', [ConfigController::class, 'configuracoes'])->name('config.aluno');
+    Route::put('/configuracoes-alunos', [ConfigController::class, 'atualizarConfiguracoes'])->name('atualizar.dados');
+
+
+
 
 //ROTAS adm
 Route::prefix('admin')->middleware('auth')->group(function () {
