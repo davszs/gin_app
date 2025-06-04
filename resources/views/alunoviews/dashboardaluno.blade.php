@@ -1,99 +1,9 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@extends('layouts.alunoheader')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal do Aluno - Dashboard</title>
-    <link rel="stylesheet" href={{asset('css/estilo_basico.css')}}>
-    <!-- Font Awesome para ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-
-<body><!-- Estrutura principal -->
-    <div class="container"><!-- Menu Lateral -->
-         <nav class="sidebar">
-
-             <div class="logo">
-                <a href="#"><i class="fas fa-dumbbell"></i></a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="{{ route('aluno.dashboard') }}" title="Início"><i class="fas fa-home"></i><span>Início</span></a></li>
-                <li class="active"><a href="{{ route('aulas.aluno') }}" title="Aulas"><i
-                            class="fas fa-calendar-alt"></i><span>Aulas</span></a></li>
-                <li><a href="{{ route('comunicados.aluno') }}" title="Comunicados"><i
-                            class="fas fa-bullhorn"></i><span>Comunicados</span></a></li>
-                <li><a href="{{ route('pagamento.aluno') }}" title="Financeiro"><i
-                            class="fas fa-wallet"></i><span>Financeiro</span></a></li>
-                <li><a href="#" title="Suporte"><i class="fas fa-headset"></i><span>Suporte</span></a></li>
-                <li class="sidebar-bottom">
-                    <a href="#" title="Configurações"><i
-                            class="fas fa-cog"></i><span>Configurações</span></a>
-                </li>
-               <li><a href="#" id="logoutTrigger"><i class="fas fa-sign-out-alt"></i><span>Desconectar</span></a></li>
-            </ul>
-        </nav>
-
-         {{-- Modal de logout --}}
-    <div id="logoutModal" class="logout-overlay" style="display: none;">
-        <div class="logout-box">
-            <p>Tem certeza que deseja desconectar a conta e sair?</p>
-            <div class="logout-buttons">
-                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="confirm">Sim, sair</button>
-                </form>
-                <button class="cancel" id="cancelLogout">Cancelar</button>
-            </div>
-        </div>
-        
-    </div>
-
-      @if (session('status'))
-        <div class="overlay-message" id="overlayMessage">
-            <div class="alert-box">
-                <p>{{ session('status') }}</p>
-                <button id="okBtn">OK</button>
-            </div>
-        </div>
-        @endif
-    </div>
-
-
-    {{-- Scripts relacionados à sidebar --}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const okBtn = document.getElementById("okBtn");
-            const overlay = document.getElementById("overlayMessage");
-            if (okBtn && overlay) {
-                okBtn.addEventListener("click", () => overlay.style.display = "none");
-            }
-
-            const logoutLink = document.getElementById("logoutTrigger");
-            const logoutModal = document.getElementById("logoutModal");
-            const cancelBtn = document.getElementById("cancelLogout");
-
-            logoutLink?.addEventListener("click", e => {
-                e.preventDefault();
-                logoutModal.style.display = "flex";
-            });
-
-            cancelBtn?.addEventListener("click", () => {
-                logoutModal.style.display = "none";
-            });
-        });
-    </script>
-        <!-- Conteúdo Principal -->
-        <main class="content"><!-- Cabeçalho -->
-            <header class="top-bar">
-                <div class="page-title">
-                    <h1>Dashboard</h1>
-                </div>
-                <div class="user-info"><span>Logado como <strong>Aluno</strong></span>
-                    <div class="user-avatar"><img src="https://via.placeholder.com/40" alt="Avatar do usuário"></div>
-                </div>
-            </header><!-- Dashboard Content -->
-            <div class="dashboard-container"><!-- Card Plano -->
+@section('title', 'Painel de Controle')
+@section('page-title', 'Painel de Controle')
+            
+   @section('content')        
                 <div class="card plano-card">
                     <div class="card-header">
                         <h2>Meu Plano</h2>
@@ -248,10 +158,6 @@
                             </div>
                         </div><button class="btn btn-primary">Ver todos os comunicados</button>
                     </div>
-                </div>
-            </div>
-        </main>
-    </div>
-</body>
-
-</html>
+                @endsection
+            
+       

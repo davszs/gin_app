@@ -223,20 +223,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 
 -- --------------------------------------------------------
 
---
--- Estrutura para tabela `users`
---
 
-CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -259,7 +246,7 @@ CREATE TABLE `usuario` (
 INSERT INTO `usuario` (`id_usuario`, `email`, `nome_user`, `senha_user`, `tipo_user`) VALUES
 (1, 'test@gmail.com', 'Teste', '$2y$10$5jddlwrvb/kXaQKHATyPJe.xZBK5s0ZiGeB9Sw/D8LUvuCoYJAPq2', 'Administrador'),
 (2, 'admin@teste.com', 'Admin Teste', '$2y$12$WUYLuuHmXKsHSEYOhWMiFuL7HwuUDnfcmI63hIYfBI3G4vL1S.wBi', 'Administrador'),
-(3, 'aluno@teste.com', 'Jo\0o da Silva', '$2y$12$5KuA2cSmzQMNgsZSfoFH4uhTElwok5etkoPpbC44Q0bg/LVbD7Tlu', 'Aluno');
+(3, 'aluno@teste.com', 'João da Silva', '$2y$12$5KuA2cSmzQMNgsZSfoFH4uhTElwok5etkoPpbC44Q0bg/LVbD7Tlu', 'Aluno');
 
 --
 -- Índices para tabelas despejadas
@@ -346,13 +333,7 @@ ALTER TABLE `sessions`
   ADD KEY `sessions_last_activity_index` (`last_activity`);
 
 --
--- Índices de tabela `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
 
---
 -- Índices de tabela `usuario`
 --
 ALTER TABLE `usuario`
@@ -433,6 +414,23 @@ ALTER TABLE `mensalidade`
 ALTER TABLE `pagamento`
   ADD CONSTRAINT `pagamento_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `aluno` (`id_usuario`) ON DELETE CASCADE;
 COMMIT;
+ALTER TABLE `administrador` MODIFY `id_usuario` INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `aluno` MODIFY `id_usuario` INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `pagamento` MODIFY `id_pagamento` INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `mensalidade` MODIFY `id_mensalidade` INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `usuario` MODIFY `id_usuario` INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `aluno`
+ADD CONSTRAINT `fk_aluno_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario`(`id_usuario`) ON DELETE CASCADE;
+
+ALTER TABLE `administrador`
+ADD CONSTRAINT `fk_adm_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario`(`id_usuario`) ON DELETE CASCADE;
+
+ALTER TABLE `pagamento`
+ADD CONSTRAINT `fk_pagamento_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario`(`id_usuario`) ON DELETE CASCADE;
+
+ALTER TABLE `mensalidade`
+ADD CONSTRAINT `fk_mensalidade_pagamento` FOREIGN KEY (`id_pagamento`) REFERENCES `pagamento`(`id_pagamento`) ON DELETE CASCADE;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

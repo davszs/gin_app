@@ -1,368 +1,213 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+@extends('layouts.alunoheader')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal do Aluno - Aulas</title>
-    <link rel="stylesheet" href={{asset('css\estilo_basico.css')}}>
-    <!-- Font Awesome para ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+@section('title', 'Aulas')
+@section('page-title', 'Aulas')
 
-<body>
-    <!-- Estrutura principal -->
-    <div class="container">
-        <!-- Menu Lateral -->
-        <nav class="sidebar">
+@section('content')
+    {{-- Seção Minhas Aulas --}}
+    <h2>Minhas Aulas</h2><br>
+   @foreach($aulas as $aula)
+    @php
+        // Procura se já existe solicitação pendente de cancelamento para esta aula
+        $solicitacaoCancelamento = $solicitacoesPendentes->firstWhere(function($sol) use ($aula) {
+            return $sol->aula_id == $aula->id && $sol->tipo == 'cancelamento';
+        });
+    @endphp
 
-             <div class="logo">
-                <a href="#"><i class="fas fa-dumbbell"></i></a>
-            </div>
-              <ul class="nav-links">
-                <li><a href="{{ route('aluno.dashboard') }}" title="Início"><i class="fas fa-home"></i><span>Início</span></a></li>
-                <li class="active"><a href="{{ route('aulas.aluno') }}" title="Aulas"><i
-                            class="fas fa-calendar-alt"></i><span>Aulas</span></a></li>
-                <li><a href="{{ route('comunicados.aluno') }}" title="Comunicados"><i
-                            class="fas fa-bullhorn"></i><span>Comunicados</span></a></li>
-                <li><a href="{{ route('pagamento.aluno') }}" title="Financeiro"><i
-                            class="fas fa-wallet"></i><span>Financeiro</span></a></li>
-                <li><a href="#" title="Suporte"><i class="fas fa-headset"></i><span>Suporte</span></a></li>
-                <li class="sidebar-bottom">
-                    <a href="#" title="Configurações"><i
-                            class="fas fa-cog"></i><span>Configurações</span></a>
-                </li>
-               <li><a href="#" id="logoutTrigger"><i class="fas fa-sign-out-alt"></i><span>Desconectar</span></a></li>
-            </ul>
-        </nav>
+    <div class="card-aula">
+        <h3>{{ $aula->nome }}</h3>
+        <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
+        <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
+        <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
+        <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
 
-         {{-- Modal de logout --}}
-    <div id="logoutModal" class="logout-overlay" style="display: none;">
-        <div class="logout-box">
-            <p>Tem certeza que deseja desconectar a conta e sair?</p>
-            <div class="logout-buttons">
-                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="confirm">Sim, sair</button>
-                </form>
-                <button class="cancel" id="cancelLogout">Cancelar</button>
-            </div>
-        </div>
-        
-    </div>
-
-      @if (session('status'))
-        <div class="overlay-message" id="overlayMessage">
-            <div class="alert-box">
-                <p>{{ session('status') }}</p>
-                <button id="okBtn">OK</button>
-            </div>
-        </div>
+        @if($solicitacaoCancelamento)
+            <button class="btn-solicitado-cancelar" disabled>Solicitação de Cancelamento Enviada</button>
+        @else
+            <form action="{{ route('inscricao.cancelar', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja cancelar esta inscrição?')">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn-cancelar">Solicitar Cancelamento</button>
+            </form>
         @endif
     </div>
+@endforeach
+        </div>
+    <br>
 
-
-    {{-- Scripts relacionados à sidebar --}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const okBtn = document.getElementById("okBtn");
-            const overlay = document.getElementById("overlayMessage");
-            if (okBtn && overlay) {
-                okBtn.addEventListener("click", () => overlay.style.display = "none");
-            }
-
-            const logoutLink = document.getElementById("logoutTrigger");
-            const logoutModal = document.getElementById("logoutModal");
-            const cancelBtn = document.getElementById("cancelLogout");
-
-            logoutLink?.addEventListener("click", e => {
-                e.preventDefault();
-                logoutModal.style.display = "flex";
-            });
-
-            cancelBtn?.addEventListener("click", () => {
-                logoutModal.style.display = "none";
-            });
+    {{-- Seção Aulas Disponíveis --}}
+    <h2>Inscreve-se em Aulas</h2>
+    <br>
+    @foreach($aulasDisponiveis as $aula)
+    @php
+        // Procura se já existe solicitação pendente de inscrição para esta aula
+        $solicitacaoInscricao = $solicitacoesPendentes->firstWhere(function($sol) use ($aula) {
+            return $sol->aula_id == $aula->id && $sol->tipo == 'inscricao';
         });
-    </script>
+    @endphp
 
+    <div class="card-aula">
+        <h3>{{ $aula->nome }}</h3>
+        <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
+        <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
+        <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
+        <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
 
-        <!-- Conteúdo Principal -->
-        <main class="content">
-            <!-- Cabeçalho -->
-            <header class="top-bar">
-                <div class="page-title">
-                    <h1>Aulas</h1>
-                </div>
-                <div class="user-info">
-                    <span>Logado como <strong>Aluno</strong></span>
-                    <div class="user-avatar">
-                        <img src="https://via.placeholder.com/40" alt="Avatar do usuário">
-                    </div>
-                </div>
-            </header>
-
-            <!-- Dashboard Content -->
-            <div class="dashboard-container">
-                <!-- Card Aulas Disponíveis -->
-                <div class="card plano-card">
-                    <div class="card-header">
-                        <h2>Aulas Disponíveis</h2>
-                    </div>
-                    <div class="card-body">
-                        <!-- Filtros -->
-                        <div class="filtros" style="display: flex; gap: 10px; margin-bottom: 15px;">
-                            <select
-                                style="padding: 8px; border-radius: var(--border-radius); border: 1px solid var(--border-color);">
-                                <option value="">Todas as modalidades</option>
-                                <option value="musculacao">Musculação</option>
-                                <option value="pilates">Pilates</option>
-                                <option value="yoga">Yoga</option>
-                                <option value="spinning">Spinning</option>
-                                <option value="funcional">Funcional</option>
-                            </select>
-                            <select
-                                style="padding: 8px; border-radius: var(--border-radius); border: 1px solid var(--border-color);">
-                                <option value="">Todos os dias</option>
-                                <option value="segunda">Segunda-feira</option>
-                                <option value="terca">Terça-feira</option>
-                                <option value="quarta">Quarta-feira</option>
-                                <option value="quinta">Quinta-feira</option>
-                                <option value="sexta">Sexta-feira</option>
-                                <option value="sabado">Sábado</option>
-                            </select>
-                        </div>
-
-                        <!-- Lista de Aulas -->
-                        <div class="aulas-lista">
-                            <div class="agenda-item">
-                                <div class="plano-tipo">
-                                    <h3>Circuito Funcional</h3>
-                                    <span class="status ativo">Vagas: 5/20</span>
-                                </div>
-                                <div class="plano-detalhes">
-                                    <div class="info-item">
-                                        <span class="label">Professor:</span>
-                                        <span class="value">Ricardo Silva</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Dias:</span>
-                                        <span class="value">Terça e Quinta</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Horário:</span>
-                                        <span class="value">19:00 - 20:00</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Local:</span>
-                                        <span class="value">Sala 2</span>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary"
-                                    style="width: 100%; margin-top: 15px;">Inscrever-se</button>
-                            </div>
-
-                            <div class="agenda-item" style="margin-top: 20px;">
-                                <div class="plano-tipo">
-                                    <h3>Pilates Solo</h3>
-                                    <span class="status ativo">Vagas: 8/12</span>
-                                </div>
-                                <div class="plano-detalhes">
-                                    <div class="info-item">
-                                        <span class="label">Professor:</span>
-                                        <span class="value">Mariana Costa</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Dias:</span>
-                                        <span class="value">Segunda, Quarta e Sexta</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Horário:</span>
-                                        <span class="value">08:00 - 09:00</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Local:</span>
-                                        <span class="value">Sala 3</span>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary"
-                                    style="width: 100%; margin-top: 15px;">Inscrever-se</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card Minhas Aulas -->
-                <div class="card agenda-card">
-                    <div class="card-header">
-                        <h2>Minhas Aulas</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="aulas-inscritas">
-                            <div class="agenda-item">
-                                <div class="plano-tipo">
-                                    <h3>Treino em Grupo</h3>
-                                    <span class="status ativo">Confirmada</span>
-                                </div>
-                                <div class="plano-detalhes">
-                                    <div class="info-item">
-                                        <span class="label">Professor:</span>
-                                        <span class="value">André Oliveira</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Dias:</span>
-                                        <span class="value">Segunda e Quarta</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Horário:</span>
-                                        <span class="value">17:00 - 18:00</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Local:</span>
-                                        <span class="value">Sala de Musculação</span>
-                                    </div>
-                                </div>
-                                <div style="display: flex; gap: 10px; margin-top: 15px;">
-                                    <button class="btn btn-primary" style="flex: 1;">Detalhes</button>
-                                    <button class="btn"
-                                        style="flex: 1; background-color: var(--danger-color);">Cancelar</button>
-                                </div>
-                            </div>
-
-                            <div class="agenda-item" style="margin-top: 20px;">
-                                <div class="plano-tipo">
-                                    <h3>Zumba Dance</h3>
-                                    <span class="status ativo">Confirmada</span>
-                                </div>
-                                <div class="plano-detalhes">
-                                    <div class="info-item">
-                                        <span class="label">Professor:</span>
-                                        <span class="value">Fernanda Lima</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Dias:</span>
-                                        <span class="value">Terça e Quinta</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Horário:</span>
-                                        <span class="value">20:00 - 21:00</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <span class="label">Local:</span>
-                                        <span class="value">Sala 1</span>
-                                    </div>
-                                </div>
-                                <div style="display: flex; gap: 10px; margin-top: 15px;">
-                                    <button class="btn btn-primary" style="flex: 1;">Detalhes</button>
-                                    <button class="btn"
-                                        style="flex: 1; background-color: var(--danger-color);">Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card Próximas Aulas -->
-                <div class="card frequencia-card">
-                    <div class="card-header">
-                        <h2>Próximas Aulas</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="agenda-dias">
-                            <div class="agenda-item">
-                                <div class="agenda-dia">Hoje</div>
-                                <div class="agenda-aulas">
-                                    <div class="aula">
-                                        <span class="aula-horario">17:00</span>
-                                        <span class="aula-nome">Treino em Grupo</span>
-                                        <span class="aula-prof">Prof. André</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="agenda-item">
-                                <div class="agenda-dia">Amanhã</div>
-                                <div class="agenda-aulas">
-                                    <div class="aula">
-                                        <span class="aula-horario">20:00</span>
-                                        <span class="aula-nome">Zumba Dance</span>
-                                        <span class="aula-prof">Prof. Fernanda</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="agenda-item">
-                                <div class="agenda-dia">Quarta-feira</div>
-                                <div class="agenda-aulas">
-                                    <div class="aula">
-                                        <span class="aula-horario">17:00</span>
-                                        <span class="aula-nome">Treino em Grupo</span>
-                                        <span class="aula-prof">Prof. André</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card Aulas Populares -->
-                <div class="card comunicados-card">
-                    <div class="card-header">
-                        <h2>Aulas Populares</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="comunicados-lista">
-                            <div class="comunicado">
-                                <div class="comunicado-data">10 vagas</div>
-                                <div class="comunicado-conteudo">
-                                    <h4>Yoga para Iniciantes</h4>
-                                    <p>Terça e Quinta às 07:00 - Prof. Juliana</p>
-                                </div>
-                            </div>
-                            <div class="comunicado">
-                                <div class="comunicado-data">3 vagas</div>
-                                <div class="comunicado-conteudo">
-                                    <h4>Spinning Intenso</h4>
-                                    <p>Segunda a Sexta às 18:00 - Prof. Carlos</p>
-                                </div>
-                            </div>
-                            <div class="comunicado">
-                                <div class="comunicado-data">7 vagas</div>
-                                <div class="comunicado-conteudo">
-                                    <h4>Crossfit</h4>
-                                    <p>Segunda, Quarta e Sexta às 19:30 - Prof. Rodrigo</p>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary">Ver todas as aulas</button>
-                    </div>
-                </div>
-            </div>
-        </main>
+        @if($solicitacaoInscricao)
+            <button class="btn-solicitado-inscrever" disabled>Solicitação de Inscrição Enviada</button>
+        @else
+            <form action="{{ route('inscricao.inscrever', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja se inscrever nessa aula?')">
+                @csrf
+                <button type="submit" class="btn-inscrever">Solicitar Inscrição</button>
+            </form>
+        @endif
     </div>
+@endforeach<br>
 
-    <!-- Script para garantir a funcionalidade do menu lateral -->
-    <script>
-        // Verificar se estamos em tela móvel e adicionar toggle para o menu
-        document.addEventListener('DOMContentLoaded', function () {
-            // Adicionar botão do menu em telas móveis se não existir
-            if (window.innerWidth <= 768) {
-                const topBar = document.querySelector('.top-bar');
-                const sidebar = document.querySelector('.sidebar');
+    {{-- Seção Aulas Pendentes --}}
+    <h2>Status de últimas solicitações</h2><br>
+    @if($solicitacoesPendentes->isEmpty())
+    <p>Você não possui solicitações pendentes.</p>
+@else
+    <div class="cards-container">
+        @foreach($solicitacoesPendentes as $solicitacao)
+            <div class="card-aula">
+                <h3>{{ $solicitacao->aula->nome }}</h3>
+                <p><strong>Tipo:</strong> {{ ucfirst($solicitacao->tipo) }}</p>
+                <p><strong>Status:</strong> {{ ucfirst($solicitacao->status) }}</p>
+                <p><strong>Data:</strong> {{ $solicitacao->created_at->format('d/m/Y H:i') }}</p>
+            </div>
+        @endforeach
+    </div>
+@endif
 
-                // Criar botão de toggle se ainda não existir
-                if (!document.querySelector('.menu-toggle')) {
-                    const menuToggle = document.createElement('button');
-                    menuToggle.className = 'menu-toggle';
-                    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-                    topBar.insertBefore(menuToggle, topBar.firstChild);
+@if(session('info'))
+    <div class="alert alert-warning">
+        {{ session('info') }}
+    </div>
+@endif
+@if(session('sucesso'))
+    <div class="alert alert-success">
+        {{ session('sucesso') }}
+    </div>
+@endif
 
-                    // Adicionar evento de clique
-                    menuToggle.addEventListener('click', function () {
-                        sidebar.classList.toggle('active');
-                    });
+@endsection
+
+
+
+
+@push('styles')
+<style>
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.card-aula {
+    background: #afc2ff;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    padding: 1rem;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.card-aula h3 {
+    margin-bottom: 0.5rem;
+}
+.btn-cancelar {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+.btn-cancelar:hover {
+    background-color: #c0392b;
+}
+.btn-inscrever {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+.btn-inscrever:hover {
+    background-color: #2980b9;
+}
+.form-filtro {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.form-filtro label {
+    font-weight: bold;
+}
+.form-filtro input, .form-filtro select {
+    padding: 0.3rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+.form-filtro button {
+    padding: 0.4rem 1rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+.btn-solicitado-inscrever {
+    background-color: #2ecc71; /* verde */
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: not-allowed;
+    margin-top: 1rem;
+}
+
+.btn-solicitado-cancelar {
+    background-color: #f1c40f; /* amarelo */
+    color: black;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: not-allowed;
+    margin-top: 1rem;
+}
+
+</style>
+@endpush
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleciona todos os formulários de solicitação
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const btn = form.querySelector('button');
+            if (btn) {
+                e.preventDefault(); // previne o envio imediato
+                btn.disabled = true; // desabilita o botão para evitar múltiplos cliques
+                
+                if (btn.classList.contains('btn-cancelar')) {
+                    btn.style.backgroundColor = '#f1c40f'; // amarelo
+                    btn.textContent = 'Solicitação de Cancelamento Enviada';
+                } else if (btn.classList.contains('btn-inscrever')) {
+                    btn.style.backgroundColor = '#2ecc71'; // verde
+                    btn.textContent = 'Solicitação de Inscrição Enviada';
                 }
+
+                // Envia o formulário após mudar o texto e cor, com pequeno delay
+                setTimeout(() => form.submit(), 500);
             }
         });
-    </script>
-</body>
-
-</html>
+    });
+});
+</script>
+@endpush

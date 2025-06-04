@@ -5,17 +5,48 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Aluno extends Model
 {
-    use HasFactory;
+     use HasFactory;
+
+    protected $table = 'alunos';
 
     protected $fillable = [
-       'user_id', 'telefone', 'endereco' 
+        'user_id',
+        'nome',
+        'email',
+        'cpf',
+        'telefone',
+        'endereco',
+        'avatar' //foto de perfil
     ];
 
-    //Relacionamento (1,1): Um aluno pertence a um usuário
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+   
+    public function aulas()
+    {
+        return $this->belongsToMany(Aula::class, 'inscricao_aula', 'aluno_id', 'aula_id')
+                ->withPivot('status', 'data_inscricao')
+                ->withTimestamps();
+    }
+
+
+    public function inscricoes()
+    {
+          return $this->belongsToMany(Aluno::class, 'inscricao_aula', 'aula_id', 'aluno_id')
+                ->withPivot('status', 'data_inscricao')
+                ->withTimestamps();
+    }
+    public function plano()
+{
+    return $this->hasOne(Plano::class);
+}
+    
+
 }

@@ -372,103 +372,12 @@
 
 
 </head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-    <ul class="sidebar-menu">
-        <li class="sidebar-item active">
-             <a href="#"><i class="fas fa-home"></i>
-            <span>Início</span></a>
-        </li>
-        <li class="sidebar-item">
-            <a href="#"> <i class="fas fa-user-graduate"></i>
-            <span>Alunos</span></a>
-        </li>
-        <li class="sidebar-item">
-            <a href="#"> <i class="fas fa-chalkboard-teacher"></i>
-            <span>Professores</span></a>
-        </li>
-        <li class="sidebar-item">
-            <a href="#"> <i class="fas fa-book"></i>
-            <span>Aulas</span></a>
-        </li>
-        <li class="sidebar-item">
-            <a href="#"> <i class="fas fa-users"></i>
-            <span>Turmas</span></a>
-        </li>
-        <li class="sidebar-item">
-            <a href="#"> <i class="fas fa-dollar-sign"></i>
-            <span>Financeiro</span></a>
-        </li>
-        <li class="sidebar-item">
-            <a href="#"> <i class="fas fa-cog"></i>
-            <span>Configurações</span></a>
-    </li>
-        <li class="sidebar-item">
-            <a href="#" id="logoutTrigger"><i class="fas fa-sign-out-alt"></i><span>Desconectar</span></a>
-        </li>
-    </ul>
-    </div>
-    
-     {{-- Modal de logout --}}
-    <div id="logoutModal" class="logout-overlay" style="display: none;">
-        <div class="logout-box">
-            <p>Tem certeza que deseja desconectar a conta e sair?</p>
-            <div class="logout-buttons">
-                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="confirm">Sim, sair</button>
-                </form>
-                <button class="cancel" id="cancelLogout">Cancelar</button>
-            </div>
-        </div>
-    </div>
+@extends('layouts.admheader')
 
-      @if (session('status'))
-        <div class="overlay-message" id="overlayMessage">
-            <div class="alert-box">
-                <p>{{ session('status') }}</p>
-                <button id="okBtn">OK</button>
-            </div>
-        </div>
-        @endif
-    </div>
+@section('title', 'Painel de Controle')
+@section('page-title', 'Painel de Controle')
+@section('content')
 
-
-    {{-- Scripts relacionados à sidebar --}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const okBtn = document.getElementById("okBtn");
-            const overlay = document.getElementById("overlayMessage");
-            if (okBtn && overlay) {
-                okBtn.addEventListener("click", () => overlay.style.display = "none");
-            }
-
-            const logoutLink = document.getElementById("logoutTrigger");
-            const logoutModal = document.getElementById("logoutModal");
-            const cancelBtn = document.getElementById("cancelLogout");
-
-            logoutLink?.addEventListener("click", e => {
-                e.preventDefault();
-                logoutModal.style.display = "flex";
-            });
-
-            cancelBtn?.addEventListener("click", () => {
-                logoutModal.style.display = "none";
-            });
-        });
-    </script>
-
-    <!-- Content -->
-    <div class="content">
-        <!-- Header -->
-        <div class="header">
-            <h1>Dashboard</h1>
-            <div class="admin-profile">
-                <span>Admin</span>
-                <div class="avatar">A</div>
-            </div>
-        </div>
 
         <!-- Main Content -->
         <div class="main-content">
@@ -565,8 +474,8 @@
                     <div class="alert-text">3 novos alunos aguardando aprovação de matrícula</div>
                 </div>
             </div>
-        </div>
-    </div>
+        
+    @endsection
   
 
 </body>

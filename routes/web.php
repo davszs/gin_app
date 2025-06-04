@@ -5,6 +5,11 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlunosController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\InscricaoAulaController;
+use App\Http\Controllers\SolicitacaoAulaController;
+use App\Http\Controllers\PagamentoController;
+use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\SuportController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -29,6 +34,42 @@ Route::resource('alunos', AlunosController::class);
 Route::resource('admins', AdministradorController::class);
 
 // ROTAS alunos 
-Route::get('/minhas-aulas', fn() => view('alunoviews.aulas'))->name(("aulas.aluno"));
-Route::get('/pagamento', fn() => view('alunoviews.financeiroaluno'))->name(("pagamento.aluno"));
+//Aulas-Aluno
+Route::middleware(['auth'])->group(function () {
+    Route::get('/minhas-aulas', [InscricaoAulaController::class, 'minhasAulas'])->name('aulas.aluno');
+    Route::post('/aulas/{aula}/inscrever', [InscricaoAulaController::class, 'inscrever'])->name('inscricao.inscrever');
+    Route::put('/aulas/{aula}/cancelar', [InscricaoAulaController::class, 'cancelarInscricao'])->name('inscricao.cancelar');
+    Route::get('/aulas/filtro', [InscricaoAulaController::class, 'filtro'])->name('aulas.filtro');
+});
+//Pagamentos-Aluno
+Route::get('/pagamentos', [PagamentoController::class, 'index'])->name('pagamento.aluno');
+Route::get('pagar-boleto/{id}', [PagamentoController::class, 'gerarBoleto'])->name('pagamento.gerarBoleto');
+//Comunicados-Alunos
 Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name(("comunicados.aluno"));
+//Suporte-Alunos
+Route::get('/suporte-', [SuportController::class, 'configuracoes'])->name('suport.aluno');
+
+//Configurações-Alunos
+    Route::get('/configuracoes-alunos', [ConfigController::class, 'configuracoes'])->name('config.aluno');
+    Route::put('/configuracoes-alunos', [ConfigController::class, 'atualizarConfiguracoes'])->name('atualizar.dados');
+
+
+
+
+//ROTAS adm
+Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('/solicitacoes', [SolicitacaoAulaController::class, 'index'])->name('solicitacoes.index');
+    Route::put('/solicitacoes/{id}/aprovar', [SolicitacaoAulaController::class, 'aprovar'])->name('solicitacoes.aprovar');
+    Route::put('/solicitacoes/{id}/rejeitar', [SolicitacaoAulaController::class, 'rejeitar'])->name('solicitacoes.rejeitar');
+});
+
+Route::get('/cadastro-aulas', fn() => view('cadastro.aulas'))->name('cadastro.aulas');
+
+Route::get('/financeiro', fn() => view('financeiro'))->name('financeiro');
+
+Route::get('/planos', fn() => view('planos'))->name('planos');
+
+Route::get('/configuracoes', fn() => view('config'))->name('adm.config');
+
+
+

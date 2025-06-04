@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use function Pest\Laravel\from;
+use Illuminate\Notifications\Notifiable;
 
 class AlunosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   use Notifiable;
+
+    
     public function index()
     {
         $alunos = Aluno::with('user')->get();
