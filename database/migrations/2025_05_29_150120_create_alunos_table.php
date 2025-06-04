@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('alunos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('nome', 50);
-            $table->string('email', 90)->unique();
-            $table->string('cpf', 14)->unique();
             $table->string('telefone', 13);
             $table->string('endereco', 70)->nullable();
             $table->string('avatar')->nullable()->after('endereco');

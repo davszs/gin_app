@@ -21,15 +21,23 @@ class User extends Authenticatable
         'tipo',
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'remember_token'];
 
     // Nome do campo de senha personalizado
     public function getAuthPassword()
     {
         return $this->password;
     }
+
     public function aluno()
-{
-    return $this->hasOne(Aluno::class);
-}
+    {
+        return $this->hasOne(Aluno::class);
+    }
+
+    
+    public function administrador()
+    {
+        return $this->hasOne(Administrador::class);
+    }
+
 }

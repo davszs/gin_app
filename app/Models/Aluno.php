@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 
 class Aluno extends Model
 {
@@ -21,17 +22,13 @@ class Aluno extends Model
         'avatar' //foto de perfil
     ];
 
-    /**
-     * Um aluno pertence a um usuário (tabela users).
-     */
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Um aluno pode estar inscrito em várias aulas.
-     */
+   
     public function aulas()
     {
         return $this->belongsToMany(Aula::class, 'inscricao_aula', 'aluno_id', 'aula_id')
@@ -39,9 +36,7 @@ class Aluno extends Model
                 ->withTimestamps();
     }
 
-    /**
-     * Um aluno tem muitas inscrições (registro completo, mesmo que canceladas).
-     */
+
     public function inscricoes()
     {
           return $this->belongsToMany(Aluno::class, 'inscricao_aula', 'aula_id', 'aluno_id')
@@ -53,4 +48,5 @@ class Aluno extends Model
     return $this->hasOne(Plano::class);
 }
     
+
 }

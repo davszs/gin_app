@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlunosController;
@@ -28,10 +29,11 @@ Route::get('/home_admin', fn() => view('dashboard'))->name('admin.dashboard');
 Route::get('/recuperar-senha', [ResetPasswordController::class, 'showResetForm'])->name('recuperar-senha');
 Route::post('/recuperar-senha', [ResetPasswordController::class, 'resetPassword']);
 
+// ROTAS CRUD alunos e admins
 Route::resource('alunos', AlunosController::class);
+Route::resource('admins', AdministradorController::class);
 
 // ROTAS alunos 
-
 //Aulas-Aluno
 Route::middleware(['auth'])->group(function () {
     Route::get('/minhas-aulas', [InscricaoAulaController::class, 'minhasAulas'])->name('aulas.aluno');
@@ -48,7 +50,6 @@ Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name((
 Route::get('/suporte-', [SuportController::class, 'configuracoes'])->name('suport.aluno');
 
 //Configurações-Alunos
-
     Route::get('/configuracoes-alunos', [ConfigController::class, 'configuracoes'])->name('config.aluno');
     Route::put('/configuracoes-alunos', [ConfigController::class, 'atualizarConfiguracoes'])->name('atualizar.dados');
 
@@ -69,5 +70,6 @@ Route::get('/financeiro', fn() => view('financeiro'))->name('financeiro');
 Route::get('/planos', fn() => view('planos'))->name('planos');
 
 Route::get('/configuracoes', fn() => view('config'))->name('adm.config');
+
 
 
