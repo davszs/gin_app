@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlunosController;
@@ -23,11 +24,11 @@ Route::get('/home_admin', fn() => view('dashboard'))->name('admin.dashboard');
 Route::get('/recuperar-senha', [ResetPasswordController::class, 'showResetForm'])->name('recuperar-senha');
 Route::post('/recuperar-senha', [ResetPasswordController::class, 'resetPassword']);
 
+// ROTAS CRUD alunos e admins
 Route::resource('alunos', AlunosController::class);
+Route::resource('admins', AdministradorController::class);
 
 // ROTAS alunos 
 Route::get('/minhas-aulas', fn() => view('alunoviews.aulas'))->name(("aulas.aluno"));
 Route::get('/pagamento', fn() => view('alunoviews.financeiroaluno'))->name(("pagamento.aluno"));
 Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name(("comunicados.aluno"));
-
-//ROTAS adm
