@@ -17,7 +17,7 @@ class User extends Authenticatable
         'cpf', 'email', 'nome', 'password', 'tipo'
     ];
 
-    protected $hidden = ['password'];
+    protected $hidden = ['password', 'remember_token'];
 
     // Nome do campo de senha personalizado
     public function getAuthPassword()
