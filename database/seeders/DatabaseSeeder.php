@@ -131,6 +131,14 @@ DB::table('pagamentos')->insert([
         'updated_at' => now(),
     ]
 ]);
+
+DB::table('comunicados')->insert([
+            'titulo'     => 'Aula Extra de Funcional',
+            'descricao'  => 'Na próxima quarta-feira teremos uma aula extra de treinamento funcional às 20h. Vagas limitadas!',
+            'data'       => '2025-06-10',
+            'tipo'       => 'aulas', // 'geral' ou 'aulas'
+            'importante' => true,
+        ]);
     }
 
     

@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'Portal do Aluno')</title>
+    
 
     {{-- Token CSRF para JS --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -24,25 +25,58 @@
         <div class="logo">
             <a href="{{ route('admin.dashboard') }}"><i class="fas fa-dumbbell"></i></a>
         </div>
-        <ul class="nav-links">
-            <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <a href="{{ route('admin.dashboard') }}" title="Início"><i class="fas fa-home"></i><span>Início</span></a>
-            </li>
-            <li class="{{ request()->routeIs('cadastro.aulas') ? 'active' : '' }}">
-                <a href="{{ route('cadastro.aulas') }}" title="Aulas"><i class="fas fa-calendar-alt"></i><span>Aulas</span></a>
-            </li>
-            <li class="{{ request()->routeIs('solicitacoes.index') ? 'active' : '' }}">
-                <a href="{{ route('solicitacoes.index') }}" title="Comunicados"><i class="fas fa-bullhorn"></i><span>Solicitações <br> Aulas</span></a>
-            </li>
-            <li class="{{ request()->routeIs('financeiro') ? 'active' : '' }}">
-                <a href="{{ route('financeiro') }}" title="Financeiro"><i class="fas fa-wallet"></i><span>Financeiro</span></a>
-            </li>
-            <li><a href="{{ route('planos') }}" title="Suporte"><i class="fas fa-headset"></i><span>Planos</span></a></li>
-            <li class="sidebar-bottom">
-                <a href="{{ route('adm.config') }}" title="Configurações"><i class="fas fa-cog"></i><span>Configurações</span></a>
-            </li>
-            <li><a href="#" id="logoutTrigger"><i class="fas fa-sign-out-alt"></i><span>Desconectar</span></a></li>
-        </ul>
+         <ul class="nav-links">
+        <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('admin.dashboard') }}" title="Início">
+                <i class="fas fa-home"></i><span>Início</span>
+            </a>
+        </li>
+        <li class="{{ request()->routeIs('admins.index') ? 'active' : '' }}">
+            <a href="{{ route('admins.index') }}" title="Gestores">
+                <i class="fas fa-user-tie"></i><span>Gestores</span>
+            </a>
+        </li>
+        <li class="{{ request()->routeIs('alunos.index') ? 'active' : '' }}">
+            <a href="{{ route('alunos.index') }}" title="Alunos">
+                <i class="fas fa-users"></i><span>Alunos</span>
+            </a>
+        </li>
+        <li class="{{ request()->routeIs('cadastro.aulas') ? 'active' : '' }}">
+            <a href="{{ route('cadastro.aulas') }}" title="Aulas">
+                <i class="fas fa-chalkboard-teacher"></i><span>Aulas</span>
+            </a>
+        </li>
+        <li class="{{ request()->routeIs('solicitacoes.index') ? 'active' : '' }}">
+            <a href="{{ route('solicitacoes.index') }}" title="Solicitações">
+                <i class="fas fa-envelope-open-text"></i><span>Solicitações <br> Aulas</span>
+            </a>
+        </li>
+        <li class="{{ request()->routeIs('comunicados.adm') ? 'active' : '' }}">
+            <a href="{{ route('comunicados.adm') }}" title="Comunicados">
+                <i class="fas fa-bullhorn"></i><span>Comunicados</span>
+            </a>
+        </li>
+        <li class="{{ request()->routeIs('financeiro') ? 'active' : '' }}">
+            <a href="{{ route('financeiro') }}" title="Financeiro">
+                <i class="fas fa-wallet"></i><span>Financeiro</span>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('planos') }}" title="Planos">
+                <i class="fas fa-clipboard-list"></i><span>Planos</span>
+            </a>
+        </li>
+        <li class="sidebar-bottom">
+            <a href="{{ route('adm.config') }}" title="Configurações">
+                <i class="fas fa-cog"></i><span>Configurações</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" id="logoutTrigger" title="Desconectar">
+                <i class="fas fa-sign-out-alt"></i><span>Desconectar</span>
+            </a>
+        </li>
+    </ul>
     </nav>
 
     {{-- Modal Logout --}}

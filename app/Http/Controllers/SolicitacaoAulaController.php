@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SolicitacaoAula;
 use App\Models\InscricaoAula;
+use App\Models\Aula;
 use Illuminate\Support\Facades\DB;
 
 class SolicitacaoAulaController extends Controller
@@ -21,23 +22,27 @@ class SolicitacaoAulaController extends Controller
         ->with(['aluno.user', 'aula'])
         ->get();
 
-    return view('solicitacoes', compact('solicitacoesPendentes', 'solicitacoesProcessadas'));
+    return view('admviews.solicitacoes', compact('solicitacoesPendentes', 'solicitacoesProcessadas'));
     }
 
     public function aprovar($id)
     {
         $solicitacao = SolicitacaoAula::findOrFail($id);
+        
 
         DB::transaction(function () use ($solicitacao) {
-            $solicitacao->status = 'aprovada';
+            $solicitacao->status = 'aceita';
             $solicitacao->save();
-
+            
+        $aula = Aula::findOrFail($solicitacao->aula_id);
+        $valorAula = $aula->valor;
             if ($solicitacao->tipo === 'inscricao') {
                 InscricaoAula::create([
                     'aluno_id' => $solicitacao->aluno_id,
                     'aula_id' => $solicitacao->aula_id,
                     'status' => 'ativo',
                     'data_inscricao' => now(),
+                    'valor' => $valorAula,
                 ]);
             } elseif ($solicitacao->tipo === 'cancelamento') {
                 DB::table('inscricao_aula')

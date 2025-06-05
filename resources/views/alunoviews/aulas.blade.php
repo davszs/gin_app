@@ -189,25 +189,30 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Seleciona todos os formulários de solicitação
     document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            const btn = form.querySelector('button');
-            if (btn) {
-                e.preventDefault(); // previne o envio imediato
-                btn.disabled = true; // desabilita o botão para evitar múltiplos cliques
-                
-                if (btn.classList.contains('btn-cancelar')) {
-                    btn.style.backgroundColor = '#f1c40f'; // amarelo
-                    btn.textContent = 'Solicitação de Cancelamento Enviada';
-                } else if (btn.classList.contains('btn-inscrever')) {
-                    btn.style.backgroundColor = '#2ecc71'; // verde
-                    btn.textContent = 'Solicitação de Inscrição Enviada';
-                }
+       form.addEventListener('submit', function(e) {
+    const btn = form.querySelector('button');
 
-                // Envia o formulário após mudar o texto e cor, com pequeno delay
-                setTimeout(() => form.submit(), 500);
-            }
-        });
-    });
+    // Pergunta de confirmação
+    const confirmar = form.onsubmit ? form.onsubmit() : confirm('Tem certeza?');
+    if (!confirmar) {
+        e.preventDefault(); // se cancelar, não faz nada
+        return;
+    }
+
+    if (btn) {
+        e.preventDefault(); // previne o envio imediato
+        btn.disabled = true;
+
+        if (btn.classList.contains('btn-cancelar')) {
+            btn.style.backgroundColor = '#f1c40f';
+            btn.textContent = 'Solicitação de Cancelamento Enviada';
+        } else if (btn.classList.contains('btn-inscrever')) {
+            btn.style.backgroundColor = '#2ecc71';
+            btn.textContent = 'Solicitação de Inscrição Enviada';
+        }
+
+        setTimeout(() => form.submit(), 500);
+    }
 });
 </script>
 @endpush

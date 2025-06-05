@@ -13,9 +13,18 @@ class AdministradorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('q')) {
+        $query = $request->input('q');
+        $admins = Administrador::whereHas('user', function ($q) use ($query) {
+            $q->where('nome', 'like', "%$query%")
+              ->orWhere('cpf', 'like', "%$query%")
+              ->orWhere('email', 'like', "%$query%");
+        })->get();
+    } else {
         $admins = Administrador::with('user')->get();
+    }
         return view('admins.index', compact('admins'));
     }
 

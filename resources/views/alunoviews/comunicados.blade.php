@@ -2,129 +2,192 @@
 
 @section('title', 'Comunicados')
 @section('page-title', 'Comunicados')
- @section('content')      
-            <!-- Conteúdo dos Comunicados -->
-            <div class="comunicados-container">
-                <!-- Filtros -->
-                <div class="comunicados-filtros">
-                    <button class="filtro-btn ativo" data-filter="todos">Todos</button>
-                    <button class="filtro-btn" data-filter="geral">Geral</button>
-                    <button class="filtro-btn" data-filter="aulas">Aulas</button>
+
+@section('content')      
+<div class="comunicados-container">
+    <!-- Filtros -->
+    <div class="comunicados-filtros">
+        <button class="filtro-btn ativo" data-filter="todos">Todos</button>
+        <button class="filtro-btn" data-filter="geral">Geral</button>
+        <button class="filtro-btn" data-filter="aulas">Aulas</button>
+    </div>
+
+    <!-- Lista de Comunicados -->
+<div class="comunicados-lista-completa">
+    @if($comunicados->isEmpty())
+        <div class="sem-comunicados">
+            <p>📭 Nenhum comunicado disponível no momento.</p>
+        </div>
+    @else
+        @foreach($comunicados as $comunicado)
+            <div class="comunicado-card {{ $comunicado->importante ? 'importante' : '' }}" data-tipo="{{ $comunicado->tipo }}">
+                <div class="comunicado-header">
+                    <div class="comunicado-info">
+                        <span class="comunicado-data">{{ \Carbon\Carbon::parse($comunicado->data)->format('d/m/Y') }}</span>
+                        <span class="comunicado-tag">{{ ucfirst($comunicado->tipo) }}</span>
+                    </div>
+                    @if($comunicado->importante)
+                        <div class="comunicado-importante-badge">
+                            <i class="fas fa-exclamation-circle"></i> Importante
+                        </div>
+                    @endif
                 </div>
-
-                <!-- Lista de Comunicados -->
-                <div class="comunicados-lista-completa">
-                    <!-- Comunicado Importante -->
-                    <div class="comunicado-card importante" data-tipo="geral">
-                        <div class="comunicado-header">
-                            <div class="comunicado-info">
-                                <span class="comunicado-data">15/04/2025</span>
-                                <span class="comunicado-tag">Geral</span>
-                            </div>
-                            <div class="comunicado-importante-badge">
-                                <i class="fas fa-exclamation-circle"></i> Importante
-                            </div>
-                        </div>
-                        <div class="comunicado-body">
-                            <h3 class="comunicado-titulo">Alteração no Horário de Funcionamento</h3>
-                            <p class="comunicado-texto">Informamos que a partir do dia 20/04/2025, nossa academia
-                                passará a funcionar em horário estendido de segunda a sexta, das 05h às 23h. Aos
-                                sábados, o funcionamento será das 08h às 18h e aos domingos das 09h às 15h.</p>
-                            <p class="comunicado-texto">Esta alteração tem como objetivo atender melhor nossos alunos e
-                                proporcionar mais flexibilidade para suas atividades físicas.</p>
-                        </div>
-                    </div>
-
-                    <!-- Comunicado Normal -->
-                    <div class="comunicado-card" data-tipo="aulas">
-                        <div class="comunicado-header">
-                            <div class="comunicado-info">
-                                <span class="comunicado-data">12/04/2025</span>
-                                <span class="comunicado-tag">Aulas</span>
-                            </div>
-                        </div>
-                        <div class="comunicado-body">
-                            <h3 class="comunicado-titulo">Manutenção das Esteiras</h3>
-                            <p class="comunicado-texto">Informamos que as esteiras estarão em manutenção no dia 16/04
-                                das 10h às 14h. Durante este período, sugerimos o uso das bicicletas ergométricas ou a
-                                participação em nossas aulas coletivas.</p>
-                        </div>
-                    </div>
-
-                    <!-- Comunicado Normal -->
-                    <div class="comunicado-card" data-tipo="aulas">
-                        <div class="comunicado-header">
-                            <div class="comunicado-info">
-                                <span class="comunicado-data">10/04/2025</span>
-                                <span class="comunicado-tag">Aulas</span>
-                            </div>
-                        </div>
-                        <div class="comunicado-body">
-                            <h3 class="comunicado-titulo">Nova Aula de Yoga</h3>
-                            <p class="comunicado-texto">A partir de segunda-feira, teremos aulas de Yoga às terças e
-                                quintas às 19h. As inscrições podem ser feitas na recepção ou pelo aplicativo. Vagas
-                                limitadas!</p>
-                        </div>
-                    </div>
-
-                    <!-- Comunicado Importante -->
-                    <div class="comunicado-card importante" data-tipo="geral">
-                        <div class="comunicado-header">
-                            <div class="comunicado-info">
-                                <span class="comunicado-data">08/04/2025</span>
-                                <span class="comunicado-tag">Geral</span>
-                            </div>
-                            <div class="comunicado-importante-badge">
-                                <i class="fas fa-exclamation-circle"></i> Importante
-                            </div>
-                        </div>
-                        <div class="comunicado-body">
-                            <h3 class="comunicado-titulo">Promoção para Amigos</h3>
-                            <p class="comunicado-texto">Traga um amigo e ganhe 15% de desconto na mensalidade do próximo
-                                mês! Promoção válida até 30/04/2025. Consulte as regras na recepção.</p>
-                        </div>
-                    </div>
-
-                    <!-- Comunicado Normal -->
-                    <div class="comunicado-card" data-tipo="geral">
-                        <div class="comunicado-header">
-                            <div class="comunicado-info">
-                                <span class="comunicado-data">05/04/2025</span>
-                                <span class="comunicado-tag">Geral</span>
-                            </div>
-                        </div>
-                        <div class="comunicado-body">
-                            <h3 class="comunicado-titulo">Limpeza da Piscina</h3>
-                            <p class="comunicado-texto">A piscina estará fechada para limpeza no dia 18/04/2025, durante
-                                todo o dia. As aulas de natação deste dia serão repostas conforme agenda a ser
-                                divulgada.</p>
-                        </div>
-                    </div>
-
-                    <!-- Comunicado Normal -->
-                    <div class="comunicado-card" data-tipo="aulas">
-                        <div class="comunicado-header">
-                            <div class="comunicado-info">
-                                <span class="comunicado-data">01/04/2025</span>
-                                <span class="comunicado-tag">Aulas</span>
-                            </div>
-                        </div>
-                        <div class="comunicado-body">
-                            <h3 class="comunicado-titulo">Cancelamento de Aula de Spinning</h3>
-                            <p class="comunicado-texto">A aula de Spinning do dia 02/04 às 18h30 foi cancelada devido a
-                                problemas técnicos. Pedimos desculpas pelo transtorno.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Paginação -->
-                <div class="paginacao">
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">3</button>
-                    <button class="page-btn next"><i class="fas fa-chevron-right"></i></button>
+                <div class="comunicado-body">
+                    <h3 class="comunicado-titulo">{{ $comunicado->titulo }}</h3>
+                    <p class="comunicado-texto">{{ $comunicado->descricao }}</p>
                 </div>
             </div>
-        </main>
-    </div>
- @endsection
+        @endforeach
+    @endif
+</div>
+    
+</div>
+@endsection
+<style>
+.comunicados-container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.comunicados-filtros {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.filtro-btn {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #eee;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.filtro-btn.ativo,
+.filtro-btn:hover {
+    background-color: #0859d396;
+    color: #000;
+}
+
+.comunicados-lista-completa {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.comunicado-card {
+    background-color: #c0bfbf6b;
+    border-left: 6px solid #189df5;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease;
+}
+
+.comunicado-card:hover {
+    transform: translateY(-4px);
+}
+
+.comunicado-card.importante {
+    border-left-color: #e63946;
+    background-color: #c0bfbf6b;
+}
+
+.comunicado-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.comunicado-info {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.comunicado-tag {
+    background-color: #ddd;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.comunicado-card.importante .comunicado-tag {
+    background-color: #e63946;
+    color: #fff;
+}
+
+.comunicado-importante-badge {
+    background-color: #e63946;
+    color: #fff;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.comunicado-body {
+    color: #444;
+}
+
+.comunicado-titulo {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.comunicado-texto {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Mensagem quando não há comunicados */
+.sem-comunicados {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 1.2rem;
+    color: #888;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const botoesFiltro = document.querySelectorAll('.filtro-btn');
+    const comunicados = document.querySelectorAll('.comunicado-card');
+
+    botoesFiltro.forEach(botao => {
+        botao.addEventListener('click', function () {
+            // Ativar/desativar botões
+            botoesFiltro.forEach(btn => btn.classList.remove('ativo'));
+            this.classList.add('ativo');
+
+            const filtro = this.getAttribute('data-filter');
+
+            comunicados.forEach(card => {
+                const tipo = card.getAttribute('data-tipo');
+
+                if (filtro === 'todos' || filtro === tipo) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
