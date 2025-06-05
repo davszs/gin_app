@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('alunos', function (Blueprint $table) {
+        Schema::create('comunicados', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('telefone', 13);
-            $table->string('endereco', 70)->nullable();
+            $table->string('titulo');
+            $table->string('descricao');
+            $table->date('data');
             $table->timestamps();
         });
     }
@@ -25,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('alunos');
-         Schema::table('alunos', function (Blueprint $table) {
-        $table->dropColumn('avatar');
-    });
+        Schema::dropIfExists('comunicados');
     }
 };
