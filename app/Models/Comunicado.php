@@ -12,5 +12,7 @@ class Comunicado extends Model
         'titulo',
         'descricao',
         'data',
+        'tipo',
+        'importante',
     ];
 }

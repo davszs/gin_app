@@ -10,6 +10,7 @@ use App\Http\Controllers\SolicitacaoAulaController;
 use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\SuportController;
+use App\Http\Controllers\ComunicadoController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -23,7 +24,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //ROTAS principal aluno e adm
 Route::get('/home_aluno', fn() => view('alunoviews.dashboardaluno'))->name('aluno.dashboard');
-Route::get('/home_admin', fn() => view('dashboard'))->name('admin.dashboard');
+Route::get('/home_admin', fn() => view('admviews.dashboard'))->name('admin.dashboard');
 
 //ROTAS rec - senha
 Route::get('/recuperar-senha', [ResetPasswordController::class, 'showResetForm'])->name('recuperar-senha');
@@ -43,12 +44,11 @@ Route::middleware(['auth'])->group(function () {
 });
 //Pagamentos-Aluno
 Route::get('/pagamentos', [PagamentoController::class, 'index'])->name('pagamento.aluno');
-Route::get('pagar-boleto/{id}', [PagamentoController::class, 'gerarBoleto'])->name('pagamento.gerarBoleto');
+Route::get('/pagar-boleto/{id}', [PagamentoController::class, 'gerarBoleto'])->name('pagamento.gerarBoleto');
 //Comunicados-Alunos
-Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name(("comunicados.aluno"));
+Route::get('/comunicados-aluno', [ComunicadoController::class, 'index_aluno'])->name('comunicados.aluno');
 //Suporte-Alunos
 Route::get('/suporte-', [SuportController::class, 'index'])->name('suport.aluno');
-
 //Configurações-Alunos
     Route::get('/configuracoes-alunos', [ConfigController::class, 'configuracoes'])->name('config.aluno');
     Route::put('/configuracoes-alunos', [ConfigController::class, 'atualizarConfiguracoes'])->name('atualizar.dados');
@@ -63,13 +63,15 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/solicitacoes/{id}/rejeitar', [SolicitacaoAulaController::class, 'rejeitar'])->name('solicitacoes.rejeitar');
 });
 
-Route::get('/cadastro-aulas', fn() => view('cadastro.aulas'))->name('cadastro.aulas');
+Route::get('/cadastro-aulas', fn() => view('admviews.cadastro-aulas'))->name('cadastro.aulas');
 
-Route::get('/financeiro', fn() => view('financeiro'))->name('financeiro');
+Route::get('/financeiro', fn() => view('admviews.financeiro'))->name('financeiro');
 
-Route::get('/planos', fn() => view('planos'))->name('planos');
+Route::get('/planos', fn() => view('admviews.planos'))->name('planos');
 
-Route::get('/configuracoes', fn() => view('config'))->name('adm.config');
+Route::get('/configuracoes', fn() => view('admviews.config'))->name('adm.config');
+
+Route::get('/comunicados', fn() => view('admviews.comunicados-adm'))->name('comunicados.adm');
 
 
 

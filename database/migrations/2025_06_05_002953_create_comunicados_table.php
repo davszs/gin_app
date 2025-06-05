@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('titulo');
             $table->string('descricao');
             $table->date('data');
+            $table->string('tipo')->default('geral'); // 'geral' ou 'aulas'
+            $table->boolean('importante')->default(false);
             $table->timestamps();
         });
     }

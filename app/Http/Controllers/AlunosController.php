@@ -15,9 +15,18 @@ class AlunosController extends Controller
    use Notifiable;
 
     
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('q')) {
+        $query = $request->input('q');
+        $admins = Aluno::whereHas('user', function ($q) use ($query) {
+            $q->where('nome', 'like', "%$query%")
+              ->orWhere('cpf', 'like', "%$query%")
+              ->orWhere('email', 'like', "%$query%");
+        })->get();
+    } else {
         $alunos = Aluno::with('user')->get();
+    }
         return view('alunos.index', compact('alunos'));
     }
 
