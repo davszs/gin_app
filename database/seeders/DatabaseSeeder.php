@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
                 'nome' => 'Aluno Teste',
                 'email' => 'aluno@teste.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('senha123'),  // senha que quiser
+                'password' => Hash::make('aluno123'),  // senha que quiser
                 'tipo' => 'aluno',
-                 'cpf' => '222.222.222-22',
+                 'cpf' => '22222222222',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -44,9 +44,6 @@ class DatabaseSeeder extends Seeder
             [
                 'id' => 1,
                 'user_id' => 1,
-                'nome' => 'Aluno Teste',
-                'email' => 'aluno@teste.com',
-                'cpf' => '222.222.222-22',
                 'telefone' => '11999999999',
                 'endereco' => 'Rua Exemplo, 123',
                 'created_at' => now(),

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('telefone', 13);
             $table->string('endereco', 70)->nullable();
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }
@@ -27,7 +28,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('alunos');
          Schema::table('alunos', function (Blueprint $table) {
-        $table->dropColumn('avatar');
+        
     });
     }
 };
