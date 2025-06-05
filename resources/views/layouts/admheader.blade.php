@@ -75,7 +75,7 @@
             <header class="top-bar">
                
                 <div class="user-info">
-                    <span>Logado como <strong>Aluno</strong></span>
+                    <span>Logado como <strong>Administrador</strong></span>
                     <div class="user-avatar">
                         <img src="https://via.placeholder.com/40" alt="Avatar do usuário" />
                     </div>
