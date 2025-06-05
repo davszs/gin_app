@@ -47,7 +47,7 @@ Route::get('pagar-boleto/{id}', [PagamentoController::class, 'gerarBoleto'])->na
 //Comunicados-Alunos
 Route::get('/comunicados-aluno', fn() => view('alunoviews.comunicados'))->name(("comunicados.aluno"));
 //Suporte-Alunos
-Route::get('/suporte-', [SuportController::class, 'configuracoes'])->name('suport.aluno');
+Route::get('/suporte-', [SuportController::class, 'index'])->name('suport.aluno');
 
 //Configurações-Alunos
     Route::get('/configuracoes-alunos', [ConfigController::class, 'configuracoes'])->name('config.aluno');

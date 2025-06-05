@@ -14,9 +14,6 @@ class Aluno extends Model
 
     protected $fillable = [
         'user_id',
-        'nome',
-        'email',
-        'cpf',
         'telefone',
         'endereco',
         'avatar' //foto de perfil

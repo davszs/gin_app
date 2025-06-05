@@ -26,10 +26,10 @@
             <h3>Dados Pessoais</h3>
 
             <label>Nome</label>
-            <input type="text" name="nome" value="{{ old('nome', $aluno->nome) }}" required>
+            <input type="text" name="nome" value="{{ old('nome', $usuarioLogado->nome) }}" required>
 
             <label>Email</label>
-            <input type="email" name="email" value="{{ old('email', $aluno->email) }}" required>
+            <input type="email" name="email" value="{{ old('email', $usuarioLogado->email) }}" required>
 
             <label>Telefone</label>
             <input type="text" name="telefone" value="{{ old('telefone', $aluno->telefone) }}">
