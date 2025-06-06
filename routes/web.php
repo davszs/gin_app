@@ -4,6 +4,7 @@ use App\Http\Controllers\AdministradorController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlunosController;
+use App\Http\Controllers\AulaController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\InscricaoAulaController;
 use App\Http\Controllers\SolicitacaoAulaController;
@@ -63,7 +64,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/solicitacoes/{id}/rejeitar', [SolicitacaoAulaController::class, 'rejeitar'])->name('solicitacoes.rejeitar');
 });
 
-Route::get('/cadastro-aulas', fn() => view('admviews.cadastro-aulas'))->name('cadastro.aulas');
+Route::resource('aulas', AulaController::class);
 
 Route::get('/financeiro', fn() => view('admviews.financeiro'))->name('financeiro');
 

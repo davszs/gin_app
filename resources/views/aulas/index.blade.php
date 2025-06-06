@@ -32,20 +32,27 @@
             <tr>
                 <th>ID</th>
                 <th>Nome</th>
-                <th>CPF</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <th>Ações</th>
+                <th>Descricao</th>
+                <th>Dia da semana</th>
+                <th>Começo</th>
+                <th>Fim</th>
+                <th>Instrutor</th>
+                <th>Capacidade</th>
+                <th>Valor R$</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($aulas as $aula)                            
             <tr>
-                <td>{{ $aula->user->id }}</td>
-                <td>{{ $aula->user->nome }}</td>
-                <td>{{ $aula->user->cpf }}</td>
-                <td>{{ $aula->user->email }}</td>
-                <td>{{ $aula->telefone }}</td>
+                <td>{{ $aula->id }}</td>
+                <td>{{ $aula->nome }}</td>
+                <td>{{ $aula->descricao }}</td>
+                <td>{{ $aula->dia_semana }}</td>
+                <td>{{ $aula->horario_inicio }}</td>
+                <td>{{ $aula->horario_fim }}</td>
+                <td>{{ $aula->instrutor }}</td>
+                <td>{{ $aula->capacidade }}</td>
+                <td>{{ $aula->valor }}</td>
                 <td>
                     <div class="action-buttons">
                         <a href="{{ route('aulas.show', $aula) }}" class="action-button" title="Visualizar">

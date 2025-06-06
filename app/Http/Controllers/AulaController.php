@@ -13,7 +13,7 @@ class AulaController extends Controller
     public function index()
     {
         $aulas = Aula::all();
-        return view('', compact('aulas'));
+        return view('aulas.index', compact('aulas'));
     }
 
     /**
@@ -41,7 +41,7 @@ class AulaController extends Controller
         ]);
 
         Aula::create($request->all());
-        return redirect()->route('')->with('status', 'Aula cadastrada com sucesso!');
+        return redirect()->route('aulas.index')->with('status', 'Aula cadastrada com sucesso!');
     }
 
     /**
@@ -49,7 +49,7 @@ class AulaController extends Controller
      */
     public function show(Aula $aula)
     {
-        return view('', compact('aula'));
+        return view('aulas.index', compact('aula'));
     }
 
     /**
@@ -57,7 +57,7 @@ class AulaController extends Controller
      */
     public function edit(Aula $aula)
     {
-        return view('', compact('aula'));
+        return view('aulas.index', compact('aula'));
     }
 
     /**
@@ -88,6 +88,6 @@ class AulaController extends Controller
     public function destroy(Aula $aula)
     {
         $aula->delete();
-        return redirect()->route('')->with('status', 'Aula removida!');
+        return redirect()->route('aulas.index')->with('status', 'Aula removida!');
     }
 }

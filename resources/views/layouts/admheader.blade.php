@@ -41,8 +41,8 @@
                 <i class="fas fa-users"></i><span>Alunos</span>
             </a>
         </li>
-        <li class="{{ request()->routeIs('cadastro.aulas') ? 'active' : '' }}">
-            <a href="{{ route('cadastro.aulas') }}" title="Aulas">
+        <li class="{{ request()->routeIs('aulas.index') ? 'active' : '' }}">
+            <a href="{{ route('aulas.index') }}" title="Aulas">
                 <i class="fas fa-chalkboard-teacher"></i><span>Aulas</span>
             </a>
         </li>
