@@ -51,8 +51,8 @@
                 <i class="fas fa-envelope-open-text"></i><span>Solicitações <br> Aulas</span>
             </a>
         </li>
-        <li class="{{ request()->routeIs('comunicados.adm') ? 'active' : '' }}">
-            <a href="{{ route('comunicados.adm') }}" title="Comunicados">
+        <li class="{{ request()->routeIs('comunicados.index') ? 'active' : '' }}">
+            <a href="{{ route('comunicados.index') }}" title="Comunicados">
                 <i class="fas fa-bullhorn"></i><span>Comunicados</span>
             </a>
         </li>

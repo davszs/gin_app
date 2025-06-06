@@ -52,9 +52,19 @@
                     <td><span class="status active">Ativo</span></td>
                     <td>
                         <div class="action-buttons">
-                            <a href="{{ route('alunos.show', $aluno) }}" class="action-button" title="Visualizar">
-                                <i class="fas fa-eye"></i>
+                            <a href="javascript:void(0);" 
+                                         class="action-button" 
+                                        title="Visualizar"
+                                    onclick="abrirModalAluno(this)"
+                                data-nome="{{ $aluno->user->nome }}"
+                                data-cpf="{{ $aluno->user->cpf }}"
+                                data-email="{{ $aluno->user->email }}"
+                                data-telefone="{{ $aluno->telefone }}"
+                                data-avatar="{{ asset('storage/' . ($aluno->avatar ?? 'default-avatar.jpg')) }}"
+>
+                                            <i class="fas fa-eye"></i>
                             </a>
+
                             <a href="{{ route('alunos.edit', $aluno) }}" class="action-button edit-button" title="Editar">
                                 <i class="fas fa-edit"></i>
                             </a>
@@ -73,6 +83,25 @@
             </tbody>
         </table>
     </div>
+    <div id="modalAluno" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="fecharModalAluno()">&times;</span>
+        <h2>Informações do Aluno</h2>
+        <div class="container">
+            <div style="display: flex; gap: 20px;">
+                 <img id="alunoAvatar" class="avatar-img" 
+                src="{{ asset('storage/' . ($aluno->avatar ?? 'default-avatar.png')) }}" 
+                    alt="Avatar">
+                <div>
+                    <p><strong>Nome:</strong> <span id="alunoNome"></span></p>
+                    <p><strong>CPF:</strong> <span id="alunoCPF"></span></p>
+                    <p><strong>Email:</strong> <span id="alunoEmail"></span></p>
+                    <p><strong>Telefone:</strong> <span id="alunoTelefone"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     @else
     <p>Nenhum aluno cadastrado!</p>
     @endif
@@ -92,6 +121,19 @@
             setTimeout(() => overlay.style.display = "none", 5000);
         }
     });
+    function abrirModalAluno(el) {
+    document.getElementById('alunoNome').innerText = el.dataset.nome;
+    document.getElementById('alunoCPF').innerText = el.dataset.cpf;
+    document.getElementById('alunoEmail').innerText = el.dataset.email;
+    document.getElementById('alunoTelefone').innerText = el.dataset.telefone;
+    document.getElementById('alunoAvatar').src = el.dataset.avatar;
+
+    document.getElementById('modalAluno').style.display = 'flex';
+}
+
+function fecharModalAluno() {
+    document.getElementById('modalAluno').style.display = 'none';
+}
 </script>
 @endpush
 
@@ -246,5 +288,116 @@
         border-radius: 4px;
         cursor: pointer;
     }
+
+     #modalFuncionario {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        width: 90%;
+        max-width: 700px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        font-family: 'Segoe UI', sans-serif;
+        position: relative;
+    }
+
+    .modal-content h2 {
+        margin-bottom: 20px;
+        font-size: 20px;
+        color: #2c3e50;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+
+    .modal-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .modal-tab {
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        background-color: #ecf0f1;
+        font-weight: bold;
+        color: #34495e;
+        transition: background-color 0.2s ease;
+    }
+
+    .modal-tab.active {
+        background-color: #3498db;
+        color: #fff;
+    }
+
+    .modal-body {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .avatar-container {
+        flex: 0 0 120px;
+    }
+
+    .avatar-container img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 2px solid #3498db;
+    }
+
+    .info-grid {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px 20px;
+    }
+
+    .info-grid label {
+        font-size: 14px;
+        color: #555;
+        font-weight: bold;
+    }
+
+    .info-grid span {
+        font-size: 14px;
+        color: #333;
+        display: block;
+        margin-top: 2px;
+    }
+
+    .close {
+        position: absolute;
+        top: 12px;
+        right: 20px;
+        font-size: 22px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #aaa;
+        transition: color 0.2s ease;
+    }
+
+    .close:hover {
+        color: #e74c3c;
+    }
+    .avatar-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #312f2fa6;
+}
 </style>
 @endpush
