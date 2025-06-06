@@ -15,4 +15,10 @@ class Comunicado extends Model
         'tipo',
         'importante',
     ];
+    protected $dates = [
+    'data',
+];
+protected $casts = [
+        'data' => 'date', // transforma automaticamente em Carbon
+    ];
 }

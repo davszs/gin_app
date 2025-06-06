@@ -10,9 +10,18 @@ class ComunicadoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function inde_adm()
+    public function index(Request $request)
     {
-        $comunicados = Comunicado::get();
+          if ($request->has('q')) {
+    $query = $request->input('q');
+
+    $comunicados = Comunicado::where('titulo', 'like', "%$query%")
+        ->orWhere('descricao', 'like', "%$query%")
+        ->orWhere('tipo', 'like', "%$query%")
+        ->get();
+} else {
+    $comunicados = Comunicado::all();
+}
         return view('comunicados.index', compact('comunicados'));
     }
 
@@ -63,19 +72,22 @@ class ComunicadoController extends Controller
      */
     public function update(Request $request, Comunicado $comunicado)
 {
-    $dados = $request->validate([
+     $request->validate([
         'titulo' => 'required|string|max:255',
-        'descricao' => 'required|string',
+        'descricao' => 'required|string|max:500',
         'data' => 'required|date',
-        'tipo' => 'required|string|in:geral,aulas',
-        'importante' => 'nullable|boolean',
+        'tipo' => 'required|in:geral,aulas',
     ]);
 
-    $dados['importante'] = $request->has('importante');
+    $comunicado->titulo = $request->titulo;
+    $comunicado->descricao = $request->descricao;
+    $comunicado->data = $request->data;
+    $comunicado->tipo = $request->tipo;
+    $comunicado->importante = $request->has('importante'); // Essa linha é a chave
 
-    $comunicado->update($dados);
+    $comunicado->save();
 
-    return redirect()->route('comunicados.index')->with('success','Comunicado atualizado!');
+    return redirect()->route('comunicados.index')->with('success', 'Comunicado atualizado com sucesso!');
 }
 
     /**

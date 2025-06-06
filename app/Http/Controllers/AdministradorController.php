@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AdministradorController extends Controller
 {
@@ -124,4 +125,24 @@ class AdministradorController extends Controller
         $admin->user->delete();
         return redirect()->route('admins.index')->with('status', 'Administrador removido!');
     }
+    public function updatePassword(Request $request)
+{
+    
+    $request->validate([
+        'current_password' => 'required',
+        'new_password' => 'required|string|min:8|confirmed',
+    ]);
+
+    $user = Auth::user();
+
+    if (!Hash::check($request->current_password, $user->password)) {
+        return back()->withErrors(['current_password' => 'A senha atual está incorreta.']);
+    }
+    $user = User::findOrFail(Auth::id());
+    $user->update([
+        'password' => Hash::make($request->new_password),
+    ]);
+
+    return back()->with('status', 'Senha alterada com sucesso!');
+}
 }

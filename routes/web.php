@@ -70,8 +70,10 @@ Route::get('/financeiro', fn() => view('admviews.financeiro'))->name('financeiro
 Route::get('/planos', fn() => view('admviews.planos'))->name('planos');
 
 Route::get('/configuracoes', fn() => view('admviews.config'))->name('adm.config');
+Route::put('/admin/senha', [AdministradorController::class, 'updatePassword'])->name('admin.updatePassword');
 
-Route::get('/comunicados', fn() => view('admviews.comunicados-adm'))->name('comunicados.adm');
+//Rotas Crud comunicados
+Route::resource('comunicados', ComunicadoController::class);
 
 
 
