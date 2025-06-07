@@ -11,4 +11,9 @@ class SuportController extends Controller
     {
         return view('alunoviews.suporte');
     }
+
+      public function enviar(Request $request)
+    {
+        return redirect()->back()->with('success', 'Chamado enviado com sucesso!');
+    }
 }

@@ -50,6 +50,8 @@ Route::get('/pagar-boleto/{id}', [PagamentoController::class, 'gerarBoleto'])->n
 Route::get('/comunicados-aluno', [ComunicadoController::class, 'index_aluno'])->name('comunicados.aluno');
 //Suporte-Alunos
 Route::get('/suporte-', [SuportController::class, 'index'])->name('suport.aluno');
+Route::post('/suporte/chamado', [SuportController::class, 'enviar'])->name('suporte.enviar');
+
 //Configurações-Alunos
     Route::get('/configuracoes-alunos', [ConfigController::class, 'configuracoes'])->name('config.aluno');
     Route::put('/configuracoes-alunos', [ConfigController::class, 'atualizarConfiguracoes'])->name('atualizar.dados');
