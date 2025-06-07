@@ -12,6 +12,7 @@ use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\SuportController;
 use App\Http\Controllers\ComunicadoController;
+use App\Http\Controllers\Aluno\DashboardController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -24,7 +25,7 @@ Route::post('/login.submit', [AuthController::class, 'loginAttempt'])->name('log
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //ROTAS principal aluno e adm
-Route::get('/home_aluno', fn() => view('alunoviews.dashboardaluno'))->name('aluno.dashboard');
+Route::get('/home_aluno', [DashboardController::class, 'index'])->name('aluno.dashboard');
 Route::get('/home_admin', fn() => view('admviews.dashboard'))->name('admin.dashboard');
 
 //ROTAS rec - senha
