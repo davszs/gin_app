@@ -14,7 +14,7 @@ body {
     background-image: url('../images/plano_fundo.png');
     background-size: cover;
     background-position: center;
-    overflow: hidden;
+    overflow-y: auto; /* garante rolagem vertical */
     animation: fadeInBody 1.5s ease-in;
 }
 
@@ -292,3 +292,4 @@ body {
     .alert-box button:hover {
         background-color: #0056b3;
     }
+    

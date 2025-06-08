@@ -36,9 +36,7 @@ class Aluno extends Model
 
     public function inscricoes()
     {
-          return $this->belongsToMany(Aluno::class, 'inscricao_aula', 'aula_id', 'aluno_id')
-                ->withPivot('status', 'data_inscricao')
-                ->withTimestamps();
+         return $this->hasMany(InscricaoAula::class);
     }
     public function plano()
 {

@@ -12,7 +12,9 @@ use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\SuportController;
 use App\Http\Controllers\ComunicadoController;
+use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\Aluno\DashboardController;
+
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -71,8 +73,16 @@ Route::resource('aulas', AulaController::class);
 
 Route::get('/financeiro', fn() => view('admviews.financeiro'))->name('financeiro');
 
-Route::get('/planos', fn() => view('admviews.planos'))->name('planos');
 
+//Rotas Gerenciamento de Planos
+// Página principal de visualização
+Route::get('/planos', [PlanoController::class, 'index'])->name('planos.index');
+Route::post('/planos/{plano}/inscricao/adicionar', [PlanoController::class, 'adicionarInscricao'])->name('plano.adicionarInscricao');
+Route::delete('/planos/{plano}/inscricao/{inscricao}', [PlanoController::class, 'removerInscricao'])->name('plano.removerInscricao');
+
+
+
+//Rotas de configurações portal ADM
 Route::get('/configuracoes', fn() => view('admviews.config'))->name('adm.config');
 Route::put('/admin/senha', [AdministradorController::class, 'updatePassword'])->name('admin.updatePassword');
 

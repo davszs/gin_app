@@ -21,12 +21,7 @@ class InscricaoAula extends Model
 
     public function planos()
     {
-        return $this->belongsToMany(
-            Plano::class,
-            'plano_inscricao_aula',
-            'inscricao_aula_id',
-            'plano_id'
-        )->withTimestamps();
+          return $this->belongsToMany(Plano::class, 'plano_inscricao_aula', 'inscricao_aula_id', 'plano_id');
     }
 
     public function aula()
