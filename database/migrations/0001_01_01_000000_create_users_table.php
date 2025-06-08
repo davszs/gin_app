@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('tipo', ['administrador','aluno']);
+            $table->enum('status', ['ativo','bloqueado']) -> default('ativo');
             $table->rememberToken();
             $table->timestamps();
         });

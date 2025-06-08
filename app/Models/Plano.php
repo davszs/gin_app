@@ -15,7 +15,7 @@ class Plano extends Model
         'aluno_id',
         'nome',
         'valor_total',
-        'status',
+        'status', // enum ativo ou cancelado
     ];
 
     /**
@@ -67,5 +67,7 @@ public function ajustes()
 {
     return $this->hasMany(AjustePlano::class);
 }
+
+
 
 }

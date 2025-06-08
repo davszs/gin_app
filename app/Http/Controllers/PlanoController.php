@@ -85,4 +85,38 @@ class PlanoController extends Controller
 
         return redirect()->route('planos.index')->with('sucesso', 'Inscrição adicionada com sucesso.');
     }
+    public function cancelarPlano($id)
+{
+    // Buscar o plano com o relacionamento aluno → user
+    $plano = Plano::with('aluno.user')->findOrFail($id);
+
+    // Atualizar o status do plano para 'cancelado'
+    $plano->status = 'cancelado';
+    $plano->save();
+
+    // Verifica se o plano tem um aluno vinculado e se o aluno tem um usuário
+    if ($plano->aluno && $plano->aluno->user) {
+        $plano->aluno->user->status = 'bloqueado';
+        $plano->aluno->user->save();
+    }
+
+    return redirect()->back()->with('sucesso', 'Plano cancelado e usuário bloqueado com sucesso.');
+}
+    public function ativarPlano($id)
+{
+    // Buscar o plano com o relacionamento aluno → user
+    $plano = Plano::with('aluno.user')->findOrFail($id);
+
+    // Atualizar o status do plano para 'cancelado'
+    $plano->status = 'ativo';
+    $plano->save();
+
+    // Verifica se o plano tem um aluno vinculado e se o aluno tem um usuário
+    if ($plano->aluno && $plano->aluno->user) {
+        $plano->aluno->user->status = 'ativo';
+        $plano->aluno->user->save();
+    }
+
+    return redirect()->back()->with('sucesso', 'Plano ativado e usuário desbloqueado com sucesso.');
+}
 }

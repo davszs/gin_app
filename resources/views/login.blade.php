@@ -47,7 +47,7 @@
     @if (session('status'))
     <div class="overlay-message" id="overlayMessage">
         <div class="alert-box">
-            <p>{{ session('status') }}</p>
+            <p>{!! session('status') !!}</p>
             <button id="okBtn">OK</button>
         </div>
     </div>
