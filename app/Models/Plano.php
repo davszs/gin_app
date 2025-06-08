@@ -23,7 +23,7 @@ class Plano extends Model
      */
     public function aluno()
     {
-        return $this->belongsTo(Aluno::class);
+        return $this->belongsTo(Aluno::class, 'aluno_id');
     }
 
     /**
