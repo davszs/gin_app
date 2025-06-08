@@ -75,10 +75,12 @@ Route::get('/financeiro', fn() => view('admviews.financeiro'))->name('financeiro
 
 
 //Rotas Gerenciamento de Planos
-// Página principal de visualização
 Route::get('/planos', [PlanoController::class, 'index'])->name('planos.index');
 Route::post('/planos/{plano}/inscricao/adicionar', [PlanoController::class, 'adicionarInscricao'])->name('plano.adicionarInscricao');
 Route::delete('/planos/{plano}/inscricao/{inscricao}', [PlanoController::class, 'removerInscricao'])->name('plano.removerInscricao');
+Route::post('/planos/{id}/cancelar', [PlanoController::class, 'cancelarPlano'])->name('planos.cancelar');
+Route::post('/planos/{id}/ativar', [PlanoController::class, 'ativarPlano'])->name('planos.ativar');
+
 
 
 

@@ -17,7 +17,7 @@ class AuthController extends Controller
         return view('login');
     }
 
-    public function loginAttempt(Request $request)
+   public function loginAttempt(Request $request)
 {
     $dados = $request->validate([
         'email' => 'required|email',
@@ -26,16 +26,27 @@ class AuthController extends Controller
 
     $user = User::where('email', $dados['email'])->first();
 
-    if ($user && Hash::check($dados['password'], $user->password)) {
-        Auth::login($user);
-        $request->session()->regenerate();
+    if ($user) {
+        // Verifica se o usuário está bloqueado
+        if ($user->status === 'bloqueado') {
+            return back()->withInput()->with('status', 'Sua conta está bloqueada.<br>Entre em contato com a administração.');
+        }
 
-        $tipo = $user->tipo;
-        return redirect()->route($tipo === 'administrador' ? 'admin.dashboard' : 'aluno.dashboard')->with('status', $tipo === 'administrador' ? 'Bem-vindo ao Portal de Controle!' : 'Bem-vindo ao Portal do Aluno!');
+        // Verifica se a senha está correta
+        if (Hash::check($dados['password'], $user->password)) {
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            $tipo = $user->tipo;
+            return redirect()->route(
+                $tipo === 'administrador' ? 'admin.dashboard' : 'aluno.dashboard'
+            )->with('status', $tipo === 'administrador' ? 'Bem-vindo ao Portal de Controle!' : 'Bem-vindo ao Portal do Aluno!');
+        }
     }
 
     return back()->withInput()->with('status', 'Login inválido!');
 }
+
 
     public function logout(Request $request)
     {

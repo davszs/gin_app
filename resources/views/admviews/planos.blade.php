@@ -4,52 +4,151 @@
 @section('page-title', 'Gerenciamento de Planos')
 
 @section('content')
+<!-- Filtro de busca por aluno -->
+    <div class="mb-4">
+    <label for="filtroAluno" class="form-label fw-bold">🔍 Filtro de pesquisa:</label>
+    <input type="text" class="form-control shadow-sm border-1" id="filtroAluno" placeholder="Pesquisar aluno pelo nome...">
+</div>
+
+<!-- Nav Tabs com estilo -->
+<ul class="nav nav-tabs nav-fill border rounded shadow-sm" id="tabsStatus" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active fw-semibold text-dark" id="ativos-tab" data-bs-toggle="tab" data-bs-target="#ativos" type="button" role="tab" aria-controls="ativos" aria-selected="true">
+            ✅ Planos Ativos
+        </button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link fw-semibold text-dark" id="cancelados-tab" data-bs-toggle="tab" data-bs-target="#cancelados" type="button" role="tab" aria-controls="cancelados" aria-selected="false">
+            ❌ Planos Cancelados
+        </button>
+    </li>
+</ul><br>
+
 <div class="container mt-4">
-    <div class="row g-4">
-        @foreach($planos as $plano)
-            <div class="col-md-6 col-xl-4">
-                <div class="card shadow-sm plano-card h-100">
-                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center rounded-top">
-                        <h5 class="mb-0"> Nome do plano: 
-                            {{ $plano->nome }}<br>
-                        </h5>
-                        <span class="badge bg-warning text-dark text-uppercase">Aluno: {{ $plano->aluno->user->name }}</span>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="fw-bold mb-3">Inscrições nas Aulas:</h6>
-                        <ul class="list-group mb-3">
-                            @forelse($plano->inscricoes as $inscricao)
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        {{ $inscricao->aula->nome }} 
-                                        <small class="text-muted d-block">R$ {{ number_format($inscricao->aula->valor, 2, ',', '.') }}</small>
-                                    </div>
-                                    <button class="btn btn-sm btn-outline-danger" title="Remover" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-url="{{ route('plano.removerInscricao', [$plano->id, $inscricao->id]) }}">
-                                        <i class="bi bi-x-circle"></i>
-                                    </button>
-                                </li>
-                            @empty
-                                <li class="list-group-item text-muted">Sem inscrições.</li>
-                            @endforelse
-                        </ul>
+    <!-- Conteúdo das tabs -->
+    <div class="tab-content" id="tabsStatusContent">
+        <!-- Planos Ativos -->
+       <div class="tab-pane fade show active" id="ativos" role="tabpanel" aria-labelledby="ativos-tab">
+            <div class="row g-4" id="planosAtivosContainer">
+                @foreach($planos->where('status', 'ativo') as $plano)
+                    <div class="col-md-6 col-xl-4 plano-card-wrapper" data-aluno="{{ strtolower($plano->aluno->user->nome) }}">
+                        <div class="card shadow-sm plano-card h-100">
+                            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center rounded-top">
+                                <h5 class="mb-0"> Nome do plano: 
+                                    {{ $plano->nome }}<br>
+                                </h5>
+                                <span class="badge bg-warning text-dark text-uppercase">Aluno: {{ $plano->aluno->user->nome }}</span>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="fw-bold mb-3">Inscrições nas Aulas:</h6>
+                                <ul class="list-group mb-3">
+                                    @forelse($plano->inscricoes as $inscricao)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                {{ $inscricao->aula->nome }} 
+                                                <small class="text-muted d-block">R$ {{ number_format($inscricao->aula->valor, 2, ',', '.') }}</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-danger" title="Remover" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-url="{{ route('plano.removerInscricao', [$plano->id, $inscricao->id]) }}">
+                                                <i class="bi bi-x-circle"></i>
+                                            </button>
+                                        </li>
+                                    @empty
+                                        <li class="list-group-item text-muted">Sem inscrições.</li>
+                                    @endforelse
+                                </ul>
 
-                        <!-- Botão para adicionar aula -->
-                        <button class="btn btn-sm btn-outline-secondary w-100 mb-3" data-bs-toggle="modal" data-bs-target="#addAulaModal" data-plano-id="{{ $plano->id }}">
-                            <i class="bi bi-plus-lg"></i> Adicionar Aula
-                        </button><br>
+                                <button class="btn btn-sm btn-outline-secondary w-100 mb-3" data-bs-toggle="modal" data-bs-target="#addAulaModal" data-plano-id="{{ $plano->id }}">
+                                    <i class="bi bi-plus-lg"></i> Adicionar Aula
+                                </button><br>
 
-                        <div class="mb-3"><br>
-                            <strong>Total Atualizado:</strong> 
-                            <span class="text-success">R$ {{ number_format($plano->valor_total, 2, ',', '.') }}</span>
+                                <div class="mb-3"><br>
+                                    <strong>Total Atualizado:</strong> 
+                                    <span class="text-success">R$ {{ number_format($plano->valor_total, 2, ',', '.') }}</span>
+                                </div><br>
+
+                                <button class="btn btn-outline-danger w-100" type="button"
+                                    onclick="confirmarAcao('{{ route('planos.cancelar', $plano->id) }}', 'Tem certeza que deseja cancelar este plano?', 'Plano cancelado com sucesso!')">
+                                    <i class="bi bi-x-circle"></i> Cancelar Plano
+                                </button>
+                            </div>
                         </div><br>
-                            <button class="btn btn-outline-primary w-100 btn-atualizar-boleto" type="button">
-
-        <i class="bi bi-arrow-repeat"></i> Atualizar Plano
-    </button><br>
                     </div>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Planos Cancelados -->
+        <div class="tab-pane fade" id="cancelados" role="tabpanel" aria-labelledby="cancelados-tab">
+            <div class="row g-4" id="planosCanceladosContainer">
+                @foreach($planos->where('status', 'cancelado') as $plano)
+                    <div class="col-md-6 col-xl-4 plano-card-wrapper" data-aluno="{{ strtolower($plano->aluno->user->nome) }}">
+                        <div class="card shadow-sm plano-card h-100">
+                            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center rounded-top">
+                                <h5 class="mb-0"> Nome do plano: 
+                                    {{ $plano->nome }}<br>
+                                </h5>
+                                <span class="badge bg-warning text-dark text-uppercase">Aluno: {{ $plano->aluno->user->nome }}</span>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="fw-bold mb-3">Inscrições nas Aulas:</h6>
+                                <ul class="list-group mb-3">
+                                    @forelse($plano->inscricoes as $inscricao)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                {{ $inscricao->aula->nome }} 
+                                                <small class="text-muted d-block">R$ {{ number_format($inscricao->aula->valor, 2, ',', '.') }}</small>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-danger" title="Remover" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-url="{{ route('plano.removerInscricao', [$plano->id, $inscricao->id]) }}">
+                                                <i class="bi bi-x-circle"></i>
+                                            </button>
+                                        </li>
+                                    @empty
+                                        <li class="list-group-item text-muted">Sem inscrições.</li>
+                                    @endforelse
+                                </ul>
+
+                                <button class="btn btn-sm btn-outline-secondary w-100 mb-3" data-bs-toggle="modal" data-bs-target="#addAulaModal" data-plano-id="{{ $plano->id }}">
+                                    <i class="bi bi-plus-lg"></i> Adicionar Aula
+                                </button><br>
+
+                                <div class="mb-3"><br>
+                                    <strong>Total Atualizado:</strong> 
+                                    <span class="text-success">R$ {{ number_format($plano->valor_total, 2, ',', '.') }}</span>
+                                </div><br>
+
+                                <button class="btn btn-outline-success w-100" type="button"
+                                    onclick="confirmarAcao('{{ route('planos.ativar', $plano->id) }}', 'Deseja ativar este plano novamente?', 'Plano ativado com sucesso!')">
+                                    <i class="bi bi-check-circle"></i> Ativar Plano
+                                </button>
+                            </div>
+                        </div><br>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal de Confirmação de Ação -->
+<div class="modal fade" id="acaoModal" tabindex="-1" aria-labelledby="acaoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmação</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body" id="acaoModalBody">
+        <!-- Conteúdo será inserido dinamicamente -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="confirmarAcaoBtn">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
                 </div>
             </div>
-        @endforeach
+       
     </div>
 </div>
 
@@ -93,7 +192,7 @@
               <label for="aula_id">Selecione a Aula:</label>
               <select class="form-select" name="aula_id" id="aula_id" required>
                   <option value="" disabled selected>-- Escolha uma aula --</option>
-                @foreach($aulas as $aula)
+                
     @php
     $aulasDisponiveis = $aulas->reject(fn($aula) => $plano->inscricoes->contains('aula_id', $aula->id));
 @endphp
@@ -105,7 +204,7 @@
         <option value="{{ $aula->id }}">{{ $aula->nome }} - R$ {{ number_format($aula->valor, 2, ',', '.') }}</option>
     @endforeach
 @endif
-@endforeach
+
               </select>
           </div>
         </div>
@@ -358,6 +457,97 @@ h5, h6, strong {
     opacity: 1 !important;
     pointer-events: auto !important;
 }
+/* Filtros e TABs */
+  #filtroAluno:focus {
+        border-color: #03c6e9;
+        box-shadow: 0 0 0 0.2rem rgba(7, 114, 255, 0.25);
+    }
+
+   /* Container dos botões de aba */
+.nav-tabs.custom-tabs {
+    border-bottom: none;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Botões de aba */
+.nav-tabs.custom-tabs .nav-link {
+    background: none;
+    border: none;
+    color: #1552a1;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs.custom-tabs .nav-link:hover {
+    background-color: #e7f1ff;
+}
+
+/* Aba ativa */
+.nav-tabs.custom-tabs .nav-link.active {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-bottom: 3px solid #000;
+    color: #000;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Conteúdo das abas */
+.tab-content {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 20px;
+    margin-top: -1px; /* alinhamento perfeito com a aba ativa */
+}
+
+/* Animação de entrada */
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Títulos e textos das abas */
+.tab-pane h3,
+.tab-pane h4 {
+    color: #1552a1;
+    margin-bottom: 15px;
+}
+
+.tab-pane p,
+.tab-pane li {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.tab-pane ul {
+    padding-left: 20px;
+    list-style: disc;
+}
+
+/* Animação */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 </style>
 @endpush
 
@@ -398,5 +588,54 @@ addModal.addEventListener('show.bs.modal', function (event) {
             modal.show();
         }
     });
+     function confirmarAcao(url, mensagem, sucessoMsg) {
+        const modal = new bootstrap.Modal(document.getElementById('acaoModal'));
+        document.getElementById('acaoModalBody').innerText = mensagem;
+
+        const confirmarBtn = document.getElementById('confirmarAcaoBtn');
+        confirmarBtn.onclick = function () {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    modal.hide();
+                    alert(sucessoMsg);
+                    location.reload();
+                } else {
+                    return response.json().then(data => {
+                        throw new Error(data.message || 'Erro ao realizar ação.');
+                    });
+                }
+            })
+            .catch(error => {
+                alert('Erro: ' + error.message);
+            });
+        };
+
+        modal.show();
+    }
+     function filtrarPlanos(containerId, filtro) {
+    const planos = document.querySelectorAll(`#${containerId} .plano-card-wrapper`);
+    planos.forEach(plano => {
+        const nomeAluno = plano.getAttribute('data-aluno')?.toLowerCase() || '';
+        if (nomeAluno.includes(filtro)) {
+            plano.style.display = '';
+        } else {
+            plano.style.display = 'none';
+        }
+    });
+}
+
+document.getElementById('filtroAluno').addEventListener('input', function () {
+    const filtro = this.value.toLowerCase();
+
+    filtrarPlanos('planosAtivosContainer', filtro);
+    filtrarPlanos('planosCanceladosContainer', filtro);
+});
 </script>
 @endpush

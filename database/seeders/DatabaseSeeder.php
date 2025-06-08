@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('aluno123'),  // senha que quiser
                 'tipo' => 'aluno',
                  'cpf' => '22222222222',
+                 'status' => 'ativo',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -34,6 +35,19 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('admin123'),
                 'tipo' => 'administrador',
                  'cpf' => '12345678901',
+                 'status' => 'ativo',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 3,
+                'nome' => 'Bloqueado Teste',
+                'email' => 'bloqueia@teste.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('senha123'),
+                'tipo' => 'aluno',
+                 'cpf' => '12345678902',
+                 'status' => 'bloqueado',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -49,6 +63,18 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
+            
+        ]);
+        DB::table('alunos')->insert([
+            [
+                'id' => 3,
+                'user_id' => 3,
+                'telefone' => '11999999799',
+                'endereco' => 'Rua Exemplo, 321',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+            
         ]);
 
         // Inserindo aula
@@ -104,7 +130,18 @@ class DatabaseSeeder extends Seeder
                 'aluno_id' => 1,
                 'nome' => 'Plano Inicial',
                 'valor_total' => 50.00,
-                'status' => 'pendente',
+                'status' => 'ativo',
+                'created_at' => now(),
+                'updated_at' => now(),
+         ]
+]);
+DB::table('planos')->insert([
+        [
+                'id' => 2,
+                'aluno_id' => 3,
+                'nome' => 'Plano Premiun',
+                'valor_total' => 0,
+                'status' => 'cancelado',
                 'created_at' => now(),
                 'updated_at' => now(),
          ]

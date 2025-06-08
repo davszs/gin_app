@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('aluno_id')->constrained('alunos')->onDelete('cascade');
             $table->string('nome');
             $table->decimal('valor_total', 10, 2)->default(50);
-            $table->string('status')->default('pendente'); // pendente, pago, cancelado
+            $table->enum('status', ['ativo','cancelado'])->default('ativo'); // ativo ou cancelado
             $table->timestamps();
         });
 
