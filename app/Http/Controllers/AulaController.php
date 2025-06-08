@@ -21,7 +21,7 @@ class AulaController extends Controller
      */
     public function create()
     {
-        return view();
+        return view('aulas.create');
     }
 
     /**

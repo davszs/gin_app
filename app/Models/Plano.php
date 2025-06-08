@@ -41,20 +41,31 @@ class Plano extends Model
 
     public function aulas()
 {
-    return $this->inscricoes->map(function ($inscricao) {
-        return $inscricao->aula;
-    });
+    return $this->inscricoes->map(fn($inscricao) => $inscricao->aula);
 }
 
     public function calcularValorTotal()
 {
-    $valorTotal = $this->inscricoes->sum(function ($inscricao) {
-        return $inscricao->aula->valor ?? 0;
-    });
+    $valorTotalInscricoes = $this->inscricoes->sum(fn($inscricao) => $inscricao->aula->valor ?? 0);
+    $valorTotalAjustes = $this->ajustes->sum('valor');
 
-    $this->valor_total = $valorTotal;
+    $this->valor_total = $valorTotalInscricoes + $valorTotalAjustes;
     $this->save();
 
-    return $valorTotal;
+    // Atualiza os próximos pagamentos
+    $this->pagamentos()
+        ->where('data_referencia', '>=', now()->startOfMonth())
+        ->update(['valor' => $this->valor_total]);
+
+    return $this->valor_total;
 }
+public function pagamentos()
+{
+    return $this->hasMany(Pagamento::class);
+}
+public function ajustes()
+{
+    return $this->hasMany(AjustePlano::class);
+}
+
 }

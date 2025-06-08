@@ -62,7 +62,7 @@
             </a>
         </li>
         <li>
-            <a href="{{ route('planos') }}" title="Planos">
+            <a href="{{ route('planos.index') }}" title="Planos">
                 <i class="fas fa-clipboard-list"></i><span>Planos</span>
             </a>
         </li>
