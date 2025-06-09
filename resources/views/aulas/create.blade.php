@@ -25,10 +25,20 @@
             </div>
 
             <div class="input-box">
-                <label for="dia_semana">Dia da Semana (1 = Domingo, 7 = Sábado):</label><br />
-                <input type="number" name="dia_semana" min="1" max="7" required value="{{ old('dia_semana') }}" />
-                @error('dia_semana') <small style="color:red">{{ $message }}</small> @enderror
-            </div>
+    <label for="dia_semana">Dia da Semana:</label><br />
+    <select name="dia_semana" required>
+        <option value="">Selecione um dia</option>
+        <option value="seg" {{ old('dia_semana') == 'Segunda' ? 'selected' : '' }}>Segunda-feira</option>
+        <option value="ter" {{ old('dia_semana') == 'Terça' ? 'selected' : '' }}>Terça-feira</option>
+        <option value="qua" {{ old('dia_semana') == 'Quarta' ? 'selected' : '' }}>Quarta-feira</option>
+        <option value="qui" {{ old('dia_semana') == 'Quinta' ? 'selected' : '' }}>Quinta-feira</option>
+        <option value="sex" {{ old('dia_semana') == 'Sexta' ? 'selected' : '' }}>Sexta-feira</option>
+        <option value="sab" {{ old('dia_semana') == 'Sábado' ? 'selected' : '' }}>Sábado</option>
+    </select>
+    @error('dia_semana') 
+        <small style="color:red">{{ $message }}</small> 
+    @enderror
+</div>
 
             <div class="input-box">
                 <label for="horario_inicio">Horário de Início (HH:mm):</label><br />

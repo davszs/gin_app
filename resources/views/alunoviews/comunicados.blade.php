@@ -11,7 +11,8 @@
         <button class="filtro-btn" data-filter="geral">Geral</button>
         <button class="filtro-btn" data-filter="aulas">Aulas</button>
     </div>
-
+ </div>
+ 
     <!-- Lista de Comunicados -->
 <div class="comunicados-lista-completa">
     @if($comunicados->isEmpty())
@@ -76,13 +77,20 @@
 }
 
 .comunicados-lista-completa {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
 }
 
+/* Em telas pequenas, volta para 1 coluna */
+@media (max-width: 768px) {
+    .comunicados-lista-completa {
+        grid-template-columns: 1fr;
+    }
+}
+
 .comunicado-card {
-    background-color: #c0bfbf6b;
+    background-color: #eee;
     border-left: 6px solid #189df5;
     border-radius: 10px;
     padding: 1.5rem;
@@ -95,8 +103,8 @@
 }
 
 .comunicado-card.importante {
-    border-left-color: #e63946;
-    background-color: #c0bfbf6b;
+    border-left-color: yellow;
+    background-color: #eee;
 }
 
 .comunicado-header {
@@ -114,7 +122,7 @@
 }
 
 .comunicado-tag {
-    background-color: #ddd;
+    background-color: #189df583;
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     font-weight: bold;
@@ -123,13 +131,13 @@
 }
 
 .comunicado-card.importante .comunicado-tag {
-    background-color: #e63946;
-    color: #fff;
+    background-color:  rgba(255, 255, 0, 0.808);
+   
 }
 
 .comunicado-importante-badge {
-    background-color: #e63946;
-    color: #fff;
+    background-color: yellow;
+    color: #ff0000bd;
     padding: 0.3rem 0.7rem;
     border-radius: 6px;
     font-size: 0.85rem;

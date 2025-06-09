@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -83,7 +84,7 @@ class DatabaseSeeder extends Seeder
                 'id' => 1,
                 'nome' => 'Crossfit',
                 'descricao' => 'Aula de Crossfit com foco em glúteo, com instrutor Eduardo dos Reis.',
-                'dia_semana' => 1,
+                'dia_semana' => 'Terça',
                 'horario_inicio' => '07:00:00',
                 'horario_fim' => '08:00:00',
                 'instrutor' => 'Eduardo dos Reis',
@@ -98,7 +99,7 @@ class DatabaseSeeder extends Seeder
                 'id' => 2,
                 'nome' => 'Funcional Nádegas',
                 'descricao' => 'Levantamento de peso com nádegas, com Gabriel Minelli',
-                'dia_semana' => 1,
+                'dia_semana' => 'Segunda',
                 'horario_inicio' => '07:00:00',
                 'horario_fim' => '08:00:00',
                 'instrutor' => 'Gabriel Minelli',
@@ -139,7 +140,7 @@ DB::table('planos')->insert([
         [
                 'id' => 2,
                 'aluno_id' => 3,
-                'nome' => 'Plano Premiun',
+                'nome' => 'Plano Premium',
                 'valor_total' => 0,
                 'status' => 'cancelado',
                 'created_at' => now(),
@@ -163,8 +164,21 @@ DB::table('pagamentos')->insert([
         'user_id' => 1,
         'valor' => 50.00,
         'status' => 'pendente',
-        'vencimento' => now()->addDays(7),
-        'data_referencia' => now()->startOfMonth(),
+        'vencimento' => Carbon::parse('2025-06-25'),
+        'data_referencia' => Carbon::parse('2025-06-01'),
+        'created_at' => now(),
+        'updated_at' => now(),
+    ]
+]);
+DB::table('pagamentos')->insert([
+    [
+        'plano_id' => 1,
+        'user_id' => 1,
+        'valor' => 50.00,
+        'status' => 'pago',
+        'vencimento' => Carbon::parse('2025-05-25'),
+        'data_referencia' => Carbon::parse('2025-05-01'),
+        'data_pagamento' => Carbon::parse('2025-05-10'),
         'created_at' => now(),
         'updated_at' => now(),
     ]
