@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Aluno;
+use App\Models\Plano;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -62,15 +63,21 @@ class AlunosController extends Controller
             'cpf' => $dados['cpf'],
         ]);
 
-        Aluno::create([
+        $aluno = Aluno::create([
             'user_id' => $user->id,
             'telefone' => $dados['telefone'],
             'endereco' => $dados['endereco'],
         ]);
 
+        $aluno->plano()->create([
+            'nome' => 'Plano de ' . $user->nome,
+            'valor_total' => 0,
+            'status' => 'pendente',
+        ]);
+
         return redirect()
             ->route('alunos.index')
-            ->with('status', 'Aluno cadastrado com sucesso! Senha: ' . $senhagerada);
+            ->with('status', 'Aluno e plano cadastrados com sucesso! Senha: ' . $senhagerada);
     }
 
     /**
