@@ -160,6 +160,7 @@ DB::table('plano_inscricao_aula')->insert([
 DB::table('pagamentos')->insert([
     [
         'plano_id' => 1,
+        'user_id' => 1,
         'valor' => 50.00,
         'status' => 'pendente',
         'vencimento' => now()->addDays(7),

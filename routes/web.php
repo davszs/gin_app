@@ -14,7 +14,8 @@ use App\Http\Controllers\SuportController;
 use App\Http\Controllers\ComunicadoController;
 use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\Aluno\DashboardController;
-
+use App\Http\Controllers\Aluno\FinanceiroController;
+use App\Http\Controllers\FinanceiroController as ControllersFinanceiroController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -71,7 +72,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 Route::resource('aulas', AulaController::class);
 
-Route::get('/financeiro', fn() => view('admviews.financeiro'))->name('financeiro');
+  // Rotas financeiro adm
+ Route::get('/financeiro', [ControllersFinanceiroController::class,'index'])->name('financeiro');
+ Route::post('/financeiro-atualizar', [ControllersFinanceiroController::class,'atualizar'])->name('financeiro.atualizar');
 
 
 //Rotas Gerenciamento de Planos
@@ -80,9 +83,6 @@ Route::post('/planos/{plano}/inscricao/adicionar', [PlanoController::class, 'adi
 Route::delete('/planos/{plano}/inscricao/{inscricao}', [PlanoController::class, 'removerInscricao'])->name('plano.removerInscricao');
 Route::post('/planos/{id}/cancelar', [PlanoController::class, 'cancelarPlano'])->name('planos.cancelar');
 Route::post('/planos/{id}/ativar', [PlanoController::class, 'ativarPlano'])->name('planos.ativar');
-
-
-
 
 //Rotas de configurações portal ADM
 Route::get('/configuracoes', fn() => view('admviews.config'))->name('adm.config');

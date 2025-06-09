@@ -90,12 +90,13 @@ class PagamentoController extends Controller
 
         if (!$jaExiste) {
             Pagamento::create([
-                'plano_id' => $plano->id,
-                'valor' => $plano->valor, // supondo que o plano tem valor fixo
-                'status' => 'pendente',
-                'vencimento' => $referencia->copy()->addDays(10),
-                'data_referencia' => $referencia,
-            ]);
+    'plano_id' => $plano->id,
+    'aluno_id' => $plano->aluno_id, // aqui!
+    'data_referencia' => now(),
+    'vencimento' => now()->addDays(7),
+    'valor' => $plano->valor_total,
+    'status' => 'pendente',
+]);
         }
     }
   }

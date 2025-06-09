@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->date('data_referencia'); // mês de referência do pagamento (ex: 2025-06-01)
             $table->date('vencimento');
             $table->decimal('valor', 10, 2);
-            $table->enum('status', ['pendente', 'pago', 'vencido'])->default('pendente');
+            $table->enum('status', ['pendente', 'pago','pago com atraso', 'vencido'])->default('pendente');
             $table->timestamp('data_pagamento')->nullable();
             $table->timestamps();
         });
