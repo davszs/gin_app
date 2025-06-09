@@ -42,6 +42,10 @@ class Aluno extends Model
 {
     return $this->hasOne(Plano::class);
 }
+public function pagamentos()
+{
+    return $this->hasMany(Pagamento::class);
+}
     
 
 }
