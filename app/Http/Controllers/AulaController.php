@@ -32,7 +32,7 @@ class AulaController extends Controller
         $request->validate([
             'nome'=>'required|string|max:50',
             'descricao'=>'nullable|string|max:255',
-            'dia_semana'=>'required|integer|between:1,7',
+            'dia_semana'=>'required|in:Segunda,Terça,Quarta,Quinta,Sexta,Sábado',
             'horario_inicio'=>'required|date_format:H:i',
             'horario_fim'=>'required|date_format:H:i|after:horario_inicio',
             'instrutor'=>'required|string|max:50',
@@ -68,7 +68,7 @@ class AulaController extends Controller
         $request->validate([
             'nome'=>'sometimes|required|string|max:50',
             'descricao'=>'sometimes|nullable|string|max:255',
-            'dia_semana'=>'sometimes|required|integer|between:1,7',
+            'dia_semana'=>'required|in:Segunda,Terça,Quarta,Quinta,Sexta,Sábado',
             'horario_inicio'=>'sometimes|required|date_format:H:i',
             'horario_fim'=>'sometimes|required|date_format:H:i|after:horario_inicio',
             'instrutor'=>'sometimes|required|string|max:50',

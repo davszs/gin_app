@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->text('descricao')->nullable();
-            $table->tinyInteger('dia_semana'); // 1=Dom, ..., 7=Sáb
+            $table->enum('dia_semana', ['Segunda','Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']); 
             $table->time('horario_inicio');
             $table->time('horario_fim');
             $table->string('instrutor')->nullable();

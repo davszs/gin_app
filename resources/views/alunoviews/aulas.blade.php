@@ -69,7 +69,7 @@
     @if($solicitacoesPendentes->isEmpty())
     <p>Você não possui solicitações pendentes.</p>
 @else
-    <div class="cards-container">
+    
         @foreach($solicitacoesPendentes as $solicitacao)
             <div class="card-aula">
                 <h3>{{ $solicitacao->aula->nome }}</h3>
@@ -78,7 +78,7 @@
                 <p><strong>Data:</strong> {{ $solicitacao->created_at->format('d/m/Y H:i') }}</p>
             </div>
         @endforeach
-    </div>
+   
 @endif
 
 @if(session('info'))
@@ -102,84 +102,106 @@
 .cards-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.5rem;
+    justify-content: center;
 }
+
 .card-aula {
-    background: #afc2ff;
-    border-radius: 8px;
-    box-shadow: 0 0 6px rgba(0,0,0,0.1);
-    padding: 1rem;
-    width: 280px;
+    background-color: #f5f7fa;
+    border-left: 6px solid #0859d3; /* azul padrão */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    width: calc((100% / 4) - 1.5rem); /* 4 cards por linha com gap */
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    transition: transform 0.2s ease;
+    cursor: default;
 }
+
+.card-aula:hover {
+    transform: translateY(-6px);
+}
+
 .card-aula h3 {
+    margin-bottom: 0.6rem;
+    color: #0859d3;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.card-aula p {
+    color: #555;
     margin-bottom: 0.5rem;
+    font-size: 0.95rem;
 }
-.btn-cancelar {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 0.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 1rem;
-}
-.btn-cancelar:hover {
-    background-color: #c0392b;
-}
-.btn-inscrever {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 0.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 1rem;
-}
-.btn-inscrever:hover {
-    background-color: #2980b9;
-}
-.form-filtro {
-    margin-bottom: 1rem;
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-.form-filtro label {
-    font-weight: bold;
-}
-.form-filtro input, .form-filtro select {
-    padding: 0.3rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-.form-filtro button {
-    padding: 0.4rem 1rem;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-}
+
+.btn-cancelar,
+.btn-inscrever,
+.btn-solicitado-cancelar,
 .btn-solicitado-inscrever {
-    background-color: #2ecc71; /* verde */
-    color: white;
     border: none;
-    padding: 0.5rem;
-    border-radius: 4px;
-    cursor: not-allowed;
-    margin-top: 1rem;
+    padding: 0.6rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: auto;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    user-select: none;
+}
+
+.btn-cancelar {
+    background-color: #e63946; /* vermelho */
+    color: white;
+}
+
+.btn-cancelar:hover:not(:disabled) {
+    background-color: #b43136;
+}
+
+.btn-inscrever {
+    background-color: #0859d3; /* azul escuro */
+    color: white;
+}
+
+.btn-inscrever:hover:not(:disabled) {
+    background-color: #063d8a;
 }
 
 .btn-solicitado-cancelar {
     background-color: #f1c40f; /* amarelo */
     color: black;
-    border: none;
-    padding: 0.5rem;
-    border-radius: 4px;
     cursor: not-allowed;
-    margin-top: 1rem;
+}
+
+.btn-solicitado-inscrever {
+    background-color: #2ecc71; /* verde */
+    color: white;
+    cursor: not-allowed;
+}
+
+/* Responsividade: menos colunas em telas menores */
+@media (max-width: 1200px) {
+    .card-aula {
+        width: calc((100% / 3) - 1.5rem); /* 3 cards por linha */
+    }
+}
+
+@media (max-width: 900px) {
+    .card-aula {
+        width: calc((100% / 2) - 1.5rem); /* 2 cards por linha */
+    }
+}
+
+@media (max-width: 600px) {
+    .card-aula {
+        width: 100%; /* 1 card por linha */
+    }
 }
 
 </style>

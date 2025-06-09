@@ -50,6 +50,22 @@
     </div>
 </div>
 
+<!-- Contato e Localização -->
+<div class="contato-container">
+    <div class="contato-info">
+        <h4><i class="fas fa-map-marker-alt"></i> Localização do Escritório</h4>
+       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3653.2508459634128!2d-46.691896625416184!3d-23.702734566799823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9be46d5222a8f7%3A0xd0a91a78f6212c68!2sEtec%20Irm%C3%A3%20Agostina!5e0!3m2!1spt-BR!2sbr!4v1749496217604!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <div class="contato-info">
+        <h4><i class="fas fa-envelope"></i> E-mail</h4>
+        <p>suporte@academiaexemplo.com</p>
+
+        <h4><i class="fab fa-whatsapp"></i> WhatsApp</h4>
+        <p><a href="https://wa.me/5599999999999" target="_blank">(11) 94701-5576</a></p>
+    </div>
+</div>
+
 @if(session('success'))
 <div id="successBox" class="alert-box">
     <div class="alert-content">
@@ -64,16 +80,16 @@
     const btn = document.getElementById('btnAbrirChamado');
 
     btn.onclick = function () {
-        modal.style.display = 'block';
+        modal.classList.add('aberto');
     }
 
     function fecharModal() {
-        modal.style.display = 'none';
+        modal.classList.remove('aberto');
     }
 
     window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = 'none';
+        if (event.target === modal) {
+            modal.classList.remove('aberto');
         }
     }
 </script>
@@ -209,14 +225,22 @@ form {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
+    overflow: auto; /* permite rolagem se necessário */
+    align-items: center;
+    justify-content: center;
+}
+.modal.aberto {
+    display: flex !important;
 }
 
 .modal-content {
     background-color: #fff;
-    margin: 8% auto;
     padding: 30px;
     border-radius: 12px;
-    width: 500px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh; /* altura máxima da viewport */
+    overflow-y: auto; /* rola apenas o conteúdo do modal */
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     position: relative;
 }
@@ -246,6 +270,38 @@ form {
 
 .form-control-file:hover {
     background-color: #f0f0f0;
+}
+.contato-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 60px;
+    padding: 30px;
+    background: #f5f8fc;
+    border-radius: 16px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.contato-info {
+    flex: 1 1 400px;
+    margin: 20px;
+}
+
+.contato-info h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #2b4d76;
+}
+
+.contato-info p, .contato-info a {
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+}
+
+.contato-info a:hover {
+    text-decoration: underline;
+    color: #11539e;
 }
 
 </style>

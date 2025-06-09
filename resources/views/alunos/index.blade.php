@@ -49,8 +49,16 @@
                     <td>{{ $aluno->user->email }}</td>
                     <td>{{ $aluno->telefone }}</td>
                     <td>Mensal</td>
-                    <td><span class="status active">Ativo</span></td>
-                    <td>
+                  <td>
+    @if($aluno->user->status === 'ativo')
+        <span class="status active">Ativo</span>
+    @elseif($aluno->user->status === 'bloqueado')
+        <span class="status blocked">Bloqueado</span>
+    @else
+        <span class="status">{{ ucfirst($aluno->user->status) }}</span>
+    @endif
+</td>
+<td>
                         <div class="action-buttons">
                             <a href="javascript:void(0);" 
                                          class="action-button" 
@@ -398,6 +406,10 @@ function fecharModalAluno() {
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #312f2fa6;
+}
+.status.blocked {
+    color: #e74c3c; /* vermelho */
+    font-weight: 600;
 }
 </style>
 @endpush
