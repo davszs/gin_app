@@ -32,12 +32,12 @@
                             <form action="{{ route('solicitacoes.aprovar', $solicitacao->id) }}" method="POST" style="display:inline-block;">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" onclick="return confirm('Confirmar aprovação?')">Aprovar</button>
+                                <button class= "aprovar" type="submit" onclick="return confirm('Confirmar aprovação?')">Aprovar</button>
                             </form>
                             <form action="{{ route('solicitacoes.rejeitar', $solicitacao->id) }}" method="POST" style="display:inline-block; margin-left: 5px;">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" onclick="return confirm('Confirmar rejeição?')">Rejeitar</button>
+                                <button class= "rejeitar" type="submit" onclick="return confirm('Confirmar rejeição?')">Rejeitar</button>
                             </form>
                         </td>
                     </tr>
@@ -92,20 +92,31 @@
     }
 
     th {
-        background-color: #f8f8f8;
+         background-color: #4287c9;
+    }
+    tbody tr:hover {
+        background-color: #4288c95b;
     }
 
     button {
-        background-color: #3498db;
+        
         color: white;
         border: none;
         padding: 0.4rem 0.8rem;
         border-radius: 4px;
         cursor: pointer;
     }
+    .aprovar{
+background-color: #34db42;
+    }
+
+    .rejeitar{
+        background-color: #db3434;
+    }
 
     button:hover {
-        background-color: #2980b9;
+        background-color: #a1a1a1;
+        color: black;
     }
 </style>
 @endpush

@@ -36,7 +36,7 @@ class Aluno extends Model
 
     public function inscricoes()
     {
-         return $this->hasMany(InscricaoAula::class);
+         return $this->hasMany(InscricaoAula::class, 'aluno_id');
     }
     public function plano()
 {

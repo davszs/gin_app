@@ -23,7 +23,7 @@
     {{-- Sidebar --}}
     <nav class="sidebar">
         <div class="logo">
-            <a href="{{ route('aluno.dashboard') }}"><i class="fas fa-dumbbell"></i></a>
+            <a href="{{ route('aluno.dashboard') }}"><img src="/images/favicon.ico" alt=""></a>
         </div>
         <ul class="nav-links">
             <li class="{{ request()->routeIs('aluno.dashboard') ? 'active' : '' }}">

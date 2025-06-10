@@ -37,14 +37,33 @@ class DashboardController extends Controller
     ->whereYear('data_referencia', $anoAnterior)
     ->first();
 
-        // Aulas inscritas na semana
-        $aulas = Aula::whereHas('alunos', function ($query) use ($aluno) {
-                $query->where('user_id', $aluno->user->id);
-            })
-            ->whereIn('dia_semana', ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']) // exemplo
-            ->orderBy('dia_semana')
-            ->take(7)
-            ->get();
+// Aulas inscritas na semana via inscrições
+
+$inscricoes = $aluno->inscricoes()->with('aula')->get();
+
+$aulas = $inscricoes
+    ->filter(function ($aula) {
+        $diasValidos = ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
+
+        $dia = strtolower($aula->dia_semana);
+        $dia = str_replace(['á','à','â','ã','ä'], 'a', $dia);
+        $dia = str_replace(['é','è','ê','ë'], 'e', $dia);
+
+        return in_array($dia, $diasValidos);
+    })
+    ->sortBy(function ($aula) {
+        $ordem = ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
+
+        $dia = strtolower($aula->dia_semana);
+        $dia = str_replace(['á','à','â','ã','ä'], 'a', $dia);
+        $dia = str_replace(['é','è','ê','ë'], 'e', $dia);
+
+        return array_search($dia, $ordem);
+    })
+    ->values(); // reindexa os resultados
+
+
+
 
         // Solicitações de matrícula
         $solicitacoes = [
@@ -61,4 +80,5 @@ class DashboardController extends Controller
             'solicitacoes'
         ));
     }
+    
 }

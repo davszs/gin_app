@@ -131,6 +131,17 @@
 function fecharModalAluno() {
     document.getElementById('modalAluno').style.display = 'none';
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const overlay = document.getElementById('overlayMessage');
+    const okBtn = document.getElementById('okBtn');
+
+    if (okBtn && overlay) {
+      okBtn.addEventListener('click', () => {
+        overlay.style.display = 'none';
+      });
+    }
+  });
 </script>
 @endpush
 
@@ -203,11 +214,11 @@ function fecharModalAluno() {
     }
 
     thead th {
-        background-color: #f9f9f9;
+        background-color:#4287c9;
         padding: 15px;
         text-align: left;
         font-size: 14px;
-        color: #555;
+        color: #000000;
         font-weight: 600;
         border-bottom: 1px solid #eee;
     }
@@ -220,7 +231,7 @@ function fecharModalAluno() {
     }
 
     tbody tr:hover {
-        background-color: #f5f8fa;
+        background-color: #4288c95b;
     }
 
     .action-buttons {

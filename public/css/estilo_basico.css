@@ -182,11 +182,15 @@ body {
   align-items: center;
   height: 60px;
   border-bottom: 1px solid var(--primary-light);
+
 }
 
 .logo a {
   color: var(--text-light);
   font-size: 24px;
+}
+.logo img {
+  height: 35px;
 }
 
 .nav-links {

@@ -28,12 +28,12 @@
     <label for="dia_semana">Dia da Semana:</label><br />
     <select name="dia_semana" required>
         <option value="">Selecione um dia</option>
-        <option value="seg" {{ old('dia_semana') == 'Segunda' ? 'selected' : '' }}>Segunda-feira</option>
-        <option value="ter" {{ old('dia_semana') == 'Terça' ? 'selected' : '' }}>Terça-feira</option>
-        <option value="qua" {{ old('dia_semana') == 'Quarta' ? 'selected' : '' }}>Quarta-feira</option>
-        <option value="qui" {{ old('dia_semana') == 'Quinta' ? 'selected' : '' }}>Quinta-feira</option>
-        <option value="sex" {{ old('dia_semana') == 'Sexta' ? 'selected' : '' }}>Sexta-feira</option>
-        <option value="sab" {{ old('dia_semana') == 'Sábado' ? 'selected' : '' }}>Sábado</option>
+        <option value="Segunda" {{ old('dia_semana') == 'Segunda' ? 'selected' : '' }}>Segunda-feira</option>
+        <option value="Terça" {{ old('dia_semana') == 'Terça' ? 'selected' : '' }}>Terça-feira</option>
+        <option value="Quarta" {{ old('dia_semana') == 'Quarta' ? 'selected' : '' }}>Quarta-feira</option>
+        <option value="Quinta" {{ old('dia_semana') == 'Quinta' ? 'selected' : '' }}>Quinta-feira</option>
+        <option value="Sexta" {{ old('dia_semana') == 'Sexta' ? 'selected' : '' }}>Sexta-feira</option>
+        <option value="Sábado" {{ old('dia_semana') == 'Sábado' ? 'selected' : '' }}>Sábado</option>
     </select>
     @error('dia_semana') 
         <small style="color:red">{{ $message }}</small> 

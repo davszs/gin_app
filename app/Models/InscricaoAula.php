@@ -24,10 +24,11 @@ class InscricaoAula extends Model
           return $this->belongsToMany(Plano::class, 'plano_inscricao_aula', 'inscricao_aula_id', 'plano_id');
     }
 
+    
     public function aula()
-    {
-        return $this->belongsTo(Aula::class);
-    }
+{
+    return $this->belongsTo(Aula::class );
+}
 
     public function aluno()
     {

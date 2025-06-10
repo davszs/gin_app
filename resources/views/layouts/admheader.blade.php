@@ -24,7 +24,7 @@
     {{-- Sidebar --}}
     <nav class="sidebar">
         <div class="logo">
-            <a href="{{ route('admin.dashboard') }}"><i class="fas fa-dumbbell"></i></a>
+            <a href="{{ route('admin.dashboard') }}"><img src="/images/favicon.ico" alt=""></a>
         </div>
          <ul class="nav-links">
         <li class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
