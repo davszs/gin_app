@@ -57,7 +57,8 @@ class AulaController extends Controller
      */
     public function edit(Aula $aula)
     {
-        return view('aulas.index', compact('aula'));
+
+        return view('aulas.edit', compact('aula'));
     }
 
     /**

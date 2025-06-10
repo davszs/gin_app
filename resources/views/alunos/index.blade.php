@@ -60,18 +60,7 @@
 </td>
 <td>
                         <div class="action-buttons">
-                            <a href="javascript:void(0);" 
-                                         class="action-button" 
-                                        title="Visualizar"
-                                    onclick="abrirModalAluno(this)"
-                                data-nome="{{ $aluno->user->nome }}"
-                                data-cpf="{{ $aluno->user->cpf }}"
-                                data-email="{{ $aluno->user->email }}"
-                                data-telefone="{{ $aluno->telefone }}"
-                                data-avatar="{{ asset('storage/' . ($aluno->avatar ?? 'default-avatar.jpg')) }}"
->
-                                            <i class="fas fa-eye"></i>
-                            </a>
+                          
 
                             <a href="{{ route('alunos.edit', $aluno) }}" class="action-button edit-button" title="Editar">
                                 <i class="fas fa-edit"></i>
@@ -297,28 +286,29 @@ function fecharModalAluno() {
         cursor: pointer;
     }
 
-     #modalFuncionario {
-        display: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        justify-content: center;
-        align-items: center;
-        z-index: 999;
-    }
+     #modalAluno {
+        display: flex; /* importante para centralizar */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    overflow-y: auto; /* caso o conteúdo ultrapasse a altura da tela */
+    padding: 20px;
+}
 
-    .modal-content {
-        background-color: #fff;
-        border-radius: 12px;
-        padding: 30px;
-        width: 90%;
-        max-width: 700px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        font-family: 'Segoe UI', sans-serif;
-        position: relative;
-    }
-
+.modal-content {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 25px 30px;
+    width: 100%;
+    max-width: 500px; /* REDUZIDO de 700px */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
+}
     .modal-content h2 {
         margin-bottom: 20px;
         font-size: 20px;
@@ -386,16 +376,18 @@ function fecharModalAluno() {
         margin-top: 2px;
     }
 
-    .close {
-        position: absolute;
-        top: 12px;
-        right: 20px;
-        font-size: 22px;
-        font-weight: bold;
-        cursor: pointer;
-        color: #aaa;
-        transition: color 0.2s ease;
-    }
+   .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+    z-index: 10; /* garante que fique acima de outros elementos */
+    background: none;
+    border: none;
+}
 
     .close:hover {
         color: #e74c3c;

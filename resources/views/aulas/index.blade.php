@@ -55,9 +55,7 @@
                 <td>{{ $aula->valor }}</td>
                 <td>
                     <div class="action-buttons">
-                        <a href="{{ route('aulas.show', $aula) }}" class="action-button" title="Visualizar">
-                            <i class="fas fa-eye"></i>
-                        </a>
+                        
                         <a href="{{ route('aulas.edit', $aula) }}" class="action-button edit-button" title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>
