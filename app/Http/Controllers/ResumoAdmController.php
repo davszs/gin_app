@@ -31,22 +31,30 @@ $alunosInativos = User::where('tipo', 'aluno')
         $pagamentosPendentes = Pagamento::where('status', 'pendente')->count();
         $novasMatriculas = SolicitacaoAula::where('status', 'pendente')->count();
 
-        // Gráfico: Evolução de Matrículas (últimos 6 meses)
-        $matriculasPorMes = InscricaoAula::select(
-                DB::raw("DATE_FORMAT(created_at, '%b %Y') as mes"),
-                DB::raw('COUNT(*) as total')
-            )
-            ->where('created_at', '>=', now()->subMonths(6))
-            ->groupBy('mes')
-            ->orderByRaw("MIN(created_at)")
-            ->get();
+       $totalAlvo = 100; // Número de pessoas de referência
 
+$matriculasPorMes = InscricaoAula::select(
+    DB::raw("DATE_FORMAT(created_at, '%Y-%m') as mes_ano"),
+    DB::raw("DATE_FORMAT(created_at, '%b %Y') as mes_label"),
+    DB::raw('COUNT(*) as total')
+)
+->groupBy('mes_ano', 'mes_label')
+->orderBy('mes_ano')
+->get();
+
+// Acumulado e porcentagem
+$acumulado = 0;
+$matriculasPorMes->transform(function ($item) use (&$acumulado, $totalAlvo) {
+    $acumulado += $item->total;
+    $item->porcentagem = min(round(($acumulado / $totalAlvo) * 100, 2), 100);
+    return $item;
+});
         // Gráfico: Distribuição por Aula
        $distribuicaoAula = Aula::withCount('inscricoes') // <- nome do método no model
     ->orderBy('inscricoes_count', 'desc')        // <- sufixo "_count" é automático
     ->limit(5)
     ->get()
-    ->map(fn($aula) => ['label' => $aula->nome, 'value' => $aula->inscricao_aula_count]);
+    ->map(fn($aula) => ['label' => $aula->nome, 'value' => $aula->inscricoes_count]);
 
         // Gráfico: Receita Mensal (últimos 6 meses)
         $receitaMensal = Pagamento::select(
@@ -60,13 +68,12 @@ $alunosInativos = User::where('tipo', 'aluno')
             ->get();
 
         // Gráfico: Horários Mais Procurados
-        $horariosPopulares = Aula::select('horario_inicio', DB::raw('COUNT(*) as total'))
-            ->join('inscricao_aula', 'aulas.id', '=', 'inscricao_aula.aula_id')
-            ->groupBy('horario_inicio')
-            ->orderByDesc('total')
-            ->limit(5)
-            ->get();
-
+      $horariosPopulares = Aula::select('horario_inicio', DB::raw('COUNT(inscricao_aula.aula_id) as total'))
+    ->join('inscricao_aula', 'aulas.id', '=', 'inscricao_aula.aula_id')
+    ->groupBy('horario_inicio')
+    ->orderByDesc('total')
+    ->limit(5)
+    ->get();
         return view('admviews.dashboard', [
             'alunosAtivos' => $alunosAtivos,
             'alunosInativos' => $alunosInativos,

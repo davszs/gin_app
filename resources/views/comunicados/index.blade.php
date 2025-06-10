@@ -1,20 +1,14 @@
 @extends('layouts.admheader')
-
 @section('title', 'Cadastro de Comunicados')
 @section('page-title', 'Gerenciamento de Comunicados')
 
-@section('content')   
+@section('content')
 <div class="actions-bar">
     <form method="GET" action="{{ route('comunicados.index') }}" class="search-container">
         <i class="fas fa-search"></i>
         <input type="text" name="q" placeholder="Pesquisar Comunicados..." value="{{ request('q') }}">
     </form>
-    
-
-    <button class="add-button" onclick="document.getElementById('modalCriarComunicado').style.display='flex'">
-    Criar Comunicado
-</button>
-
+    <button class="add-button" onclick="abrirModal('modalCriarComunicado')"> + Criar Comunicado</button>
 </div><br>
 
 @if(session('success'))
@@ -39,31 +33,28 @@
                 <th>Ações</th>
             </tr>
         </thead>
-        
         <tbody>
-            @foreach ($comunicados as $comunicado)                            
+            @foreach ($comunicados as $comunicado)
             <tr>
                 <td>{{ $comunicado->id }}</td>
                 <td>{{ $comunicado->titulo }}</td>
                 <td>{{ \Carbon\Carbon::parse($comunicado->data)->format('d/m/Y') }}</td>
                 <td>{{ ucfirst($comunicado->tipo) }}</td>
                 <td>
-    @if($comunicado->importante)
-        <span class="tag-importante ativo" title="Importante">
-            <i class="fas fa-star"></i> Importante
-        </span>
-    @else
-        <span class="tag-importante" title="Não marcado como importante">
-            <i class="far fa-star"></i> Não
-        </span>
-    @endif
-</td>
+                    @if($comunicado->importante)
+                        <span class="tag-importante ativo" title="Importante">
+                            <i class="fas fa-star"></i> Importante
+                        </span>
+                    @else
+                        <span class="tag-importante" title="Não marcado como importante">
+                            <i class="far fa-star"></i> Não
+                        </span>
+                    @endif
+                </td>
                 <td>
                     <div class="action-buttons">
-                        <button class="edit-button" onclick="document.getElementById('modalEditarComunicado{{ $comunicado->id }}').style.display='block'"> Editar  </button>
-
-                        <form action="{{ route('comunicados.destroy', $comunicado) }}" method="POST"
-                            onsubmit="return confirm('Tem certeza que deseja excluir este comunicado?')">
+                        <button class="action-button edit-button" onclick="abrirModal('modalEditarComunicado{{ $comunicado->id }}')"><i class="fas fa-edit"></i></button>
+                        <form action="{{ route('comunicados.destroy', $comunicado) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este comunicado?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="action-button delete-button" title="Excluir">
@@ -76,31 +67,27 @@
             @endforeach
         </tbody>
     </table>
+</div>
 
-   <!-- Modal Criar Comunicado -->
-<div id="modalCriarComunicado" class="modal" >
+<!-- Modal Criar Comunicado -->
+<div id="modalCriarComunicado" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="document.getElementById('modalCriarComunicado').style.display='none'">&times;</span>
+        <span class="close" onclick="fecharModal('modalCriarComunicado')">&times;</span>
         <form action="{{ route('comunicados.store') }}" method="POST">
             @csrf
-            
             <h1>Novo Comunicado</h1>
-
             <div class="input-box">
                 <label for="titulo">Título:</label><br>
                 <input type="text" name="titulo" maxlength="255" required value="{{ old('titulo') }}">
             </div>
-
             <div class="input-box">
                 <label for="descricao">Descrição:</label><br>
                 <textarea name="descricao" rows="5" maxlength="500" required>{{ old('descricao') }}</textarea>
             </div>
-
             <div class="input-box">
                 <label for="data">Data:</label><br>
-                <input type="date" name="data" required value="{{ old('data', \Carbon\Carbon::parse($comunicado->data)->format('Y-m-d')) }}">
+                <input type="date" name="data" required value="{{ old('data', now()->format('Y-m-d')) }}">
             </div>
-
             <div class="input-box">
                 <label for="tipo">Tipo:</label><br>
                 <select name="tipo" required>
@@ -108,14 +95,12 @@
                     <option value="aulas" {{ old('tipo') == 'aulas' ? 'selected' : '' }}>Aulas</option>
                 </select>
             </div>
-
             <div class="input-box">
                 <label>
                     <input type="checkbox" name="importante" {{ old('importante') ? 'checked' : '' }}>
                     <span class="important-label">Marcar como importante</span>
                 </label>
             </div><br>
-
             <div>
                 <input type="submit" class="login" value="Criar Comunicado">
             </div>
@@ -123,68 +108,56 @@
     </div>
 </div>
 
-<!-- Modal Editar Comunicado -->
+<!-- Modais de edição -->
 @foreach ($comunicados as $comunicado)
-    <div id="modalEditarComunicado{{ $comunicado->id }}" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="document.getElementById('modalEditarComunicado{{ $comunicado->id }}').style.display='none'">&times;</span>
-            <form action="{{ route('comunicados.update', $comunicado->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                
-                <h1>Editar Comunicado</h1>
-
-                <div class="input-box">
-                    <label for="titulo">Título:</label><br>
-                    <input type="text" name="titulo" maxlength="255" required value="{{ old('titulo', $comunicado->titulo) }}">
-                </div>
-
-                <div class="input-box">
-                    <label for="descricao">Descrição:</label><br>
-                    <textarea name="descricao" rows="5" maxlength="500" required>{{ old('descricao', $comunicado->descricao) }}</textarea>
-                </div>
-
-                <div class="input-box">
-                    <label for="data">Data:</label><br>
-                    <input type="date" name="data" required value="{{ old('data', \Carbon\Carbon::parse($comunicado->data)->format('Y-m-d')) }}">
-                </div>
-
-                <div class="input-box">
-                    <label for="tipo">Tipo:</label><br>
-                    <select name="tipo" required>
-                        <option value="geral" {{ (old('tipo', $comunicado->tipo) == 'geral') ? 'selected' : '' }}>Geral</option>
-                        <option value="aulas" {{ (old('tipo', $comunicado->tipo) == 'aulas') ? 'selected' : '' }}>Aulas</option>
-                    </select>
-                </div>
-
-                <div class="input-box">
-                    <label>
-                        <input type="checkbox" name="importante" {{ old('importante', $comunicado->importante) ? 'checked' : '' }}>
-                        <span class="important-label">Marcar como importante</span>
-                    </label>
-                </div><br>
-
-                <div>
-                    <input type="submit" class="login" value="Atualizar Comunicado">
-                </div>
-            </form>
-        </div>
+<div id="modalEditarComunicado{{ $comunicado->id }}" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharModal('modalEditarComunicado{{ $comunicado->id }}')">&times;</span>
+        <form action="{{ route('comunicados.update', $comunicado->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <h1>Editar Comunicado</h1>
+            <div class="input-box">
+                <label for="titulo">Título:</label><br>
+                <input type="text" name="titulo" maxlength="255" required value="{{ old('titulo', $comunicado->titulo) }}">
+            </div>
+            <div class="input-box">
+                <label for="descricao">Descrição:</label><br>
+                <textarea name="descricao" rows="5" maxlength="500" required>{{ old('descricao', $comunicado->descricao) }}</textarea>
+            </div>
+            <div class="input-box">
+                <label for="data">Data:</label><br>
+                <input type="date" name="data" required value="{{ old('data', \Carbon\Carbon::parse($comunicado->data)->format('Y-m-d')) }}">
+            </div>
+            <div class="input-box">
+                <label for="tipo">Tipo:</label><br>
+                <select name="tipo" required>
+                    <option value="geral" {{ (old('tipo', $comunicado->tipo) == 'geral') ? 'selected' : '' }}>Geral</option>
+                    <option value="aulas" {{ (old('tipo', $comunicado->tipo) == 'aulas') ? 'selected' : '' }}>Aulas</option>
+                </select>
+            </div>
+            <div class="input-box">
+                <label>
+                    <input type="checkbox" name="importante" {{ old('importante', $comunicado->importante) ? 'checked' : '' }}>
+                    <span class="important-label">Marcar como importante</span>
+                </label>
+            </div><br>
+            <div>
+                <input type="submit" class="login" value="Atualizar Comunicado">
+            </div>
+        </form>
     </div>
+</div>
 @endforeach
-
 
 @else
 <p>Nenhum comunicado cadastrado!</p>
 @endif
 @endsection
 
-
-
-
- 
 @push('scripts')
 <script>
-   document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const okBtn = document.getElementById("okBtn");
     const overlay = document.getElementById("overlayMessage");
 
@@ -192,30 +165,24 @@
         okBtn.addEventListener("click", function () {
             overlay.style.display = "none";
         });
-
         setTimeout(() => overlay.style.display = "none", 5000);
     }
+
     document.querySelectorAll('.modal').forEach(modal => {
-    modal.style.display = 'none';
-  });
+        modal.style.display = 'none';
+    });
 });
 
-// Declara as funções no escopo global para poder usar no onclick do HTML
 function abrirModal(id) {
     const modal = document.getElementById(id);
-    if (modal) {
-        modal.style.display = 'flex';
-    }
+    if (modal) modal.style.display = 'flex';
 }
 
 function fecharModal(id) {
     const modal = document.getElementById(id);
-    if (modal) {
-        modal.style.display = 'none';
-    }
+    if (modal) modal.style.display = 'none';
 }
 
-// Fecha modal ao clicar fora (esse evento fica global)
 window.addEventListener('click', function(event) {
     document.querySelectorAll('.modal').forEach(modal => {
         if (event.target === modal) {
@@ -223,9 +190,9 @@ window.addEventListener('click', function(event) {
         }
     });
 });
-
 </script>
 @endpush
+
 @push('styles')
 <style>
     .content {
@@ -267,6 +234,7 @@ window.addEventListener('click', function(event) {
         color: white;
         padding: 10px 20px;
         border-radius: 4px;
+        border-style: none;
         display: flex;
         align-items: center;
         font-size: 14px;
@@ -278,11 +246,12 @@ window.addEventListener('click', function(event) {
     }
 
     .add-button:hover {
-        background-color: #2980b9;
+        background-color: #65c1ff;
+        color: gray;
     }
 
     .table-container {
-        background-color: white;
+        background-color: rgb(255, 255, 255);
         border-radius: 4px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         overflow-x: auto;
@@ -295,11 +264,11 @@ window.addEventListener('click', function(event) {
     }
 
     thead th {
-        background-color: #f9f9f9;
+        background-color: #4287c9;
         padding: 15px;
         text-align: left;
         font-size: 14px;
-        color: #555;
+        color: #000000;
         font-weight: 600;
         border-bottom: 1px solid #eee;
     }
@@ -312,7 +281,7 @@ window.addEventListener('click', function(event) {
     }
 
     tbody tr:hover {
-        background-color: #f5f8fa;
+        background-color: #4288c95b;
     }
 
     .action-buttons {
@@ -335,6 +304,7 @@ window.addEventListener('click', function(event) {
     .edit-button {
         background-color: #f1f8fe;
         color: #3498db;
+        border-style: none;
     }
 
     .delete-button {
@@ -383,7 +353,7 @@ window.addEventListener('click', function(event) {
     z-index: 999;
 }
 .modal-content {
-    background: #fff;
+    background: #eee;
     border-radius: 12px;
     padding: 30px;
     width: 90%;

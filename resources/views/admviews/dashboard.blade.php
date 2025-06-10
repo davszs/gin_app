@@ -498,26 +498,42 @@
 @push('scripts')
 <script>
     // Matrículas por mês
-    const matriculasChart = new Chart(document.getElementById('matriculasChart'), {
-        type: 'line',
-        data: {
-            labels: {!! json_encode($matriculasPorMes->pluck('mes')) !!},
-            datasets: [{
-                label: 'Matrículas',
-                data: {!! json_encode($matriculasPorMes->pluck('total')) !!},
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: true,
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
+const matriculasChart = new Chart(document.getElementById('matriculasChart'), {
+    type: 'bar',
+    data: {
+        labels: {!! json_encode($matriculasPorMes->pluck('mes_label')) !!},
+        datasets: [{
+            label: 'Matrículas por Mês',
+            data: {!! json_encode($matriculasPorMes->pluck('total')) !!},
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+         indexAxis: 'y',
+        responsive: true,
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Mês'
+                }
+            },
+            y: {
+                
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Número de Matrículas'
+                },
+                ticks: {
+                    stepSize: 10
+                }
             }
         }
-    });
+    }
+});
 
     // Distribuição por Aula
     const modalidadeChart = new Chart(document.getElementById('modalidadeChart'), {
@@ -531,9 +547,14 @@
                 ]
             }]
         },
-        options: {
-            responsive: true
+         options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom', // legenda na parte inferior
+          }
         }
+    }
     });
 
     // Receita Mensal
@@ -557,21 +578,21 @@
 
     // Horários Mais Procurados
     const horariosChart = new Chart(document.getElementById('horariosChart'), {
-        type: 'bar',
-        data: {
-            labels: {!! json_encode($horariosPopulares->pluck('horario')) !!},
-            datasets: [{
-                label: 'Inscrições',
-                data: {!! json_encode($horariosPopulares->pluck('total')) !!},
-                backgroundColor: '#FF9800'
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
-            }
+    type: 'bar',
+    data: {
+        labels: {!! json_encode($horariosPopulares->pluck('horario_inicio')) !!},
+        datasets: [{
+            label: 'Inscrições',
+            data: {!! json_encode($horariosPopulares->pluck('total')) !!},
+            backgroundColor: '#FF9800'
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: { beginAtZero: true }
         }
-    });
+    }
+});
 </script>
 @endpush

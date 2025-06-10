@@ -67,7 +67,7 @@
                     <th>Ações</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-secondary">
                 @foreach($pagamentos as $pagamento)
                     @php
                         $vencido = $pagamento->status === 'pendente' && \Carbon\Carbon::parse($pagamento->vencimento)->isPast();
@@ -156,6 +156,7 @@
         margin-bottom: 30px;
         flex-wrap: wrap;
     }
+    
 
     
 </style>

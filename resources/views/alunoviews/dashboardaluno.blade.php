@@ -5,11 +5,11 @@
 
 @section('content')
 
-<div class="row-cards">
+<div class="row-cards d-flex justify-content-between">
 {{-- Card Pagamentos --}}
 <div class="card pagamento-card">
     <div class="card-header">
-        <h2>Status de Pagamentos</h2>
+        <h2><i class="fas fa-credit-card" style="margin-right: 8px; color: #007bff;"></i>   Status de Pagamentos</h2>
     </div>
     <div class="card-body">
         <div class="pagamento-info">
@@ -55,68 +55,148 @@
 {{-- Card Solicitações de Matrícula --}}
 <div class="card solicitacoes-card">
     <div class="card-header">
-        <h2>Solicitações de Matrícula</h2>
+        <h2><i class="fas fa-file-signature" style="margin-right: 8px; color: #007bff;"></i>   Solicitações de Matrícula</h2>
     </div>
     <div class="card-body">
         <div class="solicitacoes-info">
             <div class="solicitacao-pendentes"><strong>Pendentes:</strong> {{ $solicitacoes['pendentes'] }}</div>
             <div class="solicitacao-aceitas"><strong>Aceitas:</strong> {{ $solicitacoes['aceitas'] }}</div>
             <div class="solicitacao-rejeitadas"><strong>Rejeitadas:</strong> {{ $solicitacoes['recusadas'] }}</div>
-        </div>
-        <br>
+        </div><br>
         <a href="{{ route('aulas.aluno') }}" class="btn btn-primary">Visualizar Mátriculas</a>
     </div>
 </div>
-</div>
-<div class="row-cards">
-{{-- Card Agenda de Aulas --}}
-<div class="card agenda-card">
-    <div class="card-header">
-        <h2>Agenda da Semana</h2>
-    </div>
-    <div class="card-body">
-        <div class="agenda-dias">
-            @forelse($aulas as $aula)
-                <div class="agenda-item">
-                    <div class="agenda-dia">{{ ucfirst($aula->dia_semana) }}</div>
-                    <div class="agenda-aulas">
-                        <div class="aula">
-                            <span class="aula-horario">{{ $aula->horario_inicio }}</span>
-                            <span class="aula-nome">{{ $aula->nome }}</span>
-                            <span class="aula-prof">{{ $aula->instrutor }}</span>
-                        </div>
-                    </div>
-                </div>
-            @empty
-                <p>Você não está inscrito em nenhuma aula nesta semana.</p>
-            @endforelse
-        </div><br>
-        <a href="{{ route('aulas.aluno') }}" class="btn btn-primary">Ver todas as aulas</a>
-    </div>
+
 </div>
 
+<div class="row-cards">
 {{-- Card Comunicados --}}
 <div class="card comunicados-card">
     <div class="card-header">
-        <h2>Comunicados Recentes</h2>
+        <h2><i class="fas fa-bullhorn" style="margin-right: 8px; color: #007bff;"></i>   Comunicados Recentes</h2>
     </div>
     <div class="card-body">
         <div class="comunicados-lista">
             @forelse($comunicados as $comunicado)
-                <div class="comunicado">
-                    <strong>{{ $comunicado->titulo }}</strong><br>
-                    <div class="comunicado-data">{{ $comunicado->data->format('d/m/Y') }}</div>
-                    <p class="comunicado-conteudo">{{ Str::limit($comunicado->descricao, 100) }}</p>
-                </div>
-            @empty
-                <p>Nenhum comunicado recente.</p>
-            @endforelse
+    <div class="comunicado">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong>{{ $comunicado->titulo }}</strong>
+            @if($comunicado->importante)
+                <span style="background-color: #ffd900; color: red; padding: 2px 6px; border-radius: 4px; font-size: 12px;"> <i class="fas fa-exclamation-circle"></i>
+                    Importante!
+                </span>
+            @endif
         </div>
+        <div class="comunicado-data">{{ $comunicado->data->format('d/m/Y') }}</div>
+        <p class="comunicado-conteudo">{{ Str::limit($comunicado->descricao, 100) }}</p>
     </div>
+@empty
+    <p>Nenhum comunicado recente.</p>
+@endforelse
+
+        </div>
+    </div><br>
     
         <a href="{{ route('comunicados.aluno') }}" class="btn btn-primary">Ver todos os comunicados</a>
 </div>
 </div>
+
+<div class="row-cards">
+{{-- Card Agenda de Aulas --}} 
+<div class="card agenda-card">
+  <div class="card-header">
+    <h2><i class="fas fa-calendar-alt" style="margin-right: 8px; color: #007bff;"></i>   Agenda da Semana</h2>
+  </div>
+  <div class="card-body">
+    
+    <table class="agenda-tabela" style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th style="border: 1px solid #ccc; padding: 8px;">Horário</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">Segunda</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">Terça</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">Quarta</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">Quinta</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">Sexta</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">Sábado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">07:00</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">10:00</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><div class="aula-item" style="background-color: #ffe0b2; margin-bottom: 6px; padding: 6px; border-radius: 4px; color:black;">
+          <strong>Pilates</strong><br>
+          <small>Instrutor: Carlos</small>
+        </div></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">13:00</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">15:00</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px; vertical-align: top; min-width: 120px;">
+        
+        <div class="aula-item" style="background-color: #c8e6c9; margin-bottom: 6px; padding: 6px; border-radius: 4px; color:black;">
+          <strong>Funcional</strong><br>
+          <small>Instrutor: Maria</small>
+        </div>
+      </td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">17:00</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">18:00</td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"></td>
+      <td style="border: 1px solid #ccc; padding: 8px;"><div class="aula-item" style="background-color: #e0f7fa; margin-bottom: 6px; padding: 6px; border-radius: 4px; color:black;">
+          <strong>Yoga</strong><br>
+          <small>Instrutor: Ana</small>
+        </div></td>
+    </tr>
+  </tbody>
+</table>
+
+    <br>
+    <a href="{{ route('aulas.aluno') }}" class="btn btn-primary">Ver todas as aulas</a>
+  </div>
+</div>
+</div>
+
 @endsection
 <style>
     .card {
@@ -133,6 +213,9 @@
         padding-left: 12px;
         color: #333;
     }
+    .card:hover {
+            transform: translateY(-5px);
+        }
     .status {
         padding: 4px 10px;
         border-radius: 12px;
@@ -171,6 +254,10 @@
         margin: 2px 0;
     }
 
+    .aula-item:hover {
+            transform: translateX(10px);
+        }
+
     .comunicado {
         background-color: #f1f1f1;
         border-left: 4px solid #343a40;
@@ -178,12 +265,15 @@
         margin-bottom: 12px;
         border-radius: 10px;
     }
+    .comunicado:hover {
+            transform: translateX(10px);
+        }
 
     .btn-primary {
         background-color: #343a40;
         color: #ffffff;
         border: none;
-        padding: 10px 20px;
+        padding: 5px 10px;
         font-weight: bold;
         text-transform: uppercase;
         border-radius: 8px;
@@ -218,6 +308,16 @@
         flex: 1 1 100%;
     }
 }
+.comunicados-lista {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px; /* espaço entre os comunicados */
+}
 
+.comunicado {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
 
 </style>

@@ -72,7 +72,7 @@ class AlunosController extends Controller
         $aluno->plano()->create([
             'nome' => 'Plano de ' . $user->nome,
             'valor_total' => 0,
-            'status' => 'pendente',
+            'status' => 'ativo',
         ]);
 
         return redirect()

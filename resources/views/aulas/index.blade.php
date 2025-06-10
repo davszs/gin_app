@@ -39,6 +39,7 @@
                 <th>Instrutor</th>
                 <th>Capacidade</th>
                 <th>Valor R$</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -94,6 +95,16 @@
             setTimeout(() => overlay.style.display = "none", 5000);
         }
     });
+    document.addEventListener('DOMContentLoaded', function () {
+    const overlay = document.getElementById('overlayMessage');
+    const okBtn = document.getElementById('okBtn');
+
+    if (okBtn && overlay) {
+      okBtn.addEventListener('click', () => {
+        overlay.style.display = 'none';
+      });
+    }
+  });
 </script>
 @endpush
 
@@ -166,11 +177,11 @@
     }
 
     thead th {
-        background-color: #f9f9f9;
+        background-color: #4287c9;
         padding: 15px;
         text-align: left;
         font-size: 14px;
-        color: #555;
+        color: #000000;
         font-weight: 600;
         border-bottom: 1px solid #eee;
     }
@@ -183,7 +194,7 @@
     }
 
     tbody tr:hover {
-        background-color: #f5f8fa;
+        background-color: #4288c95b;
     }
 
     .action-buttons {
