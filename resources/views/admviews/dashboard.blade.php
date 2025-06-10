@@ -6,161 +6,95 @@
 
 @section('content')
     
-    <!-- Modal de logout -->
-    <div id="logoutModal" class="logout-overlay" style="display: none;">
-        <div class="logout-box">
-            <p>Tem certeza que deseja desconectar a conta e sair?</p>
-            <div class="logout-buttons">
-                <form id="logoutForm" action="#" method="POST">
-                    <button type="submit" class="confirm">Sim, sair</button>
-                </form>
-                <button class="cancel" id="cancelLogout">Cancelar</button>
-            </div>
+
+
+
+  <div id="dashboard">
+
+  <!-- Resumo de Operações -->
+  <section class="summary-section">
+    <h4 class="summary-title">
+      <i class="fas fa-chart-bar"></i> Resumo de Operações
+    </h4>
+
+    <div class="summary-cards">
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-user-check"></i></div>
+        <div class="card-content">
+          <div class="card-value">{{ $alunosAtivos }}</div>
+          <div class="card-title">Alunos Ativos</div>
         </div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-user-times"></i></div>
+        <div class="card-content">
+          <div class="card-value">{{ $alunosInativos }}</div>
+          <div class="card-title">Alunos Bloqueados</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <div class="card-content">
+          <div class="card-value">{{ $totalProfessores }}</div>
+          <div class="card-title">Administradores cadastrados</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-book"></i></div>
+        <div class="card-content">
+          <div class="card-value">{{ $totalAulas }}</div>
+          <div class="card-title">Total de Aulas</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gráficos -->
+  <h4 class="summary-title">
+      <i class="fas fa-chart-bar"></i> Gráficos de Atividades
+    </h4>
+  <section class="charts-section">
+    <div class="chart-container">
+      <h5 class="chart-title"><i class="fas fa-chart-line"></i> Evolução de Matrículas</h5>
+      <canvas id="matriculasChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h5 class="chart-title"><i class="fas fa-chart-pie"></i> Distribuição por Aula</h5>
+      <canvas id="modalidadeChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h5 class="chart-title"><i class="fas fa-chart-bar"></i> Receita Mensal</h5>
+      <canvas id="receitaChart"></canvas>
+    </div>
+    <div class="chart-container">
+      <h5 class="chart-title"><i class="fas fa-clock"></i> Horários Mais Procurados</h5>
+      <canvas id="horariosChart"></canvas>
+    </div>
+  </section>
+
+  <!-- Avisos -->
+  <section class="alerts-section">
+    <h4 class="summary-title"><i class="fas fa-exclamation-triangle"></i> Alertas Rápidos</h4>
+
+    <div class="alert-item critical">
+      <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
+      <div class="alert-text">{{ $pagamentosAtrasados }} alunos com pagamentos em atraso</div>
     </div>
 
-    <!-- Content -->
-
-        <!-- Date Filter -->
-        <div class="date-filter">
-            <label for="date-inicio">Data Início:</label>
-            <input type="date" id="date-inicio" name="date-inicio">
-            <label for="date-fim">Data Fim:</label>
-            <input type="date" id="date-fim" name="date-fim">
-            <button type="button" onclick="updateCharts()">Filtrar</button>
-        </div>
-
-        <!-- Summary Cards -->
-        <div class="summary-cards">
-            <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-user-check"></i>
-                </div>
-                <div class="card-content">
-                    <div class="card-value" id="alunosAtivos">157</div>
-                    <div class="card-title">Alunos Ativos</div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-user-times"></i>
-                </div>
-                <div class="card-content">
-                    <div class="card-value" id="alunosInativos">28</div>
-                    <div class="card-title">Alunos Inativos</div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                </div>
-                <div class="card-content">
-                    <div class="card-value" id="totalProfessores">5</div>S
-                    <div class="card-title">Total de Professores</div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="card-content">
-                    <div class="card-value" id="totalAulas">42</div>
-                    <div class="card-title">Total de Aulas</div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="card-content">
-                    <div class="card-value" id="totalTurmas">12</div>
-                    <div class="card-title">Total de Turmas</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Charts Section -->
-        <div class="charts-section">
-            <div class="chart-container">
-                <div class="chart-title">
-                    <i class="fas fa-chart-line"></i>
-                    Evolução de Matrículas
-                </div>
-                <canvas id="matriculasChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <div class="chart-title">
-                    <i class="fas fa-chart-pie"></i>
-                    Distribuição por Modalidade
-                </div>
-                <canvas id="modalidadeChart"></canvas>
-            </div>
-        </div>
-
-        <div class="charts-section">
-            <div class="chart-container">
-                <div class="chart-title">
-                    <i class="fas fa-chart-bar"></i>
-                    Receita Mensal
-                </div>
-                <canvas id="receitaChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <div class="chart-title">
-                    <i class="fas fa-clock"></i>
-                    Horários Mais Procurados
-                </div>
-                <canvas id="horariosChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Notice Board -->
-        <div class="notice-board">
-            <div class="section-title">
-                <i class="fas fa-bullhorn"></i>
-                Quadro de Avisos
-            </div>
-            <div class="notice-item">
-                <div class="notice-date">08/04/2025</div>
-                <div class="notice-text">Manutenção programada no sistema para o dia 12/04/2025 das 23h às 6h. O sistema ficará indisponível durante este período.</div>
-            </div>
-            <div class="notice-item">
-                <div class="notice-date">05/04/2025</div>
-                <div class="notice-text">Nova turma de Yoga será aberta a partir do dia 15/04. Interessados devem procurar a recepção.</div>
-            </div>
-            <div class="notice-item">
-                <div class="notice-date">01/04/2025</div>
-                <div class="notice-text">Lembramos que o horário de funcionamento aos domingos será alterado para 8h às 14h a partir deste mês.</div>
-            </div>
-        </div>
-
-        <!-- Quick Alerts -->
-        <div class="alerts-container">
-            <div class="section-title">
-                <i class="fas fa-exclamation-triangle"></i>
-                Alertas Rápidos
-            </div>
-            <div class="alert-item critical">
-                <div class="alert-icon">
-                    <i class="fas fa-exclamation-circle"></i>
-                </div>
-                <div class="alert-text">12 alunos com pagamentos em atraso há mais de 10 dias</div>
-            </div>
-            <div class="alert-item">
-                <div class="alert-icon">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="alert-text">8 planos vencendo nos próximos 7 dias</div>
-            </div>
-            <div class="alert-item">
-                <div class="alert-icon">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <div class="alert-text">3 novos alunos aguardando aprovação de matrícula</div>
-            </div>
-        </div>
+    <div class="alert-item">
+      <div class="alert-icon"><i class="fas fa-clock"></i></div>
+      <div class="alert-text">{{ $pagamentosPendentes }} pagamentos pendentes</div>
     </div>
 
+    <div class="alert-item">
+      <div class="alert-icon"><i class="fas fa-user-plus"></i></div>
+      <div class="alert-text">{{ $novasMatriculas }} novos alunos aguardando aprovação</div>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection
 
 @push('styles')
@@ -168,7 +102,7 @@
          
         /* Content Area */
         .content {
-            margin-left: 250px;
+            
             flex: 1;
             padding: 20px;
             min-height: 100vh;
@@ -313,34 +247,51 @@
         }
 
         /* Charts Section */
-        .charts-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
+.charts-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
 
-        .chart-container {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+.chart-container {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .chart-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.chart-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: flex-start;
+}
 
-        .chart-title i {
-            color: #667eea;
-        }
+.chart-title i {
+    color: #667eea;
+}
 
+/* Ajuste para o canvas dos gráficos para ocupar a largura total */
+.chart-container canvas {
+    width: 100% !important;
+    max-height: 300px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .charts-section {
+        grid-template-columns: 1fr;
+    }
+}
         /* Notice Board */
         .notice-board {
             background: white;
@@ -516,264 +467,111 @@
             }
             
             .summary-cards {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            }
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* fixa 4 colunas */
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
         }
+        .summary-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    border-left: 5px solid #667eea;
+    padding-left: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espaço entre ícone e texto */
+}
+
+.summary-title i {
+    color: #667eea;
+    font-size: 24px;
+}
 </style>
 @endpush
 
-@push('styles')
+@push('scripts')
 <script>
-     // Dados dos gráficos
-        let chartData = {
-            matriculas: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                data: [25, 35, 28, 45, 38, 52]
-            },
-            modalidades: {
-                labels: ['Musculação', 'Natação', 'Yoga', 'Pilates', 'Crossfit'],
-                data: [45, 25, 15, 10, 15]
-            },
-            receita: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
-                data: [15000, 18000, 16500, 22000, 19500, 25000]
-            },
-            horarios: {
-                labels: ['6h-8h', '8h-10h', '10h-12h', '14h-16h', '16h-18h', '18h-20h'],
-                data: [20, 35, 25, 30, 45, 60]
-            }
-        };
-
-        // Inicializar gráficos
-        let charts = {};
-
-        function initCharts() {
-            // Gráfico de Matrículas
-            const matriculasCtx = document.getElementById('matriculasChart').getContext('2d');
-            charts.matriculas = new Chart(matriculasCtx, {
-                type: 'line',
-                data: {
-                    labels: chartData.matriculas.labels,
-                    datasets: [{
-                        label: 'Novas Matrículas',
-                        data: chartData.matriculas.data,
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0,0,0,0.1)'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Gráfico de Modalidades
-            const modalidadeCtx = document.getElementById('modalidadeChart').getContext('2d');
-            charts.modalidades = new Chart(modalidadeCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: chartData.modalidades.labels,
-                    datasets: [{
-                        data: chartData.modalidades.data,
-                        backgroundColor: [
-                            '#667eea',
-                            '#764ba2',
-                            '#4facfe',
-                            '#fa709a',
-                            '#ffecd2'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Gráfico de Receita
-            const receitaCtx = document.getElementById('receitaChart').getContext('2d');
-            charts.receita = new Chart(receitaCtx, {
-                type: 'bar',
-                data: {
-                    labels: chartData.receita.labels,
-                    datasets: [{
-                        label: 'Receita (R$)',
-                        data: chartData.receita.data,
-                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                        borderColor: '#667eea',
-                        borderWidth: 1,
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0,0,0,0.1)'
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return 'R$ ' + value.toLocaleString();
-                                }
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Gráfico de Horários
-            const horariosCtx = document.getElementById('horariosChart').getContext('2d');
-            charts.horarios = new Chart(horariosCtx, {
-                type: 'radar',
-                data: {
-                    labels: chartData.horarios.labels,
-                    datasets: [{
-                        label: 'Alunos por Horário',
-                        data: chartData.horarios.data,
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#667eea'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0,0,0,0.1)'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function updateCharts() {
-            // Simular atualização dos dados baseado no filtro de data
-            const startDate = document.getElementById('date-inicio').value;
-            const endDate = document.getElementById('date-fim').value;
-            
-            if (startDate && endDate) {
-                // Gerar dados aleatórios para demonstrar a funcionalidade
-                chartData.matriculas.data = chartData.matriculas.data.map(() => 
-                    Math.floor(Math.random() * 50) + 20
-                );
-                chartData.receita.data = chartData.receita.data.map(() => 
-                    Math.floor(Math.random() * 20000) + 10000
-                );
-                chartData.horarios.data = chartData.horarios.data.map(() => 
-                    Math.floor(Math.random() * 50) + 10
-                );
-                
-                // Atualizar os gráficos
-                charts.matriculas.data.datasets[0].data = chartData.matriculas.data;
-                charts.receita.data.datasets[0].data = chartData.receita.data;
-                charts.horarios.data.datasets[0].data = chartData.horarios.data;
-                
-                charts.matriculas.update();
-                charts.receita.update();
-                charts.horarios.update();
-                
-                // Atualizar cards
-                document.getElementById('alunosAtivos').textContent = Math.floor(Math.random() * 100) + 100;
-                document.getElementById('alunosInativos').textContent = Math.floor(Math.random() * 50) + 10;
-                document.getElementById('totalAulas').textContent = Math.floor(Math.random() * 20) + 30;
-                
-                // Mostrar mensagem de sucesso
-                alert('Dados atualizados com sucesso!');
-            } else {
-                alert('Por favor, selecione as datas de início e fim.');
+    // Matrículas por mês
+    const matriculasChart = new Chart(document.getElementById('matriculasChart'), {
+        type: 'line',
+        data: {
+            labels: {!! json_encode($matriculasPorMes->pluck('mes')) !!},
+            datasets: [{
+                label: 'Matrículas',
+                data: {!! json_encode($matriculasPorMes->pluck('total')) !!},
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
             }
         }
+    });
 
-        // Scripts relacionados à sidebar e modais
-        document.addEventListener("DOMContentLoaded", function () {
-            // Inicializar gráficos
-            initCharts();
-            
-            // Configurar datas padrão (último mês)
-            const today = new Date();
-            const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
-            
-            document.getElementById('date-inicio').value = lastMonth.toISOString().split('T')[0];
-            document.getElementById('date-fim').value = today.toISOString().split('T')[0];
-            
-            // Modal de logout
-            const logoutLink = document.getElementById("logoutTrigger");
-            const logoutModal = document.getElementById("logoutModal");
-            const cancelBtn = document.getElementById("cancelLogout");
+    // Distribuição por Aula
+    const modalidadeChart = new Chart(document.getElementById('modalidadeChart'), {
+        type: 'pie',
+        data: {
+            labels: {!! json_encode($distribuicaoAula->pluck('label')) !!},
+            datasets: [{
+                data: {!! json_encode($distribuicaoAula->pluck('value')) !!},
+                backgroundColor: [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
+                ]
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
 
-            logoutLink?.addEventListener("click", e => {
-                e.preventDefault();
-                logoutModal.style.display = "flex";
-            });
+    // Receita Mensal
+    const receitaChart = new Chart(document.getElementById('receitaChart'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($receitaMensal->pluck('mes')) !!},
+            datasets: [{
+                label: 'Receita (R$)',
+                data: {!! json_encode($receitaMensal->pluck('total')) !!},
+                backgroundColor: '#4CAF50'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
 
-            cancelBtn?.addEventListener("click", () => {
-                logoutModal.style.display = "none";
-            });
-
-            // Animação dos cards
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(20px)';
-                    card.style.transition = 'all 0.5s ease';
-                    
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 100);
-                }, index * 100);
-            });
-        });
+    // Horários Mais Procurados
+    const horariosChart = new Chart(document.getElementById('horariosChart'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($horariosPopulares->pluck('horario')) !!},
+            datasets: [{
+                label: 'Inscrições',
+                data: {!! json_encode($horariosPopulares->pluck('total')) !!},
+                backgroundColor: '#FF9800'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
 </script>
 @endpush

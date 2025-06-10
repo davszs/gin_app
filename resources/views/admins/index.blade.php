@@ -48,9 +48,7 @@
                 <td>{{ $admin->telefone }}</td>
                 <td>
                     <div class="action-buttons">
-                        <a href="{{ route('admins.show', $admin) }}" class="action-button" title="Visualizar">
-                            <i class="fas fa-eye"></i>
-                        </a>
+                        
                         <a href="{{ route('admins.edit', $admin) }}" class="action-button edit-button" title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>

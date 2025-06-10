@@ -16,6 +16,7 @@ use App\Http\Controllers\PlanoController;
 use App\Http\Controllers\Aluno\DashboardController;
 use App\Http\Controllers\Aluno\FinanceiroController;
 use App\Http\Controllers\FinanceiroController as ControllersFinanceiroController;
+use App\Http\Controllers\ResumoAdmController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -29,7 +30,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //ROTAS principal aluno e adm
 Route::get('/home_aluno', [DashboardController::class, 'index'])->name('aluno.dashboard');
-Route::get('/home_admin', fn() => view('admviews.dashboard'))->name('admin.dashboard');
+Route::get('/home_adm', [ResumoAdmController::class, 'index'])->name('admin.dashboard');
 
 //ROTAS rec - senha
 Route::get('/recuperar-senha', [ResetPasswordController::class, 'showResetForm'])->name('recuperar-senha');
