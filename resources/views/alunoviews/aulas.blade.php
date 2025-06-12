@@ -4,65 +4,74 @@
 @section('page-title', 'Aulas')
 
 @section('content')
-    {{-- Seção Minhas Aulas --}}
-    <h2>Minhas Aulas</h2><br>
-   @foreach($aulas as $aula)
-    @php
+ {{-- Seção Minhas Aulas --}}
+<h2>Minhas Aulas</h2><br>
+<div class="row g-3 mx-3">
+@foreach($aulas as $aula)
+@php
         // Procura se já existe solicitação pendente de cancelamento para esta aula
         $solicitacaoCancelamento = $solicitacoesPendentes->firstWhere(function($sol) use ($aula) {
             return $sol->aula_id == $aula->id && $sol->tipo == 'cancelamento';
         });
     @endphp
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2-4">
+        <div class="card-aula h-100 d-flex flex-column">
+            <h3>{{ $aula->nome }}</h3>
+            <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
+            <p><strong>Dia(s):</strong> {{ $aula->dia_semana }}</p>
+            <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
+            <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
 
-    <div class="card-aula">
-        <h3>{{ $aula->nome }}</h3>
-        <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
-        <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
-        <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
-        <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
-
-        @if($solicitacaoCancelamento)
-            <button class="btn-solicitado-cancelar" disabled>Solicitação de Cancelamento Enviada</button>
-        @else
-            <form action="{{ route('inscricao.cancelar', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja cancelar esta inscrição?')">
-                @csrf
-                @method('PUT')
-                <button type="submit" class="btn-cancelar">Solicitar Cancelamento</button>
-            </form>
-        @endif
+            @if($solicitacaoCancelamento)
+                <button class="btn-solicitado-cancelar" disabled>Solicitação de Cancelamento Enviada</button>
+            @else
+                <form action="{{ route('inscricao.cancelar', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja cancelar esta inscrição?')">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn-cancelar">Solicitar Cancelamento</button>
+                </form>
+            @endif
+            <br>
+        </div>
     </div>
 @endforeach
-        </div>
+</div>
+
+        
     <br>
 
     {{-- Seção Aulas Disponíveis --}}
-    <h2>Inscreve-se em Aulas</h2>
-    <br>
-    @foreach($aulasDisponiveis as $aula)
+<h2>Inscreva-se em Aulas</h2>
+<br>
+<div class="row g-3 mx-3">
+@foreach($aulasDisponiveis as $aula)
     @php
-        // Procura se já existe solicitação pendente de inscrição para esta aula
         $solicitacaoInscricao = $solicitacoesPendentes->firstWhere(function($sol) use ($aula) {
             return $sol->aula_id == $aula->id && $sol->tipo == 'inscricao';
         });
     @endphp
 
-    <div class="card-aula">
-        <h3>{{ $aula->nome }}</h3>
-        <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
-        <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
-        <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
-        <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2-4">
+        <div class="card-aula h-100 d-flex flex-column">
+            <h3>{{ $aula->nome }}</h3>
+            <p><strong>Descrição:</strong> {{ $aula->descricao }}</p>
+            <p><strong>Dia(s) na Semana:</strong> {{ $aula->dia_semana }}</p>
+            <p><strong>Horário:</strong> {{ $aula->horario_inicio }}</p>
+            <p><strong>Professor:</strong> {{ $aula->instrutor }}</p>
 
-        @if($solicitacaoInscricao)
-            <button class="btn-solicitado-inscrever" disabled>Solicitação de Inscrição Enviada</button>
-        @else
-            <form action="{{ route('inscricao.inscrever', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja se inscrever nessa aula?')">
-                @csrf
-                <button type="submit" class="btn-inscrever">Solicitar Inscrição</button>
-            </form>
-        @endif
+            @if($solicitacaoInscricao)
+                <button class="btn-solicitado-inscrever" disabled>Solicitação de Inscrição Enviada</button>
+            @else
+                <form action="{{ route('inscricao.inscrever', $aula) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja se inscrever nessa aula?')">
+                    @csrf
+                    <button type="submit" class="btn-inscrever">Solicitar Inscrição</button>
+                </form>
+            @endif
+        </div>
     </div>
-@endforeach<br>
+@endforeach
+</div>
+
 
     {{-- Seção Aulas Pendentes --}}
     <h2>Status de últimas solicitações</h2><br>
@@ -99,12 +108,8 @@
 
 @push('styles')
 <style>
-.cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: center;
-}
+
+
 
 .card-aula {
     background-color: #f5f7fa;
@@ -112,7 +117,7 @@
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     padding: 1.5rem;
-    width: calc((100% / 4) - 1.5rem); /* 4 cards por linha com gap */
+    width: 100%; /* 4 cards por linha com gap */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -184,26 +189,19 @@
     color: white;
     cursor: not-allowed;
 }
-
-/* Responsividade: menos colunas em telas menores */
-@media (max-width: 1200px) {
-    .card-aula {
-        width: calc((100% / 3) - 1.5rem); /* 3 cards por linha */
-    }
+.row.g-3 {
+    --bs-gutter-x: 1rem;
+    --bs-gutter-y: 1rem;
 }
 
-@media (max-width: 900px) {
-    .card-aula {
-        width: calc((100% / 2) - 1.5rem); /* 2 cards por linha */
+@media (min-width: 1200px) {
+    .col-xl-2-4 {
+        flex: 0 0 auto;
+        width: 33%;
+        max-width: 33%;
     }
+    
 }
-
-@media (max-width: 600px) {
-    .card-aula {
-        width: 100%; /* 1 card por linha */
-    }
-}
-
 </style>
 @endpush
 @push('scripts')
